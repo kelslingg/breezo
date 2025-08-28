@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personal Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(120deg, #e0f7fa 0%, #f8fafc 60%, #e6f4f1 100%);
+      }
+      .bg-blur {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-blur">
+    <a href="profile.html" class="fixed top-4 left-4 z-20 flex items-center text-gray-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-gray-300 transition" style="background: none; box-shadow: none; padding: 0;">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <main class="max-w-md mx-auto pt-10 pb-12 px-4 flex flex-col items-center">
+      <h2 class="text-xl font-semibold text-gray-900 mb-6">Personal Details</h2>
+      
+      <!-- Required Fields Note -->
+      <div class="w-full bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+        <div class="flex items-start gap-3">
+          <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="text-sm text-blue-800">
+            <p class="font-medium mb-1">Required for Health Insights</p>
+            <p>Date of Birth and Biological Sex are required to provide accurate respiratory health assessments using our AI model.</p>
+          </div>
+        </div>
+      </div>
+      
+      <form id="personal-details-form" class="w-full bg-white rounded-2xl shadow p-6 space-y-5">
+        <div>
+          <label class="block text-gray-400 text-sm mb-1" for="fullName">Full Name</label>
+          <input id="fullName" name="fullName" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" placeholder="Enter your name" />
+        </div>
+        <div>
+          <label class="block text-gray-400 text-sm mb-1" for="email">Email</label>
+          <input id="email" name="email" type="email" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" placeholder="Enter your email" />
+        </div>
+        <div>
+          <label class="block text-gray-400 text-sm mb-1" for="dob">Date of Birth *</label>
+          <input id="dob" name="dob" type="date" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" required />
+        </div>
+        <div>
+          <label class="block text-gray-400 text-sm mb-1" for="sex">Biological Sex *</label>
+          <div class="grid grid-cols-2 gap-3">
+            <button type="button" id="sex-female" class="sex-option border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] bg-white/70 hover:bg-gray-50 transition" data-value="female">
+              <div class="flex items-center justify-center gap-2">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span>Female</span>
+              </div>
+            </button>
+            <button type="button" id="sex-male" class="sex-option border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] bg-white/70 hover:bg-gray-50 transition" data-value="male">
+              <div class="flex items-center justify-center gap-2">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span>Male</span>
+              </div>
+            </button>
+          </div>
+          <input type="hidden" id="sex" name="sex" required />
+          
+          <!-- Why Biological Sex Matters -->
+          <div class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <button type="button" id="why-sex-matters" class="text-left w-full text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center justify-between">
+              <span>Why is biological sex important for health assessments?</span>
+              <svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div id="sex-explanation" class="hidden mt-2 text-xs text-blue-800 leading-relaxed">
+              <p class="mb-2">Biological sex significantly impacts respiratory health and disease patterns:</p>
+              <ul class="list-disc list-inside space-y-1">
+                <li><strong>Lung Function:</strong> Males typically have larger lung capacity, while females may be more sensitive to certain respiratory irritants</li>
+                <li><strong>Disease Risk:</strong> Asthma is more common in females, while COPD is more prevalent in males</li>
+                <li><strong>Symptom Presentation:</strong> Respiratory symptoms can manifest differently between sexes</li>
+                <li><strong>Treatment Response:</strong> Medication effectiveness and side effects vary by biological sex</li>
+                <li><strong>Environmental Factors:</strong> Different susceptibility to air pollution and occupational hazards</li>
+              </ul>
+              <p class="mt-2 text-blue-700"><strong>Our AI model uses this information to provide more accurate, personalized health assessments.</strong></p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label class="block text-gray-400 text-sm mb-1" for="height">Height</label>
+          <input id="height" name="height" type="number" min="0" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" placeholder="Height" />
+        </div>
+        <div>
+          <label class="block text-gray-400 text-sm mb-1" for="weight">Weight</label>
+          <input id="weight" name="weight" type="number" min="0" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" placeholder="Weight" />
+        </div>
+        <div>
+          <label class="block text-gray-400 text-sm mb-1" for="bloodType">Blood Type</label>
+          <select id="bloodType" name="bloodType" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] bg-white/70">
+            <option value="" class="text-gray-300 font-normal opacity-60" disabled selected>Select</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full bg-[#199A8E] hover:bg-[#157c71] text-white font-medium rounded-xl py-3 text-base text-center shadow transition mt-2">Save</button>
+      </form>
+    </main>
+    <script>
+      // Pre-fill form if data exists
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('personal-details-form');
+        const saved = localStorage.getItem('personalDetails');
+        if (saved) {
+          const data = JSON.parse(saved);
+          if (data.fullName) form.fullName.value = data.fullName;
+          if (data.email) form.email.value = data.email;
+          if (data.dob) form.dob.value = data.dob;
+          if (data.sex) form.sex.value = data.sex;
+          if (data.height) form.height.value = data.height;
+          if (data.weight) form.weight.value = data.weight;
+          if (data.bloodType) form.bloodType.value = data.bloodType;
+        }
+        
+        // Also try to load email from userEmail if not in personalDetails
+        if (!form.email.value && localStorage.getItem('userEmail')) {
+          form.email.value = localStorage.getItem('userEmail');
+        }
+        
+        // Set up biological sex button functionality
+        setupSexButtons();
+        
+        // Set up expandable explanation
+        setupSexExplanation();
+        form.onsubmit = function(e) {
+          e.preventDefault();
+          
+          // Validate required fields for ML model
+          if (!form.dob.value || !form.sex.value) {
+            alert('Date of Birth and Biological Sex are required for accurate health insights.');
+            return;
+          }
+          
+          const data = {
+            fullName: form.fullName.value,
+            email: form.email.value,
+            dob: form.dob.value,
+            sex: form.sex.value,
+            height: form.height.value,
+            weight: form.weight.value,
+            bloodType: form.bloodType.value
+          };
+          
+          localStorage.setItem('personalDetails', JSON.stringify(data));
+          
+          // Save user-specific data for future sign-ins
+          const userEmail = localStorage.getItem('userEmail');
+          if (userEmail) {
+            const userData = {
+              fullName: data.fullName,
+              personalDetails: data
+            };
+            localStorage.setItem(`user_${userEmail}`, JSON.stringify({
+              email: userEmail,
+              lastUpdated: new Date().toISOString(),
+              ...userData
+            }));
+          }
+          
+          // Check if user came from self-diagnosis
+          const urlParams = new URLSearchParams(window.location.search);
+          const redirectTo = urlParams.get('redirect');
+          
+          if (redirectTo === 'selfdiagnosis') {
+            window.location.href = 'selfdiagnosis.html?start=1';
+          } else {
+            window.location.href = 'profile.html';
+          }
+        };
+      });
+      
+      // Function to set up biological sex button functionality
+      function setupSexButtons() {
+        const sexButtons = document.querySelectorAll('.sex-option');
+        const hiddenSexInput = document.getElementById('sex');
+        
+        sexButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const value = this.getAttribute('data-value');
+            
+            // Update hidden input
+            hiddenSexInput.value = value;
+            
+            // Update visual state of all buttons
+            updateSexButtonState(value);
+          });
+        });
+      }
+      
+      // Function to update the visual state of sex buttons
+      function updateSexButtonState(selectedValue) {
+        const sexButtons = document.querySelectorAll('.sex-option');
+        
+        sexButtons.forEach(button => {
+          const value = button.getAttribute('data-value');
+          const icon = button.querySelector('svg');
+          
+          if (value === selectedValue) {
+            // Selected state
+            button.classList.remove('border-gray-200', 'bg-white/70');
+            button.classList.add('border-[#199A8E]', 'bg-[#e6f4f1]');
+            icon.classList.remove('text-gray-400');
+            icon.classList.add('text-[#199A8E]');
+            icon.innerHTML = '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>';
+          } else {
+            // Unselected state
+            button.classList.remove('border-[#199A8E]', 'bg-[#e6f4f1]');
+            button.classList.add('border-gray-200', 'bg-white/70');
+            icon.classList.remove('text-[#199A8E]');
+            icon.classList.add('text-gray-400');
+            icon.innerHTML = '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>';
+          }
+        });
+      }
+      
+      // Function to set up expandable sex explanation
+      function setupSexExplanation() {
+        const toggleButton = document.getElementById('why-sex-matters');
+        const explanation = document.getElementById('sex-explanation');
+        const chevron = toggleButton.querySelector('svg');
+        
+        toggleButton.addEventListener('click', function() {
+          const isHidden = explanation.classList.contains('hidden');
+          
+          if (isHidden) {
+            explanation.classList.remove('hidden');
+            chevron.style.transform = 'rotate(180deg)';
+          } else {
+            explanation.classList.add('hidden');
+            chevron.style.transform = 'rotate(0deg)';
+          }
+        });
+      }
+    </script>
+  </body>
+</html> 

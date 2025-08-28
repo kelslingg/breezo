@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(120deg, #e0f7fa 0%, #f8fafc 60%, #e6f4f1 100%);
+      }
+      .bg-blur {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+      
+      @keyframes slideup { 
+        from { transform: translateY(40px); opacity: 0; } 
+        to { transform: translateY(0); opacity: 1; } 
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-[#f8fafc] via-[#f8fafc] to-[#e6f4f1] backdrop-blur-2xl">
+    <a href="profile.html" class="fixed top-4 left-4 z-20 flex items-center text-gray-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-gray-300 transition bg-none shadow-none p-0" style="background: none; box-shadow: none; padding: 0;">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <main class="max-w-xl mx-auto pb-12 px-4 flex flex-col items-center">
+      <div class="w-full bg-white rounded-2xl shadow p-0 overflow-hidden mt-2">
+        <div class="divide-y divide-gray-100">
+          <!-- Data Rights -->
+          <button id="open-data-rights" class="w-full flex items-center justify-between px-4 pt-6 pb-4 hover:bg-gray-50 transition text-left">
+            <div>
+              <div class="font-semibold text-gray-900">Your Data Rights</div>
+              <div class="text-sm text-gray-400 mt-1">Summary of rights</div>
+            </div>
+            <svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <!-- What we collect -->
+          <a href="#" id="open-collection" class="flex items-center justify-between px-4 pt-4 pb-4 hover:bg-gray-50 transition">
+            <div>
+              <div class="font-semibold text-gray-900">What we collect & why</div>
+              <div class="text-sm text-gray-400 mt-1">Symptom data<br>Usage patterns<br>Crash reports</div>
+            </div>
+            <svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <!-- Consent settings -->
+          <div class="px-4 pt-4 pb-4">
+            <div class="font-semibold text-gray-900 mb-2">Consent settings</div>
+            <div class="flex items-center justify-between mb-2">
+              <span id="label-insights" class="text-gray-500 cursor-pointer transition">Allow personalized insights</span>
+              <button id="toggle-insights" type="button" class="relative inline-block w-12 h-7 align-middle select-none transition duration-200 ease-in focus:outline-none" aria-pressed="false">
+                <span class="block w-12 h-7 bg-gray-200 rounded-full transition-colors"></span>
+                <span class="absolute left-1 top-1 w-5 h-5 bg-white border border-gray-200 rounded-full shadow transition-transform"></span>
+              </button>
+            </div>
+            <div class="flex items-center justify-between">
+              <span id="label-research" class="text-gray-500 cursor-pointer transition">Allow data collection for research</span>
+              <button id="toggle-research" type="button" class="relative inline-block w-12 h-7 align-middle select-none transition duration-200 ease-in focus:outline-none" aria-pressed="false">
+                <span class="block w-12 h-7 bg-gray-200 rounded-full transition-colors"></span>
+                <span class="absolute left-1 top-1 w-5 h-5 bg-white border border-gray-200 rounded-full shadow transition-transform"></span>
+              </button>
+            </div>
+          </div>
+          <!-- Manage Data -->
+          <div class="px-4 pt-4 pb-4">
+            <div class="font-semibold text-gray-900 mb-2">Manage Your Data</div>
+            <div class="flex flex-col gap-1">
+              <a href="#" class="text-[#199A8E] hover:underline text-sm">Request my data</a>
+              <a href="#" class="text-[#199A8E] hover:underline text-sm">Delete my account</a>
+            </div>
+          </div>
+          <!-- How We Use AI -->
+          <button id="open-ai-usage" class="w-full flex items-center justify-between px-4 pt-4 pb-4 hover:bg-gray-50 transition text-left">
+            <div>
+              <div class="font-semibold text-gray-900 mb-1">How We Use AI</div>
+              <div class="text-sm text-red-500">No diagnosis is a substitute for professional medical advice</div>
+            </div>
+            <svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </main>
+    <script>
+    // Persistent toggle logic for consent settings
+    const SETTINGS_KEY = 'privacySettings';
+    function getSettings() {
+      try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}; } catch (_) { return {}; }
+    }
+    function saveSettings(settings) {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    }
+    function setupToggle(toggleId, labelId, settingKey) {
+      const toggle = document.getElementById(toggleId);
+      const label = document.getElementById(labelId);
+      const bar = toggle.querySelector('span:first-child');
+      const knob = toggle.querySelector('span:last-child');
+      let settings = getSettings();
+      let on = Boolean(settings[settingKey]);
+
+      function render() {
+        toggle.setAttribute('aria-pressed', on);
+        if (on) {
+          bar.classList.remove('bg-gray-200');
+          bar.classList.add('bg-[#199A8E]');
+          knob.classList.add('translate-x-4');
+          label.classList.remove('text-gray-500');
+          label.classList.add('text-[#199A8E]');
+        } else {
+          bar.classList.add('bg-gray-200');
+          bar.classList.remove('bg-[#199A8E]');
+          knob.classList.remove('translate-x-4');
+          label.classList.add('text-gray-500');
+          label.classList.remove('text-[#199A8E]');
+        }
+      }
+      render();
+
+      function flip() {
+        on = !on;
+        settings = getSettings();
+        settings[settingKey] = on;
+        saveSettings(settings);
+        render();
+      }
+
+      toggle.addEventListener('click', flip);
+      label.addEventListener('click', flip);
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      setupToggle('toggle-insights', 'label-insights', 'insights');
+      setupToggle('toggle-research', 'label-research', 'research');
+          });
+    </script>
+
+    <!-- How We Use AI Modal -->
+    <div id="ai-usage-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="ai-usage-backdrop"></div>
+      <div class="relative z-10 max-w-2xl w-full max-h-[90vh] bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-purple-400 via-indigo-400 to-blue-400"></div>
+        <div class="p-6 overflow-y-auto max-h-[calc(90vh-3rem)]">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 4.5L20 9l-4 3.5L17 18l-5-2.5L7 18l1-5.5L4 9l5.5-1.5L12 3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <h3 class="text-lg font-semibold text-gray-900">How We Use AI</h3>
+            </div>
+            <button id="ai-usage-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          
+          <div class="space-y-6">
+            <!-- Main Description -->
+            <div>
+              <p class="text-gray-700">We use AI to make early health guidance more accessible—helping people understand their symptoms and decide whether to seek medical care sooner.</p>
+            </div>
+          
+            <!-- AI Model Development -->
+            <div>
+              <h4 class="font-semibold text-gray-900 mb-2">AI Model Development</h4>
+              <p class="text-gray-700">Our AI model is trained in-house by our team using publicly available health datasets (such as the <a href="https://www.kaggle.com/datasets/abbotpatcher/respiratory-symptoms-and-treatment" target="_blank" rel="noopener noreferrer" class="text-[#199A8E] hover:underline font-medium">Respiratory Symptoms and Treatment dataset on Kaggle</a>) along with verified medical information from trusted sources.</p>
+            </div>
+            
+            <!-- How It Works -->
+            <div>
+              <h4 class="font-semibold text-gray-900 mb-2">How It Works</h4>
+              <p class="text-gray-700">When you enter your symptoms, our AI compares them against patterns in respiratory health data (like asthma, allergies, or other respiratory conditions). It then suggests possible explanations and general next steps.</p>
+            </div>
+            
+            <!-- Limitations -->
+            <div>
+              <h4 class="font-semibold text-gray-900 mb-2">Limitations</h4>
+              <p class="text-gray-700">Our AI does not give medical diagnoses. It provides symptom-based insights to guide you, but it should not replace consultation with a qualified healthcare professional.</p>
+            </div>
+          
+            <!-- Privacy Section -->
+            <div class="p-4 bg-blue-50 rounded-xl border border-blue-200">
+              <h4 class="font-semibold text-blue-900 mb-2">Your Privacy Comes First</h4>
+              <p class="text-blue-800">Any information you share is used only to generate AI-based insights. It is never sold or shared with third parties without your consent.</p>
+            </div>
+          
+            <!-- Important Disclaimer -->
+            <div class="p-4 bg-red-50 rounded-xl border border-red-200">
+              <h4 class="font-semibold text-red-900 mb-2">Important Disclaimer</h4>
+              <p class="text-red-800">Our AI tool is an informational guide only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a doctor for medical concerns.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Collection Info Modal -->
+    <div id="collection-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="collection-backdrop"></div>
+      <div class="relative z-10 max-w-2xl w-full max-h-[90vh] bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400"></div>
+        <div class="p-6 overflow-y-auto max-h-[calc(90vh-3rem)]">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 4.5L20 9l-4 3.5L17 18l-5-2.5L7 18l1-5.5L4 9l5.5-1.5L12 3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <h3 class="text-lg font-semibold text-gray-900">What We Collect & Why</h3>
+            </div>
+            <button id="collection-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          
+          <p class="text-gray-700 mb-6">We believe in being transparent about the information we collect when you use our website. Here's a clear breakdown</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 bg-gray-50 rounded-xl">
+              <h4 class="font-medium text-gray-900 mb-2">Symptom Data</h4>
+              <div class="space-y-2 text-sm text-gray-600">
+                <div><span class="font-medium">What:</span> Information you enter about your symptoms.</div>
+                <div><span class="font-medium">Why:</span> To provide more accurate health insights and personalized recommendations based on your input.</div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-gray-50 rounded-xl">
+              <h4 class="font-medium text-gray-900 mb-2">Usage Patterns</h4>
+              <div class="space-y-2 text-sm text-gray-600">
+                <div><span class="font-medium">What:</span> Anonymous details about how you browse and interact with the website (e.g., pages visited, time spent, clicks).</div>
+                <div><span class="font-medium">Why:</span> To understand what features are most useful and to improve the overall website experience.</div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-gray-50 rounded-xl">
+              <h4 class="font-medium text-gray-900 mb-2">Crash Reports</h4>
+              <div class="space-y-2 text-sm text-gray-600">
+                <div><span class="font-medium">What:</span> Technical information sent automatically if the website encounters an error (e.g., browser type, device type, error messages).</div>
+                <div><span class="font-medium">Why:</span> To help us identify and fix bugs, ensuring the website runs smoothly for all users.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Collection modal functionality
+      const openCollection = document.getElementById('open-collection');
+      const collectionModal = document.getElementById('collection-modal');
+      const collectionBackdrop = document.getElementById('collection-backdrop');
+      const collectionClose = document.getElementById('collection-close');
+      
+      function openCollectionModal(e) { 
+        e && e.preventDefault(); 
+        collectionModal.classList.remove('hidden'); 
+        document.body.classList.add('overflow-hidden'); 
+      }
+      function closeCollectionModal() { 
+        collectionModal.classList.add('hidden'); 
+        document.body.classList.remove('overflow-hidden'); 
+      }
+      
+      openCollection.addEventListener('click', openCollectionModal);
+      collectionBackdrop.addEventListener('click', closeCollectionModal);
+      collectionClose.addEventListener('click', closeCollectionModal);
+      document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeCollectionModal(); });
+    </script>
+
+    <!-- Your Data Rights Modal -->
+    <div id="data-rights-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="data-rights-backdrop"></div>
+      <div class="relative z-10 max-w-2xl w-full max-h-[90vh] bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-gray-400 to-gray-600"></div>
+        <div class="p-6 overflow-y-auto max-h-[calc(90vh-3rem)]">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <h3 class="text-lg font-semibold text-gray-900">Your Data Rights</h3>
+            </div>
+            <button id="data-rights-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          
+          <div class="space-y-6">
+            <p class="text-gray-700">We believe you should always stay in control of your information. When you use our website, you have the right to:</p>
+            
+            <div class="space-y-4">
+              <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition-colors">
+                <h4 class="font-semibold text-gray-900 mb-2">Access Your Data</h4>
+                <p class="text-gray-700">You can request to see what information we have about you.</p>
+              </div>
+              
+              <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition-colors">
+                <h4 class="font-semibold text-gray-900 mb-2">Correct Your Data</h4>
+                <p class="text-gray-700">If something is wrong or outdated, you can ask us to fix it.</p>
+              </div>
+              
+              <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition-colors">
+                <h4 class="font-semibold text-gray-900 mb-2">Delete Your Data</h4>
+                <p class="text-gray-700">You may request that we remove the information you have shared with us.</p>
+              </div>
+              
+              <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition-colors">
+                <h4 class="font-semibold text-gray-900 mb-2">Limit or Withdraw Consent</h4>
+                <p class="text-gray-700">If you no longer want certain data to be collected, you can adjust your settings or contact us.</p>
+              </div>
+              
+              <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition-colors">
+                <h4 class="font-semibold text-gray-900 mb-2">Transparency</h4>
+                <p class="text-gray-700">We will always explain clearly how your data is used and why.</p>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-gray-50 rounded-xl border border-gray-200">
+              <p class="text-gray-700">To exercise any of these rights, simply reach out to us through our <span class="font-semibold text-[#199A8E]">Contact Support</span> section, and we'll respond as quickly as possible, or navigate to <span class="font-semibold text-[#199A8E]">"manage your data"</span>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // AI Usage modal functionality
+      const openAiUsage = document.getElementById('open-ai-usage');
+      const aiUsageModal = document.getElementById('ai-usage-modal');
+      const aiUsageBackdrop = document.getElementById('ai-usage-backdrop');
+      const aiUsageClose = document.getElementById('ai-usage-close');
+      
+      function openAiUsageModal(e) { 
+        e && e.preventDefault(); 
+        aiUsageModal.classList.remove('hidden'); 
+        document.body.classList.add('overflow-hidden'); 
+      }
+      function closeAiUsageModal() { 
+        aiUsageModal.classList.add('hidden'); 
+        document.body.classList.remove('overflow-hidden'); 
+      }
+      
+      openAiUsage.addEventListener('click', openAiUsageModal);
+      aiUsageBackdrop.addEventListener('click', closeAiUsageModal);
+      aiUsageClose.addEventListener('click', closeAiUsageModal);
+      document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeAiUsageModal(); });
+    </script>
+
+    <script>
+      // Data Rights modal functionality
+      const openDataRights = document.getElementById('open-data-rights');
+      const dataRightsModal = document.getElementById('data-rights-modal');
+      const dataRightsBackdrop = document.getElementById('data-rights-backdrop');
+      const dataRightsClose = document.getElementById('data-rights-close');
+      
+      function openDataRightsModal(e) { 
+        e && e.preventDefault(); 
+        dataRightsModal.classList.remove('hidden'); 
+        document.body.classList.add('overflow-hidden'); 
+      }
+      function closeDataRightsModal() { 
+        dataRightsModal.classList.add('hidden'); 
+        document.body.classList.remove('overflow-hidden'); 
+      }
+      
+      openDataRights.addEventListener('click', openDataRightsModal);
+      dataRightsBackdrop.addEventListener('click', closeDataRightsModal);
+      dataRightsClose.addEventListener('click', closeDataRightsModal);
+      document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeDataRightsModal(); });
+    </script>
+  </body>
+</html> 

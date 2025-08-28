@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Symptom Reports</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(120deg, #e0f7fa 0%, #f8fafc 60%, #e6f4f1 100%);
+      }
+      .bg-blur {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-blur">
+    <a href="profile.html" class="fixed top-4 left-4 z-20 flex items-center text-gray-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-gray-300 transition" style="background: none; box-shadow: none; padding: 0;">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <main class="max-w-xl mx-auto pt-10 pb-12 px-4 flex flex-col gap-8">
+      <!-- Dynamic Reports Container -->
+      <div id="reports-container">
+        <!-- Reports will be loaded here dynamically -->
+      </div>
+      
+      <!-- Empty State -->
+      <div id="empty-state" class="hidden text-center py-12">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+          <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No Reports Yet</h3>
+        <p class="text-gray-500 mb-6">Complete your first self-assessment to see your reports here.</p>
+        <a href="selfdiagnosis.html?start=1" class="inline-flex items-center gap-2 bg-[#199A8E] hover:bg-[#157c71] text-white font-medium rounded-lg px-6 py-3 text-sm transition">
+          <span>Start Assessment</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </main>
+
+    <script>
+      // Load and display saved reports
+      function loadReports() {
+        try {
+          const reports = JSON.parse(localStorage.getItem('symptomReports') || '[]');
+          const container = document.getElementById('reports-container');
+          const emptyState = document.getElementById('empty-state');
+          
+          if (reports.length === 0) {
+            container.innerHTML = '';
+            emptyState.classList.remove('hidden');
+            return;
+          }
+          
+          emptyState.classList.add('hidden');
+          container.innerHTML = '';
+          
+          reports.forEach((report, index) => {
+            const reportCard = createReportCard(report, index);
+            container.appendChild(reportCard);
+          });
+          
+        } catch (error) {
+          console.error('Error loading reports:', error);
+          showEmptyState();
+        }
+      }
+      
+      // Create a report card element
+      function createReportCard(report, index) {
+        const card = document.createElement('div');
+        card.className = 'report-card bg-white rounded-2xl shadow p-5 mb-4 relative hover:shadow-lg transition cursor-pointer';
+        card.tabIndex = '0';
+        card.role = 'button';
+        card.setAttribute('aria-label', 'View full report');
+        
+        // Format date and time
+        const dateTime = `${report.date} at ${report.time}`;
+        
+        card.innerHTML = `
+          <div class="flex justify-between items-start mb-2">
+            <div class="text-xs text-gray-400">${dateTime}</div>
+            <button class="text-red-400 hover:text-red-600 transition p-1 delete-report-btn" data-report-id="${report.id}" aria-label="Delete report">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 7V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v2m5 4v6m4-6v6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="text-lg font-semibold text-gray-900 mb-2">Assessment Report</div>
+          <div class="mb-2">
+            <div class="text-xs font-bold text-gray-400 mb-1 tracking-widest">DISEASE PREDICTION</div>
+            ${report.predictions.slice(0, 3).map((pred, i) => {
+              const displayProbability = Math.min(pred.probability, 0.9); // Cap at 90%
+              return `
+                <div class="flex justify-between items-center">
+                  <span class="${i === 0 ? 'font-bold text-gray-900' : 'text-gray-700'}">${pred.disease}</span>
+                  <span class="${i === 0 ? 'font-bold text-[#199A8E]' : 'text-gray-400'}">${(displayProbability * 100).toFixed(0)}%</span>
+                </div>
+                ${pred.probability > 0.9 ? '<div class="text-red-600 text-xs mt-1 font-medium ml-2">⚠️ See medical professional as soon as possible</div>' : ''}
+              `;
+            }).join('')}
+          </div>
+          <hr class="my-4">
+          <div>
+            <div class="text-xs font-bold text-gray-400 mb-2 tracking-widest">SYMPTOMS MATCHED</div>
+            <div class="flex flex-wrap gap-2">
+              ${report.symptoms.map(symptom => `
+                <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                  ${symptom.name}${symptom.detail ? `: ${symptom.detail}` : ''}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+
+        `;
+        
+        // Add click event to view full report
+        card.addEventListener('click', (e) => {
+          if (!e.target.closest('.delete-report-btn')) {
+            viewFullReport(report);
+          }
+        });
+        
+        // Add keyboard support
+        card.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (!e.target.closest('.delete-report-btn')) {
+              viewFullReport(report);
+            }
+          }
+        });
+        
+        // Add delete functionality
+        const deleteBtn = card.querySelector('.delete-report-btn');
+        deleteBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteReport(report.id);
+        });
+        
+        return card;
+      }
+      
+      // View full report (redirect to detailed report page)
+      function viewFullReport(report) {
+        // Store the report data for the detailed report page
+        localStorage.setItem('currentReport', JSON.stringify(report));
+        window.location.href = 'detailedreport.html';
+      }
+      
+      // Delete a report
+      function deleteReport(reportId) {
+        if (confirm('Are you sure you want to delete this report?')) {
+          try {
+            const reports = JSON.parse(localStorage.getItem('symptomReports') || '[]');
+            const updatedReports = reports.filter(report => report.id !== reportId);
+            localStorage.setItem('symptomReports', JSON.stringify(updatedReports));
+            
+            // Reload the reports
+            loadReports();
+            
+          } catch (error) {
+            console.error('Error deleting report:', error);
+          }
+        }
+      }
+      
+      // Show empty state
+      function showEmptyState() {
+        document.getElementById('reports-container').innerHTML = '';
+        document.getElementById('empty-state').classList.remove('hidden');
+      }
+      
+      // Load reports when page loads
+      document.addEventListener('DOMContentLoaded', loadReports);
+    </script>
+  </body>
+</html> 

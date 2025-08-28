@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breezo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-br from-blue-50 via-blue-100 to-purple-100 min-h-screen">
+    <!-- NAVBAR -->
+    <nav class="w-full bg-white shadow flex items-center justify-between px-6 py-4">
+              <div class="text-xl font-bold text-blue-600 tracking-tight">Breezo</div>
+      <a href="profile.html" aria-label="Profile" class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:ring-2 hover:ring-blue-200 transition overflow-hidden">
+        <img id="nav-profile-photo" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=36&h=36" alt="Profile" class="w-9 h-9 rounded-full object-cover" />
+        <svg id="nav-profile-icon" class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display: none;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      </a>
+    </nav>
+
+    <!-- TIP BAR -->
+    <div id="tip-bar" class="w-full flex justify-center mt-8 px-4">
+      <div class="relative flex items-center gap-3 bg-white rounded-xl px-5 py-3 w-full max-w-xl shadow text-green-700">
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#199A8E" stroke-width="2"/><path d="M12 8v4m0 4h.01" stroke="#199A8E" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="text-base font-medium">Stay hydrated and check AQI before going outside!</span>
+        <button onclick="document.getElementById('tip-bar').style.display='none'" class="absolute top-2 right-2 text-gray-400 hover:text-red-400 rounded-full w-6 h-6 flex items-center justify-center text-lg font-bold focus:outline-none" aria-label="Close tip">&times;</button>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex flex-col items-center w-full mt-8 px-4 space-y-6">
+      <!-- USER GREETING & LAST REPORT -->
+      <div class="w-full max-w-xl flex flex-col space-y-4" id="main-content">
+        <div class="flex items-center space-x-4">
+          <img id="home-profile-photo" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=96&h=96" alt="profile" class="w-16 h-16 rounded-full object-cover border-4 border-white shadow" />
+          <div>
+            <div id="home-greeting" class="text-2xl md:text-3xl font-bold text-gray-900 mb-1">Good evening, Kr</div>
+            <div class="text-sm text-gray-500">How are you feeling today?</div>
+          </div>
+        </div>
+        <!-- LAST REPORT CARD -->
+        <div id="last-report-card" class="block bg-white rounded-2xl shadow p-5 flex flex-col space-y-3 cursor-pointer hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-blue-200">
+          <div class="flex items-center justify-between">
+            <div class="text-xs text-gray-400 font-semibold tracking-wide">LAST REPORT</div>
+            <div class="text-xs text-green-600 font-semibold">AQI 45 (Good)</div>
+          </div>
+          <div id="last-report-content">
+            <!-- Last report content will be loaded here dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- DETAILED REPORT SCREEN (hidden by default) -->
+      <section id="detailed-report" style="display:none;" class="w-full flex flex-col items-center mt-4">
+        <div class="w-full max-w-2xl bg-white rounded-3xl shadow p-8 relative">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900">Detailed Assessment Report</h2>
+            <button class="bg-[#199A8E] hover:bg-[#157c71] text-white font-semibold rounded-lg px-6 py-2 flex items-center gap-2 text-base shadow" style="transition: background 0.2s;">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download Report
+            </button>
+          </div>
+          <div class="flex flex-wrap items-center gap-4 text-gray-500 text-base mb-6">
+            <span class="flex items-center gap-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3M3 11h18M5 19h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2z"/></svg> Jun 18, 2025 at 03:28 PM</span>
+            <span class="flex items-center gap-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657A8 8 0 1 0 7.05 7.05a8 8 0 0 0 10.607 9.607z"/><path d="M15 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/></svg> San Francisco, CA</span>
+          </div>
+          <div class="bg-gradient-to-br from-green-50 via-blue-50 to-white rounded-2xl p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Environmental Assessment</h3>
+            <span class="inline-block bg-green-100 text-green-700 font-semibold rounded-full px-4 py-1 text-base mb-3">AQI: 45 (Good)</span>
+            <p class="text-gray-600 mb-6">Air quality is considered satisfactory, and air pollution poses little or no risk.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-white rounded-xl shadow p-4">
+                <div class="text-gray-400 text-sm mb-1">City</div>
+                <div class="text-lg font-bold text-gray-900" id="main-city-display">Set location</div>
+              </div>
+              <div class="bg-white rounded-xl shadow p-4">
+                <div class="text-gray-400 text-sm mb-1">Humidity</div>
+                <div class="text-lg font-bold text-gray-900">65%</div>
+              </div>
+              <div class="bg-white rounded-xl shadow p-4">
+                <div class="text-gray-400 text-sm mb-1">Temperature</div>
+                <div class="text-lg font-bold text-gray-900">72°F</div>
+              </div>
+              <div class="bg-white rounded-xl shadow p-4">
+                <div class="text-gray-400 text-sm mb-1">Air Quality</div>
+                <div class="text-lg font-bold text-gray-900">Good</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AIR QUALITY CARD -->
+      <div id="aqi-card" class="w-full max-w-xl bg-white rounded-2xl shadow p-6 flex flex-col space-y-2 cursor-pointer">
+        <!-- AQI Display (always visible) -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center space-x-2">
+              <span class="w-3 h-3 rounded-full" id="aqi-location-indicator" style="background-color: #a259d9;"></span>
+              <span class="text-base font-semibold text-gray-800" id="aqi-location-text">Click to set location</span>
+            </div>
+          </div>
+          <div class="flex flex-col items-center justify-center">
+            <div class="text-5xl font-extrabold text-gray-900 leading-tight" id="aqi-value">--</div>
+            <div class="text-base font-semibold" id="aqi-level" style="color: #a259d9; margin-top: 0.25rem;">Set location to see AQI</div>
+          </div>
+          <div class="text-center text-sm text-gray-500 mt-1 mb-2" id="aqi-description">Click the card to set your location and view air quality data</div>
+          
+          <div class="w-full flex items-center mt-2 mb-1">
+            <div class="w-full h-2 rounded-full bg-gradient-to-r from-green-400 via-yellow-400 via-60% to-purple-600 relative">
+              <div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-gray-400 rounded-full shadow" id="aqi-indicator" style="margin-left:-8px; left: 0%;"></div>
+            </div>
+          </div>
+          <div class="text-xs text-gray-400 text-right w-full mt-1" id="aqi-update-time">Click to get started</div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <!-- SELF-ASSESSMENT BUTTON -->
+      <button id="self-assessment-btn"
+        class="w-full max-w-xl flex items-center bg-[#199A8E] rounded-2xl shadow px-4 py-2 mt-2 mb-2 focus:outline-none transition group hover:bg-[#157c71]"
+        role="button"
+        onclick="checkPersonalDetailsAndProceed()"
+      >
+        <span class="flex items-center justify-center bg-white/40 rounded-xl w-10 h-10 mr-4">
+          <svg class="w-6 h-6 text-[#199A8E]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 12h4l2 6 4-12 2 6h4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div class="flex-1 flex flex-col justify-center">
+          <span class="text-white font-medium text-lg leading-tight">Start Self-Assessment</span>
+          <span class="text-white/80 font-normal text-sm mt-0.5">Check your respiratory symptoms and get health insights</span>
+        </div>
+        <span class="flex items-center justify-center bg-white/20 rounded-full w-10 h-10 ml-4">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+    </main>
+
+    <!-- PERSONAL DETAILS REQUIRED MODAL -->
+    <div id="personal-details-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="personal-details-backdrop"></div>
+      <div class="relative z-10 max-w-lg w-[92%] md:w-full mx-auto mt-24 bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-orange-400 via-red-400 to-pink-400"></div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <h2 class="text-lg font-semibold text-gray-900">Personal Details Required</h2>
+            </div>
+            <button id="personal-details-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          
+          <p class="text-gray-700 mb-4">To provide accurate health insights, we need your age and gender information. Please complete your personal details first.</p>
+          
+          <div class="flex flex-col gap-3">
+            <a href="personaldetails.html" class="w-full bg-[#199A8E] hover:bg-[#157c71] text-white font-medium rounded-lg px-4 py-3 text-center shadow transition">
+              Complete Personal Details
+            </a>
+            <button id="personal-details-cancel" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg px-4 py-3 text-center shadow transition">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <!-- COMPREHENSIVE AQI INFORMATION MODAL -->
+    <div id="aqi-info-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="aqi-info-backdrop"></div>
+      <div class="relative z-10 max-w-4xl w-[95%] md:w-full bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)] max-h-[90vh]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-green-400 via-yellow-400 to-red-400"></div>
+        <div class="p-6 overflow-y-auto max-h-[calc(90vh-3rem)]">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 3l2.5 4.5L20 9l-4 3.5L17 18l-5-2.5L7 18l1-5.5L4 9l5.5-1.5L12 3z" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <h2 class="text-xl font-semibold text-gray-900">Understanding Air Quality Index (AQI)</h2>
+            </div>
+            <button id="aqi-info-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- What is AQI -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-semibold text-gray-900">What is AQI?</h3>
+              <p class="text-gray-700 text-sm leading-relaxed">
+                The Air Quality Index (AQI) is a standardized system used to communicate how polluted the air currently is or how polluted it is forecast to become. It's designed to help you understand what local air quality means to your health.
+              </p>
+              <p class="text-gray-700 text-sm leading-relaxed">
+                AQI values range from 0 to 500, with higher values indicating worse air quality and greater health concerns.
+              </p>
+            </div>
+            
+            <!-- AQI Scale -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-semibold text-gray-900">AQI Scale & Health Effects</h3>
+              <div class="space-y-3">
+                <div class="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                  <span class="w-4 h-4 rounded-full bg-green-400"></span>
+                  <div>
+                    <div class="font-medium text-green-800">0-50: Good</div>
+                    <div class="text-xs text-green-600">Air quality is satisfactory, and air pollution poses little or no risk.</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg">
+                  <span class="w-4 h-4 rounded-full bg-yellow-400"></span>
+                  <div>
+                    <div class="font-medium text-yellow-800">51-100: Moderate</div>
+                    <div class="text-xs text-yellow-600">Air quality is acceptable; however, some pollutants may be a concern for a small number of people.</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
+                  <span class="w-4 h-4 rounded-full bg-orange-400"></span>
+                  <div>
+                    <div class="font-medium text-orange-800">101-150: Unhealthy for Sensitive Groups</div>
+                    <div class="text-xs text-orange-600">Members of sensitive groups may experience health effects.</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-red-50 rounded-lg">
+                  <span class="w-4 h-4 rounded-full bg-red-400"></span>
+                  <div>
+                    <div class="font-medium text-red-800">151-200: Unhealthy</div>
+                    <div class="text-xs text-red-600">Some members of the general public may experience health effects.</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
+                  <span class="w-4 h-4 rounded-full bg-purple-400"></span>
+                  <div>
+                    <div class="font-medium text-purple-800">201-300: Very Unhealthy</div>
+                    <div class="text-xs text-purple-600">Health alert: everyone may experience more serious health effects.</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-red-100 rounded-lg">
+                  <span class="w-4 h-4 rounded-full bg-red-600"></span>
+                  <div>
+                    <div class="font-medium text-red-900">301+: Hazardous</div>
+                    <div class="text-xs text-red-700">Health warning of emergency conditions: everyone is more likely to be affected.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Health Recommendations -->
+          <div class="mt-6 p-4 bg-blue-50 rounded-xl">
+            <h3 class="text-lg font-semibold text-blue-900 mb-3">Health Recommendations by AQI Level</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm">
+              <div>
+                <h4 class="font-medium text-blue-800 mb-2">Good to Moderate (0-100)</h4>
+                <ul class="text-blue-700 space-y-1">
+                  <li>• Enjoy outdoor activities</li>
+                  <li>• Normal daily activities</li>
+                  <li>• No special precautions needed</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="font-medium text-blue-800 mb-2">Unhealthy and Above (101+)</h4>
+                <ul class="text-blue-700 space-y-1">
+                  <li>• Reduce outdoor activities</li>
+                  <li>• Stay indoors if possible</li>
+                  <li>• Use air purifiers</li>
+                  <li>• Monitor symptoms</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Data Source Info -->
+          <div class="mt-6 p-4 bg-gray-50 rounded-xl">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Data Source & Updates</h3>
+            <p class="text-gray-700 text-sm">
+              Our AQI data comes from IQAir's Air Quality API, which provides real-time air quality information from monitoring stations worldwide. 
+              Data is updated every hour and includes measurements of PM2.5, PM10, O₃, NO₂, SO₂, and CO levels.
+            </p>
+          </div>
+          
+          <!-- Medical Disclaimer -->
+          <div class="mt-6 p-4 bg-yellow-50 rounded-xl border border-yellow-200">
+            <h3 class="text-lg font-semibold text-yellow-900 mb-2">⚠️ Important Medical Disclaimer</h3>
+            <p class="text-yellow-800 text-sm">
+              <strong>This information is for educational purposes only and should not replace professional medical advice.</strong> 
+              If you experience severe symptoms, difficulty breathing, chest pain, or other concerning symptoms, 
+              please seek immediate medical attention. Always consult with a qualified healthcare professional for proper diagnosis and treatment.
+            </p>
+          </div>
+          
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- AQI MODAL WITH BLUR OVERLAY -->
+    <div id="aqi-modal-overlay" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="aqi-backdrop"></div>
+      <div class="relative z-10 max-w-lg w-[92%] md:w-full mx-auto mt-24 bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-green-400 via-yellow-400 to-red-400"></div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 4.5L20 9l-4 3.5L17 18l-5-2.5L7 18l1-5.5L4 9l5.5-1.5L12 3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <h2 class="text-lg font-semibold text-gray-900">What is AQI?</h2>
+            </div>
+            <button id="aqi-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          
+          <p class="text-gray-700 mb-4">The Air Quality Index (AQI) is a measure used to communicate how polluted the air currently is or how polluted it is forecast to become. The higher the AQI value, the greater the level of air pollution and the greater the health concern.</p>
+          
+          <!-- Location Input Section -->
+          <div class="mb-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-base font-semibold text-blue-900">Location & Air Quality</h3>
+              <button id="change-location-btn" class="text-blue-600 hover:text-blue-700 text-sm font-medium transition">
+                Change Location
+              </button>
+            </div>
+            
+            <!-- Current Location Display (shown when location is set) -->
+            <div id="current-location-info" class="hidden mb-4">
+              <div class="space-y-2 text-sm">
+                <div class="flex items-center justify-between">
+                  <span class="text-blue-700">Current Location:</span>
+                  <span class="text-blue-900 font-medium" id="current-location-display">Not set</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-blue-700">Last Updated:</span>
+                  <span class="text-blue-900 font-medium" id="last-update-display">Never</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-blue-700">Data Source:</span>
+                  <span class="text-blue-900 font-medium">IQAir</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Location Input Form (hidden by default, shown when Change Location is clicked) -->
+            <div id="location-input-section" class="hidden space-y-3">
+              <p class="text-sm text-blue-700">Enter your city to get real-time air quality data for your area.</p>
+              <div>
+                <label for="new-city-input" class="block text-sm font-medium text-blue-900 mb-1">City Name</label>
+                <input type="text" id="new-city-input" placeholder="e.g., Almaty, New York, London" 
+                       class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
+              <div class="flex gap-2">
+                <button id="save-location-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm">
+                  Get Air Quality Data
+                </button>
+                <button id="cancel-location-btn" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition text-sm">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+          
+
+
+          
+          <!-- Action Buttons -->
+          <div class="text-center mt-6">
+            <button id="learn-more-aqi-btn" class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition">
+              Learn More About AQI
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <style>
+    @keyframes slideup { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .animate-slideup { animation: slideup 0.25s cubic-bezier(.4,0,.2,1); }
+    
+    /* Ensure AQI info modal is properly centered and scrollable */
+    #aqi-info-modal {
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #aqi-info-modal .relative {
+      max-height: 90vh;
+      overflow: hidden;
+    }
+    
+    #aqi-info-modal .p-6 {
+      overflow-y: auto;
+      max-height: calc(90vh - 3rem);
+    }
+    
+    /* Custom scrollbar for better UX */
+    #aqi-info-modal .p-6::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    #aqi-info-modal .p-6::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+    
+    #aqi-info-modal .p-6::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+    }
+    
+    #aqi-info-modal .p-6::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+    </style>
+    
+         <script>
+      // ===== API CONFIGURATION =====
+      // Replace these with your actual API keys for real data
+      const API_CONFIG = {
+        OPENWEATHER_API_KEY: '71335327a6465f6e51613d7670f2f7aa',
+        IQAIR_API_KEY: 'ed2a35ef-6af9-4905-810d-47875737716d'
+      };
+      
+      // ===== END API CONFIGURATION =====
+      
+      // Function to load and display profile photos
+       function loadProfilePhotos() {
+        const savedPhoto = localStorage.getItem('profilePhoto');
+        
+        if (savedPhoto) {
+          // Update main profile photo
+          document.getElementById('home-profile-photo').src = savedPhoto;
+          
+          // Update navbar profile photo
+          const navPhoto = document.getElementById('nav-profile-photo');
+          const navIcon = document.getElementById('nav-profile-icon');
+          navPhoto.src = savedPhoto;
+          navPhoto.style.display = 'block';
+          navIcon.style.display = 'none';
+        } else {
+          // Try to load from backend if not in localStorage
+          fetch('/profile-photo')
+            .then(response => {
+              if (response.ok) {
+                return response.blob();
+              }
+              throw new Error('No profile photo found');
+            })
+            .then(blob => {
+              const photoUrl = URL.createObjectURL(blob);
+              
+              // Update main profile photo
+              document.getElementById('home-profile-photo').src = photoUrl;
+              
+              // Update navbar profile photo
+              const navPhoto = document.getElementById('nav-profile-photo');
+              const navIcon = document.getElementById('nav-profile-icon');
+              navPhoto.src = photoUrl;
+              navPhoto.style.display = 'block';
+              navIcon.style.display = 'none';
+              
+              // Save to localStorage
+              localStorage.setItem('profilePhoto', photoUrl);
+            })
+            .catch(error => {
+              console.log('Using default profile photos');
+            });
+        }
+       }
+
+       // Function to load and display the user's name
+       function loadUserName() {
+         try {
+           const savedDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
+           const userName = savedDetails.fullName || localStorage.getItem('userName');
+           
+           if (userName) {
+             const greet = document.getElementById('home-greeting');
+             // Keep the time-of-day greeting prefix if present
+             const prefix = greet.textContent.includes(',') ? greet.textContent.split(',')[0] : 'Good evening';
+             greet.textContent = `${prefix}, ${userName}`;
+           }
+         } catch (_) {}
+       }
+       
+       // Function to load and display the last report
+       function loadLastReport() {
+         try {
+           const reports = JSON.parse(localStorage.getItem('symptomReports') || '[]');
+           const lastReportCard = document.getElementById('last-report-card');
+           const lastReportContent = document.getElementById('last-report-content');
+           
+           if (reports.length === 0) {
+             // No reports - show empty state
+             lastReportContent.innerHTML = `
+               <div class="text-center py-4">
+                 <div class="text-sm text-gray-500 mb-2">No reports yet</div>
+                 <div class="text-xs text-gray-400">Complete your first assessment to see results here</div>
+               </div>
+             `;
+             lastReportCard.onclick = null;
+             return;
+           }
+           
+           const lastReport = reports[0]; // Most recent report
+           
+           // Display the last report
+           lastReportContent.innerHTML = `
+             <div class="text-sm text-gray-700">${lastReport.date}</div>
+             <div class="flex items-center space-x-2">
+               <div class="text-lg font-bold text-gray-900">${lastReport.topPrediction.disease}</div>
+               <div class="text-green-600 font-semibold">${Math.min(lastReport.topPrediction.probability * 100, 90).toFixed(0)}%</div>
+             </div>
+             ${lastReport.topPrediction.probability > 0.9 ? '<div class="text-red-600 text-xs mt-1 font-medium">⚠️ See medical professional as soon as possible</div>' : ''}
+             <div class="flex flex-wrap gap-2 mt-1">
+               ${lastReport.symptoms.slice(0, 3).map(symptom => `
+                 <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                   ${symptom.name}${symptom.detail ? `: ${symptom.detail}` : ''}
+                 </span>
+               `).join('')}
+             </div>
+
+           `;
+           
+           // Make the card clickable to view the full report
+           lastReportCard.onclick = () => {
+             localStorage.setItem('currentReport', JSON.stringify(lastReport));
+             window.location.href = 'detailedreport.html';
+           };
+           
+         } catch (error) {
+           console.error('Error loading last report:', error);
+           // Show error state
+           document.getElementById('last-report-content').innerHTML = `
+             <div class="text-center py-4">
+               <div class="text-sm text-gray-500 mb-2">Error loading report</div>
+               <div class="text-xs text-gray-400">Please try refreshing the page</div>
+             </div>
+           `;
+         }
+       }
+
+       // Function to check personal details and proceed
+       function checkPersonalDetailsAndProceed() {
+         try {
+           const personalDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
+           const hasAge = personalDetails.dob && calculateAge(personalDetails.dob);
+           const hasGender = personalDetails.sex;
+           
+           if (hasAge && hasGender) {
+             // Personal details are complete, proceed to self-assessment
+             window.location.href = 'selfdiagnosis.html?start=1';
+           } else {
+             // Show modal to complete personal details
+             document.getElementById('personal-details-modal').classList.remove('hidden');
+             document.body.classList.add('overflow-hidden');
+           }
+         } catch (error) {
+           console.error('Error checking personal details:', error);
+           // Show modal to complete personal details
+           document.getElementById('personal-details-modal').classList.remove('hidden');
+           document.body.classList.add('overflow-hidden');
+         }
+       }
+       
+       // Helper function to calculate age from date of birth
+       function calculateAge(dob) {
+         const birth = new Date(dob);
+         const today = new Date();
+         let age = today.getFullYear() - birth.getFullYear();
+         const m = today.getMonth() - birth.getMonth();
+         if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+           age--;
+         }
+         return age;
+       }
+       
+       // Function to load remembered user data
+       function loadRememberedUserData(email) {
+         // Load user-specific data if available
+         const userData = localStorage.getItem(`user_${email}`);
+         if (userData) {
+           try {
+             const user = JSON.parse(userData);
+             if (user.fullName) {
+               localStorage.setItem('userName', user.fullName);
+             }
+             if (user.personalDetails) {
+               localStorage.setItem('personalDetails', JSON.stringify(user.personalDetails));
+             }
+           } catch (_) {}
+         }
+         
+         // Also try to load from personalDetails if available
+         const existingDetails = localStorage.getItem('personalDetails');
+         if (existingDetails) {
+           try {
+             const details = JSON.parse(existingDetails);
+             if (details.email === email && details.fullName) {
+               localStorage.setItem('userName', details.fullName);
+             }
+           } catch (_) {}
+         }
+       }
+       
+
+       
+
+       
+       // Function to fetch AQI data
+       async function fetchAQIData(lat, lon, city = null) {
+         try {
+           let aqiData = null;
+           let weatherData = null;
+           
+           if (city) {
+             // Fetch data by city name
+             aqiData = await fetchAQIByCity(city);
+             weatherData = await fetchWeatherByCity(city);
+           } else if (lat && lon) {
+             // Fetch data by coordinates
+             aqiData = await fetchAQIByCoords(lat, lon);
+             weatherData = await fetchWeatherByCoords(lat, lon);
+           }
+           
+           if (aqiData) {
+             // Save AQI data with all properties preserved
+             const aqiDataToSave = {
+               ...aqiData,
+               timestamp: new Date().toISOString(),
+               location: city || `${lat.toFixed(2)}, ${lon.toFixed(2)}`
+             };
+             
+             // Ensure city and coordinates are preserved
+             if (aqiData.city) {
+               aqiDataToSave.city = aqiData.city;
+             }
+             if (aqiData.lat && aqiData.lon) {
+               aqiDataToSave.lat = aqiData.lat;
+               aqiDataToSave.lon = aqiData.lon;
+             }
+             
+             localStorage.setItem('aqiData', JSON.stringify(aqiDataToSave));
+             
+             // Update userLocation when city changes
+             if (city) {
+               const userLocation = {
+                 city: city,
+                 lat: aqiData.lat,
+                 lon: aqiData.lon,
+                 timestamp: new Date().toISOString()
+               };
+               localStorage.setItem('userLocation', JSON.stringify(userLocation));
+               console.log('📍 Updated user location:', userLocation);
+               
+               // Force update the AQI card display to show the new location immediately
+               setTimeout(() => {
+                 updateAQICardFromStorage();
+                 console.log('🔄 AQI card updated with new city:', city);
+               }, 100);
+             }
+             
+             // Log the data being saved for debugging
+             console.log('Saving AQI data:', aqiDataToSave);
+           }
+           
+           // Since IQAir provides both AQI and weather data, we can use aqiData for both
+           if (aqiData) {
+             // Create weather data from AQI data (since IQAir provides both)
+             const weatherDataFromAQI = {
+               temperature: aqiData.temperature,
+               humidity: aqiData.humidity,
+               description: getWeatherDescription(aqiData.temperature, aqiData.humidity),
+               icon: getWeatherIcon(aqiData.temperature, aqiData.humidity),
+               timestamp: new Date().toISOString(),
+               location: city || `${lat.toFixed(2)}, ${lon.toFixed(2)}`
+             };
+             
+             console.log('🌡️ Creating weather data from IQAir:', {
+               original: { temperature: aqiData.temperature, humidity: aqiData.humidity },
+               processed: weatherDataFromAQI
+             });
+             
+             // Save weather data
+             localStorage.setItem('weatherData', JSON.stringify(weatherDataFromAQI));
+             
+             console.log('🌡️ Weather data saved from IQAir:', weatherDataFromAQI);
+           }
+           
+           // Update AQI display with the combined data
+           if (aqiData) {
+             const weatherDataForDisplay = {
+               temperature: aqiData.temperature,
+               humidity: aqiData.humidity,
+               description: getWeatherDescription(aqiData.temperature, aqiData.humidity),
+               icon: getWeatherIcon(aqiData.temperature, aqiData.humidity)
+             };
+             
+             updateAQIDisplay(aqiData.value, weatherDataForDisplay);
+           }
+           
+         } catch (error) {
+           console.error('Error fetching environmental data:', error);
+           // Fallback to demo data if API fails
+           fetchDemoData(lat, lon, city);
+         }
+       }
+       
+       // Function to fetch AQI data by city name using IQAir
+       async function fetchAQIByCity(city) {
+         try {
+           console.log(`🔍 Fetching AQI data for city: "${city}"`);
+           
+           // Get city coordinates from OpenWeatherMap Geocoding API (using OpenWeather for geocoding, IQAir for AQI)
+           const geoResponse = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${API_CONFIG.OPENWEATHER_API_KEY}`);
+           
+           if (!geoResponse.ok) {
+             throw new Error('Failed to get city coordinates');
+           }
+           
+           const geoData = await geoResponse.json();
+           
+           if (geoData.length === 0) {
+             throw new Error('City not found');
+           }
+           
+           const { lat, lon } = geoData[0];
+           
+           // Get AQI data from IQAir API (accurate 0-500 scale)
+           const aqiData = await fetchAQIByCoords(lat, lon);
+           
+           // Add city information to the AQI data
+           aqiData.city = city; // Use the user's input city name
+           aqiData.lat = lat;
+           aqiData.lon = lon;
+           
+           console.log(`📍 City data set: ${aqiData.city} at coordinates ${lat}, ${lon}`);
+           
+           return aqiData;
+           
+         } catch (error) {
+           console.error('Error fetching AQI data by city:', error);
+           throw error;
+         }
+       }
+       
+       // Function to fetch AQI data by coordinates using IQAir API
+       async function fetchAQIByCoords(lat, lon) {
+         try {
+           console.log(`🔍 Fetching AQI data for coordinates: ${lat}, ${lon}`);
+           
+           // Using IQAir API for accurate AQI data
+           const response = await fetch(`http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lon}&key=${API_CONFIG.IQAIR_API_KEY}`);
+           
+           if (!response.ok) {
+             throw new Error('Failed to fetch AQI data');
+           }
+           
+           const data = await response.json();
+           console.log('🌍 IQAir API response:', data);
+           
+           if (data.status !== 'success') {
+             throw new Error(`IQAir API error: ${data.data?.message || 'Unknown error'}`);
+           }
+           
+           // Extract AQI data from IQAir response
+           const current = data.data.current;
+           const aqiValue = current.pollution.aqius; // US AQI value (0-500)
+           const city = data.data.city;
+           const country = data.data.country;
+           const temperature = current.weather.tp;
+           const humidity = current.weather.hu;
+           
+           console.log(`🏙️ City: ${city}, ${country}`);
+           console.log(`📊 AQI Value: ${aqiValue}`);
+           console.log(`🌡️ Weather: ${temperature}°C, ${humidity}% humidity`);
+           
+           // Validate weather data
+           if (temperature === undefined || humidity === undefined) {
+             console.warn('⚠️ Weather data missing from IQAir response:', current.weather);
+           }
+           
+           // IQAir already provides the AQI value in the correct 0-500 scale
+           // No conversion needed - just use the value directly
+           console.log(`✅ IQAir AQI: ${aqiValue}`);
+           
+           // Log the exact values for debugging
+           console.log('🔍 Exact IQAir response for AQI:', {
+             aqiValue: aqiValue,
+             city: city,
+             country: country,
+             temperature: current.weather.tp,
+             humidity: current.weather.hu,
+             timestamp: new Date().toISOString()
+           });
+           
+           return {
+             value: aqiValue,
+             level: getAQILevel(aqiValue),
+             city: city,
+             country: country,
+             temperature: current.weather.tp,
+             humidity: current.weather.hu,
+             timestamp: new Date().toISOString(),
+             source: 'IQAir'
+           };
+           
+         } catch (error) {
+           console.error('Error fetching AQI by coordinates:', error);
+           throw error;
+         }
+       }
+       
+
+       
+       // Function to calculate US EPA AQI from IQAir component data
+       function calculateUSEPA_AQI(components) {
+         // IQAir provides concentrations in μg/m³
+         // Note: IQAir uses pm2_5, not pm25
+         const pm25 = components.pm2_5 || components.pm25;
+         const { pm10, o3, no2, so2, co } = components;
+         
+         // Calculate AQI for each pollutant using US EPA breakpoints
+         const aqiPM25 = calculateAQIForPollutant(pm25, 'pm25');
+         const aqiPM10 = calculateAQIForPollutant(pm10, 'pm10');
+         const aqiO3 = calculateAQIForPollutant(o3, 'o3');
+         const aqiNO2 = calculateAQIForPollutant(no2, 'no2');
+         const aqiSO2 = calculateAQIForPollutant(so2, 'so2');
+         const aqiCO = calculateAQIForPollutant(co, 'co');
+         
+         // Return the highest AQI value (worst pollutant)
+         const maxAQI = Math.max(aqiPM25, aqiPM10, aqiO3, aqiNO2, aqiSO2, aqiCO);
+         
+         console.log('AQI calculations:', {
+           pm25: { concentration: pm25, aqi: aqiPM25 },
+           pm10: { concentration: pm10, aqi: aqiPM10 },
+           o3: { concentration: o3, aqi: aqiO3 },
+           no2: { concentration: no2, aqi: aqiNO2 },
+           so2: { concentration: so2, aqi: aqiSO2 },
+           co: { concentration: co, aqi: aqiCO },
+           maxAQI: maxAQI
+         });
+         
+         return maxAQI;
+       }
+       
+       // Helper function to calculate AQI for a specific pollutant
+       function calculateAQIForPollutant(concentration, pollutant) {
+         if (!concentration || concentration <= 0) return 0;
+         
+         console.log(`Calculating AQI for ${pollutant}: concentration = ${concentration}`);
+         
+         // US EPA AQI breakpoints for each pollutant
+         const breakpoints = {
+           pm25: [
+             { low: 0, high: 12.0, aqiLow: 0, aqiHigh: 50 },
+             { low: 12.1, high: 35.4, aqiLow: 51, aqiHigh: 100 },
+             { low: 35.5, high: 55.4, aqiLow: 101, aqiHigh: 150 },
+             { low: 55.5, high: 150.4, aqiLow: 151, aqiHigh: 200 },
+             { low: 150.5, high: 250.4, aqiLow: 201, aqiHigh: 300 },
+             { low: 250.5, high: 350.4, aqiLow: 301, aqiHigh: 400 },
+             { low: 350.5, high: 500.4, aqiLow: 401, aqiHigh: 500 }
+           ],
+           pm10: [
+             { low: 0, high: 54, aqiLow: 0, aqiHigh: 50 },
+             { low: 55, high: 154, aqiLow: 51, aqiHigh: 100 },
+             { low: 155, high: 254, aqiLow: 101, aqiHigh: 150 },
+             { low: 255, high: 354, aqiLow: 151, aqiHigh: 200 },
+             { low: 355, high: 424, aqiLow: 201, aqiHigh: 300 },
+             { low: 425, high: 504, aqiLow: 301, aqiHigh: 400 },
+             { low: 505, high: 604, aqiLow: 401, aqiHigh: 500 }
+           ],
+           o3: [
+             { low: 0, high: 54, aqiLow: 0, aqiHigh: 50 },
+             { low: 55, high: 70, aqiLow: 51, aqiHigh: 100 },
+             { low: 71, high: 85, aqiLow: 101, aqiHigh: 150 },
+             { low: 86, high: 105, aqiLow: 151, aqiHigh: 200 },
+             { low: 106, high: 200, aqiLow: 201, aqiHigh: 300 },
+             { low: 201, high: 300, aqiLow: 301, aqiHigh: 400 },
+             { low: 301, high: 400, aqiLow: 401, aqiHigh: 500 }
+           ],
+           no2: [
+             { low: 0, high: 53, aqiLow: 0, aqiHigh: 50 },
+             { low: 54, high: 100, aqiLow: 51, aqiHigh: 100 },
+             { low: 101, high: 360, aqiLow: 101, aqiHigh: 150 },
+             { low: 361, high: 649, aqiLow: 151, aqiHigh: 200 },
+             { low: 650, high: 1249, aqiLow: 201, aqiHigh: 300 },
+             { low: 1250, high: 1649, aqiLow: 301, aqiHigh: 400 },
+             { low: 1650, high: 2049, aqiLow: 401, aqiHigh: 500 }
+           ],
+           so2: [
+             { low: 0, high: 35, aqiLow: 0, aqiHigh: 50 },
+             { low: 36, high: 75, aqiLow: 51, aqiHigh: 100 },
+             { low: 76, high: 185, aqiLow: 101, aqiHigh: 150 },
+             { low: 186, high: 304, aqiLow: 151, aqiHigh: 200 },
+             { low: 305, high: 604, aqiLow: 201, aqiHigh: 300 },
+             { low: 605, high: 804, aqiLow: 301, aqiHigh: 400 },
+             { low: 805, high: 1004, aqiLow: 401, aqiHigh: 500 }
+           ],
+           co: [
+             { low: 0, high: 4.4, aqiLow: 0, aqiHigh: 50 },
+             { low: 4.5, high: 9.4, aqiLow: 51, aqiHigh: 100 },
+             { low: 9.5, high: 12.4, aqiLow: 101, aqiHigh: 150 },
+             { low: 12.5, high: 15.4, aqiLow: 151, aqiHigh: 200 },
+             { low: 15.5, high: 30.4, aqiLow: 201, aqiHigh: 300 },
+             { low: 30.5, high: 40.4, aqiLow: 301, aqiHigh: 400 },
+             { low: 40.5, high: 50.4, aqiLow: 401, aqiHigh: 500 }
+           ]
+         };
+         
+         const pollutantBreakpoints = breakpoints[pollutant];
+         if (!pollutantBreakpoints) return 0;
+         
+         // Find the appropriate breakpoint range
+         for (const bp of pollutantBreakpoints) {
+           if (concentration >= bp.low && concentration <= bp.high) {
+             // Linear interpolation formula: AQI = AQI_low + (conc - conc_low) * (AQI_high - AQI_low) / (conc_high - conc_low)
+             const aqi = bp.aqiLow + (concentration - bp.low) * (bp.aqiHigh - bp.aqiLow) / (bp.high - bp.low);
+             console.log(`Found breakpoint for ${pollutant}: ${bp.low}-${bp.high} → AQI ${bp.aqiLow}-${bp.aqiHigh}, calculated: ${Math.round(aqi)}`);
+             return Math.round(aqi);
+           }
+         }
+         
+         // If concentration is above the highest breakpoint, return 500
+         console.log(`Concentration ${concentration} for ${pollutant} is above all breakpoints, returning 500`);
+         return 500;
+       }
+       
+       // Function to get AQI level description
+       function getAQILevel(aqiValue) {
+         if (aqiValue <= 50) return 'Good';
+         if (aqiValue <= 100) return 'Moderate';
+         if (aqiValue <= 150) return 'Unhealthy for Sensitive Groups';
+         if (aqiValue <= 200) return 'Unhealthy';
+         if (aqiValue <= 300) return 'Very Unhealthy';
+         return 'Hazardous';
+       }
+       
+       // Individual pollutant AQI calculation functions using US EPA standards
+       function calculatePM25AQI(pm25) {
+         if (pm25 <= 12.0) return Math.round(linearInterpolate(pm25, 0, 12.0, 0, 50));
+         if (pm25 <= 35.4) return Math.round(linearInterpolate(pm25, 12.1, 35.4, 51, 100));
+         if (pm25 <= 55.4) return Math.round(linearInterpolate(pm25, 35.5, 55.4, 101, 150));
+         if (pm25 <= 150.4) return Math.round(linearInterpolate(pm25, 55.5, 150.4, 151, 200));
+         if (pm25 <= 250.4) return Math.round(linearInterpolate(pm25, 150.5, 250.4, 201, 300));
+         if (pm25 <= 350.4) return Math.round(linearInterpolate(pm25, 250.5, 350.4, 301, 400));
+         if (pm25 <= 500.4) return Math.round(linearInterpolate(pm25, 350.5, 500.4, 401, 500));
+         return 500;
+       }
+       
+       function calculatePM10AQI(pm10) {
+         if (pm10 <= 54) return Math.round(linearInterpolate(pm10, 0, 54, 0, 50));
+         if (pm10 <= 154) return Math.round(linearInterpolate(pm10, 55, 154, 51, 100));
+         if (pm10 <= 254) return Math.round(linearInterpolate(pm10, 155, 254, 101, 150));
+         if (pm10 <= 354) return Math.round(linearInterpolate(pm10, 255, 354, 151, 200));
+         if (pm10 <= 424) return Math.round(linearInterpolate(pm10, 355, 424, 201, 300));
+         if (pm10 <= 504) return Math.round(linearInterpolate(pm10, 425, 504, 301, 400));
+         if (pm10 <= 604) return Math.round(linearInterpolate(pm10, 505, 604, 401, 500));
+         return 500;
+       }
+       
+       function calculateO3AQI(o3) {
+         if (o3 <= 54) return Math.round(linearInterpolate(o3, 0, 54, 0, 50));
+         if (o3 <= 70) return Math.round(linearInterpolate(o3, 55, 70, 51, 100));
+         if (o3 <= 85) return Math.round(linearInterpolate(o3, 71, 85, 101, 150));
+         if (o3 <= 105) return Math.round(linearInterpolate(o3, 86, 105, 151, 200));
+         if (o3 <= 200) return Math.round(linearInterpolate(o3, 106, 200, 201, 300));
+         if (o3 <= 300) return Math.round(linearInterpolate(o3, 201, 300, 301, 400));
+         if (o3 <= 400) return Math.round(linearInterpolate(o3, 301, 400, 401, 500));
+         return 500;
+       }
+       
+       function calculateNO2AQI(no2) {
+         if (no2 <= 53) return Math.round(linearInterpolate(no2, 0, 53, 0, 50));
+         if (no2 <= 100) return Math.round(linearInterpolate(no2, 54, 100, 51, 100));
+         if (no2 <= 360) return Math.round(linearInterpolate(no2, 101, 360, 101, 150));
+         if (no2 <= 649) return Math.round(linearInterpolate(no2, 361, 649, 151, 200));
+         if (no2 <= 1249) return Math.round(linearInterpolate(no2, 650, 1249, 201, 300));
+         if (no2 <= 1649) return Math.round(linearInterpolate(no2, 1250, 1649, 301, 400));
+         if (no2 <= 2049) return Math.round(linearInterpolate(no2, 1650, 2049, 401, 500));
+         return 500;
+       }
+       
+       function calculateSO2AQI(so2) {
+         if (so2 <= 35) return Math.round(linearInterpolate(so2, 0, 35, 0, 50));
+         if (so2 <= 75) return Math.round(linearInterpolate(so2, 36, 75, 51, 100));
+         if (so2 <= 185) return Math.round(linearInterpolate(so2, 76, 185, 101, 150));
+         if (so2 <= 304) return Math.round(linearInterpolate(so2, 186, 304, 151, 200));
+         if (so2 <= 604) return Math.round(linearInterpolate(so2, 305, 604, 201, 300));
+         if (so2 <= 804) return Math.round(linearInterpolate(so2, 605, 804, 301, 400));
+         if (so2 <= 1004) return Math.round(linearInterpolate(so2, 805, 1004, 401, 500));
+         return 500;
+       }
+       
+       function calculateCOAQI(co) {
+         if (co <= 4.4) return Math.round(linearInterpolate(co, 0, 4.4, 0, 50));
+         if (co <= 9.4) return Math.round(linearInterpolate(co, 4.5, 9.4, 51, 100));
+         if (co <= 12.4) return Math.round(linearInterpolate(co, 9.5, 12.4, 101, 150));
+         if (co <= 15.4) return Math.round(linearInterpolate(co, 12.5, 15.4, 151, 200));
+         if (co <= 30.4) return Math.round(linearInterpolate(co, 15.5, 30.4, 201, 300));
+         if (co <= 40.4) return Math.round(linearInterpolate(co, 30.5, 40.4, 301, 400));
+         if (co <= 50.4) return Math.round(linearInterpolate(co, 40.5, 50.4, 401, 500));
+         return 500;
+       }
+       
+       // Helper function for linear interpolation
+       function linearInterpolate(value, low, high, aqiLow, aqiHigh) {
+         return aqiLow + (value - low) * (aqiHigh - aqiLow) / (high - low);
+       }
+       
+       // Function to fetch weather data by city name using IQAir
+       async function fetchWeatherByCity(city) {
+         try {
+           console.log(`🌤️ Fetching weather data for city: "${city}" using IQAir`);
+           
+           // Get city coordinates from OpenWeatherMap Geocoding API (still using OpenWeather for geocoding)
+           const geoResponse = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${API_CONFIG.OPENWEATHER_API_KEY}`);
+           
+           if (!geoResponse.ok) {
+             throw new Error('Failed to get city coordinates');
+           }
+           
+           const geoData = await geoResponse.json();
+           
+           if (geoData.length === 0) {
+             throw new Error('City not found');
+           }
+           
+           const { lat, lon } = geoData[0];
+           
+           // Get weather data from IQAir API
+           const response = await fetch(`http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lon}&key=${API_CONFIG.IQAIR_API_KEY}`);
+           
+           if (!response.ok) {
+             throw new Error('Failed to fetch weather data from IQAir');
+           }
+           
+           const data = await response.json();
+           console.log('IQAir weather data:', data);
+           
+           if (data.status !== 'success') {
+             throw new Error(`IQAir API error: ${data.data?.message || 'Unknown error'}`);
+           }
+           
+           const current = data.data.current;
+           
+           return {
+             temperature: Math.round(current.weather.tp),
+             humidity: current.weather.hu,
+             pollenLevel: getPollenLevel(current.weather.hu, getWeatherType(current.weather.tp)),
+             description: getWeatherDescription(current.weather.tp, current.weather.hu),
+             windSpeed: current.weather.ws || 0
+           };
+           
+         } catch (error) {
+           console.error('Error fetching weather by city:', error);
+           throw error;
+         }
+       }
+       
+       // Function to fetch weather data by coordinates using IQAir
+       async function fetchWeatherByCoords(lat, lon) {
+         try {
+           console.log(`🌤️ Fetching weather data for coordinates: ${lat}, ${lon} using IQAir`);
+           
+           // Get weather data from IQAir API
+           const response = await fetch(`http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lon}&key=${API_CONFIG.IQAIR_API_KEY}`);
+           
+           if (!response.ok) {
+             throw new Error('Failed to fetch weather data from IQAir');
+           }
+           
+           const data = await response.json();
+           console.log('IQAir weather data:', data);
+           
+           if (data.status !== 'success') {
+             throw new Error(`IQAir API error: ${data.data?.message || 'Unknown error'}`);
+           }
+           
+           const current = data.data.current;
+           
+           return {
+             temperature: Math.round(current.weather.tp),
+             humidity: current.weather.hu,
+             pollenLevel: getPollenLevel(current.weather.hu, getWeatherType(current.weather.tp)),
+             description: getWeatherDescription(current.weather.tp, current.weather.hu),
+             windSpeed: current.weather.ws || 0
+           };
+           
+         } catch (error) {
+           console.error('Error fetching weather by coordinates:', error);
+           throw error;
+         }
+       }
+       
+
+       
+       // Function to determine pollen level based on weather conditions
+       function getPollenLevel(humidity, weatherType) {
+         // High humidity and certain weather conditions affect pollen levels
+         if (weatherType === 'Rain' || humidity > 80) {
+           return 'Low';
+         } else if (weatherType === 'Clear' && humidity < 50) {
+           return 'High';
+         } else {
+           return 'Medium';
+         }
+       }
+       
+       // Helper function to get weather type from temperature
+       function getWeatherType(temperature) {
+         if (temperature < 0) return 'Snow';
+         if (temperature < 10) return 'Cold';
+         if (temperature < 20) return 'Cool';
+         if (temperature < 25) return 'Mild';
+         if (temperature < 30) return 'Warm';
+         return 'Hot';
+       }
+       
+       // Helper function to get weather description from temperature and humidity
+       function getWeatherDescription(temperature, humidity) {
+         const tempDesc = getWeatherType(temperature);
+         if (humidity > 80) return `${tempDesc} and Humid`;
+         if (humidity < 30) return `${tempDesc} and Dry`;
+         return tempDesc;
+       }
+       
+       // Helper function to get weather icon based on temperature and humidity
+       function getWeatherIcon(temperature, humidity) {
+         if (temperature < 0) return '❄️'; // Snow
+         if (temperature < 10) return '🥶'; // Cold
+         if (temperature < 20) return '🌤️'; // Cool
+         if (temperature < 25) return '🌥️'; // Mild
+         if (temperature < 30) return '☀️'; // Warm
+         if (humidity > 80) return '💧'; // Humid
+         return '🌡️'; // Hot
+       }
+       
+       // Fallback function for demo data if API fails
+       function fetchDemoData(lat, lon, city) {
+         const aqiValue = Math.floor(Math.random() * 150) + 20; // 20-170
+         const weatherData = {
+           temperature: Math.floor(Math.random() * 40) + 50, // 50-90°F
+           humidity: Math.floor(Math.random() * 40) + 40, // 40-80%
+           pollenLevel: ['Low', 'Medium', 'High'][Math.floor(Math.random() * 3)]
+         };
+         
+         // Save demo data
+         localStorage.setItem('aqiData', JSON.stringify({
+           value: aqiValue,
+           level: getAQILevel(aqiValue),
+           timestamp: new Date().toISOString(),
+           location: city || (lat && lon ? `${lat.toFixed(2)}, ${lon.toFixed(2)}` : 'Unknown'),
+           isDemo: true
+         }));
+         
+         localStorage.setItem('weatherData', JSON.stringify({
+           ...weatherData,
+           timestamp: new Date().toISOString(),
+           location: city || (lat && lon ? `${lat.toFixed(2)}, ${lon.toFixed(2)}` : 'Unknown'),
+           isDemo: true
+         }));
+         
+         // Update AQI display
+         updateAQIDisplay(aqiValue, weatherData);
+       }
+       
+
+       
+       // Function to get AQI description text
+       function getAQIDescription(aqi) {
+         if (aqi <= 50) return 'Air quality is good. Enjoy outdoor activities.';
+         if (aqi <= 100) return 'Air quality is acceptable. Sensitive individuals may experience minor symptoms.';
+         if (aqi <= 150) return 'Sensitive groups may experience health effects. Consider reducing outdoor activities.';
+         if (aqi <= 200) return 'Some people may experience health effects. Limit outdoor activities.';
+         if (aqi <= 300) return 'Health alert: everyone may experience health effects. Stay indoors if possible.';
+         return 'Health warning: everyone may experience serious health effects. Avoid outdoor activities.';
+       }
+       
+       // Function to update AQI display
+       function updateAQIDisplay(aqi, weather) {
+         // Update AQI value
+         const aqiValue = document.getElementById('aqi-value');
+         if (aqiValue) {
+           aqiValue.textContent = aqi;
+         }
+         
+         // Update AQI level and color
+         const aqiLevel = document.getElementById('aqi-level');
+         if (aqiLevel) {
+           const level = getAQILevel(aqi);
+           aqiLevel.textContent = level;
+           
+           // Update color based on AQI level
+           const colors = {
+             'Good': '#10B981',           // Green
+             'Moderate': '#F59E0B',       // Yellow
+             'Unhealthy for Sensitive Groups': '#F97316', // Orange
+             'Unhealthy': '#EF4444',      // Red
+             'Very Unhealthy': '#8B5CF6', // Purple
+             'Hazardous': '#DC2626'       // Dark Red
+           };
+           
+           aqiLevel.style.color = colors[level] || '#6B7280';
+         }
+         
+         // Update AQI description
+         const aqiDescription = document.getElementById('aqi-description');
+         if (aqiDescription) {
+           aqiDescription.textContent = getAQIDescription(aqi);
+         }
+         
+         // Update data source if available
+         const aqiData = JSON.parse(localStorage.getItem('aqiData') || '{}');
+         if (aqiData.source) {
+           const updateTime = document.getElementById('aqi-update-time');
+           if (updateTime) {
+             updateTime.textContent = `Updated: Just now (${aqiData.source})`;
+           }
+           
+
+         }
+         
+         // Update location indicator color
+         const locationIndicator = document.getElementById('aqi-location-indicator');
+         if (locationIndicator) {
+           const aqiData = JSON.parse(localStorage.getItem('aqiData') || '{}');
+           if (aqiData.value) {
+             const level = getAQILevel(aqiData.value);
+             const colors = {
+               'Good': '#10B981',
+               'Moderate': '#F59E0B',
+               'Unhealthy for Sensitive Groups': '#F97316',
+               'Unhealthy': '#EF4444',
+               'Very Unhealthy': '#8B5CF6',
+               'Hazardous': '#DC2626'
+             };
+             locationIndicator.style.backgroundColor = colors[level] || '#6B7280';
+           }
+         }
+         
+         // Update AQI indicator position on the progress bar
+         const aqiIndicator = document.getElementById('aqi-indicator');
+         if (aqiIndicator) {
+           // Calculate position based on AQI value (0-500 scale)
+           const position = Math.min((aqi / 500) * 100, 100);
+           aqiIndicator.style.left = `${position}%`;
+           
+           // Update border color based on AQI level
+           const level = getAQILevel(aqi);
+           const colors = {
+             'Good': '#10B981',
+             'Moderate': '#F59E0B',
+             'Unhealthy for Sensitive Groups': '#F97316',
+             'Unhealthy': '#EF4444',
+             'Very Unhealthy': '#8B5CF6',
+             'Hazardous': '#DC2626'
+           };
+           aqiIndicator.style.borderColor = colors[level] || '#6B7280';
+         }
+         
+         // Update last update time
+         const updateTime = document.getElementById('aqi-update-time');
+         if (updateTime) {
+           const now = new Date();
+           updateTime.textContent = `Updated: Just now`;
+         }
+         
+         // Weather info is now only displayed in detailed reports, not in the AQI card
+       }
+       
+
+       
+       // Function to update AQI card location text
+       function updateAQICardLocation() {
+         const locationText = document.getElementById('aqi-location-text');
+         const userLocation = JSON.parse(localStorage.getItem('userLocation') || '{}');
+         
+         console.log('🔄 Updating AQI card location with:', userLocation);
+         
+         if (locationText) {
+           if (userLocation.city) {
+             locationText.textContent = userLocation.city;
+             console.log(`✅ AQI card location updated to: ${userLocation.city}`);
+           } else if (userLocation.latitude && userLocation.longitude) {
+             // Format coordinates nicely
+             const lat = parseFloat(userLocation.latitude).toFixed(2);
+             const lon = parseFloat(userLocation.longitude).toFixed(2);
+             locationText.textContent = `${lat}, ${lon}`;
+             console.log(`✅ AQI card location updated to coordinates: ${lat}, ${lon}`);
+           } else {
+             locationText.textContent = 'Click to set location';
+             console.log('⚠️ No location data available, showing default text');
+           }
+         } else {
+           console.error('❌ AQI location text element not found');
+         }
+       }
+       
+       // Function to update main city display
+       function updateMainCityDisplay(city) {
+         const mainCityDisplay = document.getElementById('main-city-display');
+         if (mainCityDisplay) {
+           mainCityDisplay.textContent = city;
+           console.log(`🏙️ Main city display updated to: ${city}`);
+         } else {
+           console.log('⚠️ Main city display element not found');
+         }
+       }
+       
+              // Function to update AQI card from stored data
+       function updateAQICardFromStorage() {
+         const aqiData = JSON.parse(localStorage.getItem('aqiData') || '{}');
+         const weatherData = JSON.parse(localStorage.getItem('weatherData') || '{}');
+         const userLocation = JSON.parse(localStorage.getItem('userLocation') || '{}');
+         
+         if (aqiData.value && userLocation.city) {
+           // Update AQI display with stored data
+           updateAQIDisplay(aqiData.value, weatherData);
+           
+           // Update location text
+           updateAQICardLocation();
+           
+           // Update main city display
+           updateMainCityDisplay(userLocation.city);
+           
+           // Update last update time
+           const updateTime = document.getElementById('aqi-update-time');
+           if (updateTime && aqiData.timestamp) {
+             const lastUpdate = new Date(aqiData.timestamp);
+             const now = new Date();
+             const diffMinutes = Math.floor((now - lastUpdate) / (1000 * 60));
+             
+             if (diffMinutes < 1) {
+               updateTime.textContent = 'Updated: Just now';
+             } else if (diffMinutes < 60) {
+               updateTime.textContent = `Updated: ${diffMinutes} min${diffMinutes > 1 ? 's' : ''} ago`;
+             } else {
+               const diffHours = Math.floor(diffMinutes / 60);
+               updateTime.textContent = `Updated: ${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+             }
+           }
+         } else {
+           // Reset to default state
+           const aqiValue = document.getElementById('aqi-value');
+           const aqiLevel = document.getElementById('aqi-level');
+           const aqiDescription = document.getElementById('aqi-description');
+           const updateTime = document.getElementById('aqi-update-time');
+           
+           if (aqiValue) aqiValue.textContent = '--';
+           if (aqiLevel) aqiLevel.textContent = 'Set location to see AQI';
+           if (aqiDescription) aqiDescription.textContent = 'Click the card to set your location and view air quality data';
+           if (updateTime) updateTime.textContent = 'Click to get started';
+           
+           // Reset main city display
+           updateMainCityDisplay('Set location');
+         }
+       }
+       
+       // Function to update location management section (now inside AQI modal)
+       function updateLocationManagementSection() {
+         const currentLocationDisplay = document.getElementById('current-location-display');
+         const lastUpdateDisplay = document.getElementById('last-update-display');
+         const currentLocationInfo = document.getElementById('current-location-info');
+         const locationInputSection = document.getElementById('location-input-section');
+         
+         // Only update if elements exist (when AQI modal is open)
+         if (!currentLocationDisplay || !lastUpdateDisplay) {
+           return;
+         }
+         
+         const userLocation = JSON.parse(localStorage.getItem('userLocation') || '{}');
+         const aqiData = JSON.parse(localStorage.getItem('aqiData') || '{}');
+         
+         if (userLocation.city) {
+           currentLocationDisplay.textContent = userLocation.city;
+           console.log(`📍 Modal location display updated to: ${userLocation.city}`);
+           // Show current location info section and hide input section
+           if (currentLocationInfo) currentLocationInfo.classList.remove('hidden');
+           if (locationInputSection) locationInputSection.classList.add('hidden');
+         } else if (userLocation.latitude && userLocation.longitude) {
+           const lat = parseFloat(userLocation.latitude).toFixed(2);
+           const lon = parseFloat(userLocation.longitude).toFixed(2);
+           currentLocationDisplay.textContent = `${lat}, ${lon}`;
+           // Show current location info section and hide input section
+           if (currentLocationInfo) currentLocationInfo.classList.remove('hidden');
+           if (locationInputSection) locationInputSection.classList.add('hidden');
+         } else {
+           currentLocationDisplay.textContent = 'Not set';
+           // Hide current location info section and show input section
+           if (currentLocationInfo) currentLocationInfo.classList.add('hidden');
+           if (locationInputSection) locationInputSection.classList.remove('hidden');
+         }
+         
+         if (aqiData.timestamp) {
+           const lastUpdate = new Date(aqiData.timestamp);
+           const now = new Date();
+           const diffMinutes = Math.floor((now - lastUpdate) / (1000 * 60));
+           
+           if (diffMinutes < 1) {
+             lastUpdateDisplay.textContent = 'Just now';
+           } else if (diffMinutes < 60) {
+             lastUpdateDisplay.textContent = `${diffMinutes} min${diffMinutes > 1 ? 's' : ''} ago`;
+           } else {
+             const diffHours = Math.floor(diffMinutes / 60);
+             lastUpdateDisplay.textContent = `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+           }
+         } else {
+           lastUpdateDisplay.textContent = 'Never';
+         }
+       }
+       
+       // Check authentication on page load
+       document.addEventListener('DOMContentLoaded', function() {
+         // Check if user is authenticated
+         if (localStorage.getItem('isAuthenticated') !== 'true') {
+           // Check if user should be remembered
+           const rememberedEmail = localStorage.getItem('rememberedEmail');
+           const rememberMe = localStorage.getItem('rememberMe');
+           
+           if (rememberedEmail && rememberMe === 'true') {
+             // Validate remembered user exists in database
+             const users = JSON.parse(localStorage.getItem('users') || '[]');
+             const rememberedUser = users.find(u => u.email === rememberedEmail);
+             
+             if (rememberedUser) {
+               // Auto-authenticate remembered user
+               localStorage.setItem('isAuthenticated', 'true');
+               localStorage.setItem('userEmail', rememberedEmail);
+               localStorage.setItem('userName', rememberedUser.fullName);
+               localStorage.setItem('userId', rememberedUser.id);
+               
+               // Load user data
+               loadRememberedUserData(rememberedEmail);
+             } else {
+               // Invalid remembered user, clear and redirect
+               localStorage.removeItem('rememberMe');
+               localStorage.removeItem('rememberedEmail');
+               window.location.href = 'auth.html';
+               return;
+             }
+           } else {
+             // Redirect to auth page
+             window.location.href = 'auth.html';
+             return;
+           }
+         }
+         
+         loadProfilePhotos();
+         loadUserName();
+         loadLastReport();
+         
+         // Check if location permission is needed
+
+         
+         // Update AQI card with existing data if available
+         updateAQICardFromStorage();
+         
+         // Also update main city display if location data exists
+         const userLocation = JSON.parse(localStorage.getItem('userLocation') || '{}');
+         if (userLocation.city) {
+           updateMainCityDisplay(userLocation.city);
+         }
+         
+         // Personal Details Modal functionality
+         const personalDetailsModal = document.getElementById('personal-details-modal');
+         const personalDetailsBackdrop = document.getElementById('personal-details-backdrop');
+         const personalDetailsClose = document.getElementById('personal-details-close');
+         const personalDetailsCancel = document.getElementById('personal-details-cancel');
+         
+         function closePersonalDetailsModal() {
+           personalDetailsModal.classList.add('hidden');
+           document.body.classList.remove('overflow-hidden');
+         }
+         
+         personalDetailsBackdrop.addEventListener('click', closePersonalDetailsModal);
+         personalDetailsClose.addEventListener('click', closePersonalDetailsModal);
+         personalDetailsCancel.addEventListener('click', closePersonalDetailsModal);
+         document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closePersonalDetailsModal(); });
+         
+         // AQI Info Modal functionality
+         const aqiInfoModal = document.getElementById('aqi-info-modal');
+         const aqiInfoBackdrop = document.getElementById('aqi-info-backdrop');
+         const aqiInfoClose = document.getElementById('aqi-info-close');
+         
+
+         
+         // AQI Info Modal event listeners
+         aqiInfoClose.addEventListener('click', () => {
+           aqiInfoModal.classList.add('hidden');
+           document.body.classList.remove('overflow-hidden');
+         });
+         
+         aqiInfoBackdrop.addEventListener('click', () => {
+           aqiInfoModal.classList.add('hidden');
+           document.body.classList.remove('overflow-hidden');
+         });
+         
+
+         
+
+         document.addEventListener('click', (e) => {
+
+           
+           // Learn More About AQI button (now inside AQI modal)
+           if (e.target.id === 'learn-more-aqi-btn') {
+             // Close the current AQI modal
+             closeAqiModal();
+             // Open the detailed AQI info modal
+             aqiInfoModal.classList.remove('hidden');
+             document.body.classList.add('overflow-hidden');
+           }
+         });
+         
+
+         
+
+         
+
+         
+         // Escape key handler for AQI info modal
+         document.addEventListener('keydown', (e) => {
+           if (e.key === 'Escape' && !aqiInfoModal.classList.contains('hidden')) {
+             aqiInfoModal.classList.add('hidden');
+             document.body.classList.remove('overflow-hidden');
+           }
+         });
+         
+         // AQI Modal functionality
+         const aqiModal = document.getElementById('aqi-modal-overlay');
+         const aqiBackdrop = document.getElementById('aqi-backdrop');
+         const aqiClose = document.getElementById('aqi-close');
+         
+         function closeAqiModal() {
+           console.log('Closing AQI modal...');
+           if (aqiModal) {
+             aqiModal.classList.add('hidden');
+             document.body.classList.remove('overflow-hidden');
+             console.log('AQI modal closed successfully');
+           } else {
+             console.error('AQI modal element not found');
+           }
+         }
+         
+         function openAqiModal() {
+           console.log('Opening AQI modal...');
+           if (aqiModal) {
+             try {
+               aqiModal.classList.remove('hidden');
+               document.body.classList.add('overflow-hidden');
+               // Update location management section when modal opens
+               updateLocationManagementSection();
+               console.log('AQI modal opened successfully');
+             } catch (error) {
+               console.error('Error opening AQI modal:', error);
+               // Still try to show the modal even if location update fails
+               aqiModal.classList.remove('hidden');
+               document.body.classList.add('overflow-hidden');
+             }
+           } else {
+             console.error('AQI modal element not found');
+           }
+         }
+         
+         aqiBackdrop.addEventListener('click', closeAqiModal);
+         aqiClose.addEventListener('click', closeAqiModal);
+         document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeAqiModal(); });
+         
+         // AQI Card click handler
+         const aqiCard = document.getElementById('aqi-card');
+         
+         // Location management functionality
+         const changeLocationBtn = document.getElementById('change-location-btn');
+         const locationInputSection = document.getElementById('location-input-section');
+         const newCityInput = document.getElementById('new-city-input');
+         const saveLocationBtn = document.getElementById('save-location-btn');
+         const cancelLocationBtn = document.getElementById('cancel-location-btn');
+         
+         if (changeLocationBtn) {
+           changeLocationBtn.addEventListener('click', () => {
+             locationInputSection.classList.remove('hidden');
+             newCityInput.focus();
+           });
+         }
+         
+         if (cancelLocationBtn) {
+           cancelLocationBtn.addEventListener('click', () => {
+             locationInputSection.classList.add('hidden');
+             newCityInput.value = '';
+           });
+         }
+         
+         if (saveLocationBtn) {
+           saveLocationBtn.addEventListener('click', async () => {
+             const newCity = newCityInput.value.trim();
+             console.log(`💾 Save location clicked for city: "${newCity}"`);
+             
+             if (newCity) {
+               try {
+                 console.log(`🔄 Fetching new AQI and weather data for: ${newCity}`);
+                 
+                 // Fetch new AQI and weather data for the new city
+                 await fetchAQIData(null, null, newCity);
+                 
+                 console.log(`✅ Data fetched successfully for: ${newCity}`);
+                 
+                 // Update the location display
+                 updateLocationManagementSection();
+                 
+                 // Hide the input section
+                 locationInputSection.classList.add('hidden');
+                 newCityInput.value = '';
+                 
+                 // Show success message
+                 alert(`Location updated to ${newCity}! New AQI data has been fetched.`);
+                 
+                 console.log(`🎉 Location successfully updated to: ${newCity}`);
+               } catch (error) {
+                 console.error('Error updating location:', error);
+                 alert('Error updating location. Please try again.');
+               }
+             } else {
+               alert('Please enter a city name.');
+             }
+           });
+         }
+         
+         if (aqiCard) {
+           aqiCard.addEventListener('click', () => {
+             console.log('AQI card clicked!');
+             openAqiModal();
+           });
+           console.log('AQI card event listener added successfully');
+         } else {
+           console.error('AQI card element not found');
+         }
+         
+
+         
+
+         
+
+       });
+    </script>
+  </body>
+</html>

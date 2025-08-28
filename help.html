@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help & Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(120deg, #e0f7fa 0%, #f8fafc 60%, #e6f4f1 100%);
+      }
+      .bg-blur {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-blur">
+    <a href="profile.html" class="fixed top-4 left-4 z-20 flex items-center text-gray-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-gray-300 transition" style="background: none; box-shadow: none; padding: 0;">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <main class="max-w-xl mx-auto pt-10 pb-12 px-4 flex flex-col items-center">
+      <div class="w-full bg-white rounded-2xl shadow p-0 overflow-hidden">
+        <div class="divide-y divide-gray-100">
+          <a href="#" id="contact-support" class="flex items-center justify-between px-4 py-5 hover:bg-gray-50 transition">
+            <span class="text-base text-gray-900">Contact Support</span>
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#" id="open-tutorial" class="flex flex-col px-4 py-5 hover:bg-gray-50 transition">
+            <div class="flex items-center justify-between">
+              <span class="text-base text-gray-900">How to Use the app</span>
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="text-sm text-[#199A8E] mt-1">Short tutorial, onboarding guide</span>
+          </a>
+          <a href="#" id="open-rating" class="flex items-center justify-between px-4 py-5 hover:bg-gray-50 transition">
+            <span class="text-base text-gray-900">Rate your experience</span>
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+      <a href="#" class="mt-8 text-[#199A8E] text-base font-medium hover:underline text-center block">Report a Bug</a>
+    </main>
+    <!-- Support Modal -->
+    <div id="support-modal" class="hidden fixed inset-0 z-50">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="support-modal-backdrop"></div>
+      <div class="relative z-10 max-w-lg w-[92%] md:w-full mx-auto mt-28 bg-white rounded-2xl shadow-xl p-6 overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-[#199A8E] via-blue-400 to-purple-400"></div>
+        <div class="flex items-start justify-between mb-2">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-[#199A8E]/10 text-[#199A8E] border border-[#199A8E]/10 flex items-center justify-center">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8l8 5 8-5"/><rect x="4" y="6" width="16" height="12" rx="2"/></svg>
+            </span>
+            <h2 class="text-lg font-semibold text-gray-900">Need Help? We’re Here for You</h2>
+          </div>
+          <button id="support-close" aria-label="Close" class="text-gray-400 hover:text-gray-500 text-xl leading-none">&times;</button>
+        </div>
+        <p class="text-gray-600 mb-4">Our support team is ready to assist with any questions, technical issues, or feedback.</p>
+        <div class="space-y-3 mb-4">
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8l8 5 8-5"/><rect x="4" y="6" width="16" height="12" rx="2"/></svg>
+            </span>
+            <p class="text-gray-800">Email: <a href="mailto:support@breezo.com" class="text-[#199A8E] hover:underline">support@breezo.com</a></p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            </span>
+            <p class="text-gray-800">Response time: within 24 hours on weekdays</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 14a5 5 0 1 1 4 0v2h-4v-2z"/></svg>
+            </span>
+            <p class="text-gray-800">Tip: For faster help, please include a brief description of your issue and any relevant screenshots.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const openBtn = document.getElementById('contact-support');
+      const modal = document.getElementById('support-modal');
+      const closeBtn = document.getElementById('support-close');
+      const backdrop = document.getElementById('support-modal-backdrop');
+      function openModal(e){ e && e.preventDefault(); modal.classList.remove('hidden'); document.body.classList.add('overflow-hidden'); }
+      function closeModal(){ modal.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); }
+      openBtn.addEventListener('click', openModal);
+      closeBtn.addEventListener('click', closeModal);
+      backdrop.addEventListener('click', closeModal);
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
+    </script>
+
+    <!-- Rating Modal -->
+    <div id="rating-modal" class="hidden fixed inset-0 z-50">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="rating-backdrop"></div>
+      <div class="relative z-10 max-w-lg w-[92%] md:w-full mx-auto mt-32 bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400"></div>
+        <!-- Rating Form Content -->
+        <div id="rating-form" class="p-6">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center">💬</span>
+            <h3 class="text-lg font-semibold text-gray-900">Rate Your Experience</h3>
+          </div>
+          <p class="text-gray-700 mb-4">How was your experience today?</p>
+          <div id="stars" class="flex items-center gap-2 mb-3">
+            <!-- stars injected -->
+          </div>
+          <div id="dynamic-text" class="text-sm text-gray-500 mb-3"></div>
+
+          <div class="flex flex-wrap gap-2 mb-3" id="quick-tags"></div>
+
+          <textarea id="feedback-box" class="w-full border border-gray-200 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" rows="3" placeholder=""></textarea>
+
+          <div id="contact-opt" class="hidden mt-3">
+            <label class="flex items-center gap-2 text-sm text-gray-700">
+              <input id="contact-checkbox" type="checkbox" class="w-4 h-4 rounded border-gray-300" />
+              <span>Yes, contact me about this issue</span>
+            </label>
+            <div id="contact-fields" class="hidden mt-2 grid grid-cols-1 gap-2">
+              <input id="contact-email" type="email" placeholder="Email (optional)" class="border border-gray-200 rounded-lg px-3 py-2" />
+              <input id="contact-phone" type="tel" placeholder="Phone (optional)" class="border border-gray-200 rounded-lg px-3 py-2" />
+            </div>
+          </div>
+
+          <button id="send-feedback" class="mt-4 w-full bg-[#199A8E] hover:bg-[#157c71] text-white font-medium rounded-xl py-3">Send Feedback</button>
+          <div class="text-[11px] text-gray-400 mt-3">Your feedback is anonymous unless you choose to be contacted. For medical concerns, please seek immediate advice from a qualified professional.</div>
+        </div>
+
+        <!-- Inline Success State -->
+        <div id="rating-success" class="p-6 hidden">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              <h3 class="text-lg font-semibold text-gray-900">Feedback sent</h3>
+            </div>
+            <button id="rating-success-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          <p class="text-gray-700">Thanks! Your feedback helps us keep improving.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Low Rating Confirmation Modal -->
+    <div id="rating-confirm" class="hidden fixed inset-0 z-50">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="confirm-backdrop"></div>
+      <div class="relative z-10 max-w-lg w-[92%] md:w-full mx-auto mt-28 bg-white rounded-2xl shadow-xl p-6 animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)]">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center">😔</span>
+          <h3 class="text-lg font-semibold text-gray-900">We’re sorry you had a bad experience</h3>
+        </div>
+        <p class="text-gray-700 mb-4">Thank you for telling us what happened. Would you like to speak directly with our support team now?</p>
+        <div class="flex gap-3 justify-end">
+          <a href="#" id="confirm-contact" class="px-4 py-2 rounded-lg bg-[#199A8E] text-white hover:bg-[#157c71]">Contact Support</a>
+          <button id="confirm-close" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Rating flow
+      const openRating = document.getElementById('open-rating');
+      const ratingModal = document.getElementById('rating-modal');
+      const ratingBackdrop = document.getElementById('rating-backdrop');
+      const starsWrap = document.getElementById('stars');
+      const dynamicText = document.getElementById('dynamic-text');
+      const quickTags = document.getElementById('quick-tags');
+      const feedbackBox = document.getElementById('feedback-box');
+      const contactOpt = document.getElementById('contact-opt');
+      const contactCheckbox = document.getElementById('contact-checkbox');
+      const contactFields = document.getElementById('contact-fields');
+      const sendBtn = document.getElementById('send-feedback');
+      const ratingForm = document.getElementById('rating-form');
+      const ratingSuccess = document.getElementById('rating-success');
+      const ratingSuccessClose = document.getElementById('rating-success-close');
+      const confirmModal = document.getElementById('rating-confirm');
+      const confirmBackdrop = document.getElementById('confirm-backdrop');
+      const confirmClose = document.getElementById('confirm-close');
+      const confirmContact = document.getElementById('confirm-contact');
+
+      let currentRating = 0;
+
+      function openRatingModal(e){
+        e && e.preventDefault();
+        // reset view state and form data
+        ratingForm.classList.remove('hidden');
+        ratingSuccess.classList.add('hidden');
+        ratingModal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+        
+        // Reset form state
+        currentRating = 0;
+        feedbackBox.value = '';
+        contactCheckbox.checked = false;
+        contactFields.classList.add('hidden');
+        document.getElementById('contact-email').value = '';
+        document.getElementById('contact-phone').value = '';
+        
+        // Re-render stars and dynamic content
+        renderStars();
+        updateDynamic();
+      }
+      function closeRatingModal(){ ratingModal.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); }
+      function showInlineSuccess(){ ratingForm.classList.add('hidden'); ratingSuccess.classList.remove('hidden'); }
+      function openConfirm(){ confirmModal.classList.remove('hidden'); }
+      function closeConfirm(){ confirmModal.classList.add('hidden'); closeRatingModal(); }
+
+      function renderStars() {
+        starsWrap.innerHTML = '';
+        for (let i = 1; i <= 5; i++) {
+          const btn = document.createElement('button');
+          btn.setAttribute('type', 'button');
+          btn.className = 'w-8 h-8 text-amber-400';
+          btn.innerHTML = i <= currentRating
+            ? '<svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>'
+            : '<svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.7 7.1.6-5.2 4.5 1.7 7L12 18l-6.5 2.8 1.7-7L2 9.3l7.1-.6L12 2z"/></svg>';
+          btn.addEventListener('click', () => { currentRating = i; updateDynamic(); renderStars(); });
+          starsWrap.appendChild(btn);
+        }
+      }
+
+      function updateDynamic() {
+        quickTags.innerHTML = '';
+        contactOpt.classList.add('hidden');
+        feedbackBox.value = '';
+        feedbackBox.placeholder = '';
+        dynamicText.textContent = '';
+
+        if (currentRating >= 4) {
+          dynamicText.textContent = 'We’re glad you’re enjoying it! What’s your favorite part?';
+          feedbackBox.placeholder = 'Tell us more…';
+          ['Easy to use','Accurate recommendations','Fast performance','Nice design'].forEach(t => addTag(t));
+        } else if (currentRating >= 1) {
+          dynamicText.textContent = 'Sorry it didn’t meet your expectations. How can we improve?';
+          feedbackBox.placeholder = 'Describe the issue in detail…';
+          ['Wrong or inaccurate result','Slow or unresponsive','App bug or crash','Poor guidance','Design issues','Other'].forEach(t => addTag(t));
+          contactOpt.classList.remove('hidden');
+        }
+      }
+
+      function addTag(label) {
+        const tag = document.createElement('button');
+        tag.type = 'button';
+        tag.className = 'px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700 hover:bg-gray-200';
+        tag.textContent = label;
+        tag.addEventListener('click', () => { if (!feedbackBox.value) feedbackBox.value = label; else feedbackBox.value += `; ${label}`; });
+        quickTags.appendChild(tag);
+      }
+
+      contactCheckbox.addEventListener('change', () => {
+        if (contactCheckbox.checked) contactFields.classList.remove('hidden');
+        else contactFields.classList.add('hidden');
+      });
+
+      openRating.addEventListener('click', openRatingModal);
+      ratingBackdrop.addEventListener('click', closeRatingModal);
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeRatingModal(); });
+
+      renderStars();
+      updateDynamic();
+
+      function getApiBase() {
+        try {
+          const origin = window.location.origin || '';
+          if (origin.startsWith('http')) return origin;
+        } catch (_) {}
+        // Fallback to local dev server
+        return 'http://127.0.0.1:8000';
+      }
+
+      async function submitFeedback() {
+        const tags = Array.from(quickTags.querySelectorAll('button')).filter(() => false); // tags are appended to text on click, not tracked separately
+        const payload = {
+          rating: currentRating || 0,
+          feedback: feedbackBox.value || null,
+          tags: null,
+          contact_opt_in: contactCheckbox.checked,
+          contact_email: document.getElementById('contact-email').value || null,
+          contact_phone: document.getElementById('contact-phone').value || null,
+        };
+        if (payload.rating <= 0) { alert('Please select a star rating.'); return; }
+        if (payload.rating <= 3 && !payload.feedback) { alert('Please describe the issue.'); return; }
+        try {
+          const res = await fetch(`${getApiBase()}/submit-feedback`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          if (!res.ok) throw new Error('Failed to submit');
+          if (payload.rating <= 3) openConfirm();
+          else { showInlineSuccess(); }
+        } catch (e) {
+          console.warn('Network error submitting feedback; storing locally.');
+          try {
+            const key = 'feedbackQueue';
+            const queue = JSON.parse(localStorage.getItem(key) || '[]');
+            queue.push({ ...payload, queued_at: Date.now() });
+            localStorage.setItem(key, JSON.stringify(queue));
+            // Continue UX as if successful
+            if (payload.rating <= 3) openConfirm();
+            else { showInlineSuccess(); }
+          } catch (_) {
+            alert('Could not send feedback. Please try again later.');
+          }
+        }
+      }
+
+      document.getElementById('send-feedback').addEventListener('click', submitFeedback);
+      ratingSuccessClose.addEventListener('click', closeRatingModal);
+      confirmClose.addEventListener('click', closeConfirm);
+      confirmBackdrop.addEventListener('click', closeConfirm);
+      confirmContact.addEventListener('click', (e)=>{ e.preventDefault(); closeConfirm(); document.getElementById('contact-support').click(); });
+    </script>
+
+    <!-- Tutorial Modal -->
+    <div id="tutorial-modal" class="hidden fixed inset-0 z-50">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="tutorial-backdrop"></div>
+      <div class="relative z-10 max-w-lg w-[92%] md:w-full mx-auto mt-24 bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400"></div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 4.5L20 9l-4 3.5L17 18l-5-2.5L7 18l1-5.5L4 9l5.5-1.5L12 3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <h3 class="text-lg font-semibold text-gray-900">How to Use the App</h3>
+            </div>
+            <button id="tutorial-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          
+          <p class="text-gray-700 mb-4">Get started in just four easy steps:</p>
+          
+          <div class="space-y-4 mb-6">
+            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+              <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+              </span>
+              <div>
+                <h4 class="font-medium text-gray-900 mb-1">1. Create Your Profile</h4>
+                <p class="text-sm text-gray-600">Download the app and sign up with your basic details so we can personalize your experience.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+              <span class="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-sm">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </span>
+              <div>
+                <h4 class="font-medium text-gray-900 mb-1">2. Enter Your Symptoms</h4>
+                <p class="text-sm text-gray-600">Choose from our guided categories (like breathing, coughing, allergies) or type them in directly.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+              <span class="w-6 h-6 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-sm">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/></svg>
+              </span>
+              <div>
+                <h4 class="font-medium text-gray-900 mb-1">3. Get AI-Backed Guidance</h4>
+                <p class="text-sm text-gray-600">Our AI model, trained in-house under medical supervision, will suggest possible causes and the next steps you can take.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+              <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-sm">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </span>
+              <div>
+                <h4 class="font-medium text-gray-900 mb-1">4. Follow Recommendations</h4>
+                <p class="text-sm text-gray-600">If the app suggests urgent care, contact a doctor right away. You can also save your results to track changes over time.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-blue-50 rounded-xl p-4 mb-4">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+              </span>
+              <h4 class="font-medium text-gray-900">Watch the 1-Minute Video Tutorial</h4>
+            </div>
+            <p class="text-sm text-gray-600 mb-3">Prefer a quick visual guide? Watch here on YouTube</p>
+            <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">Watch Tutorial</a>
+          </div>
+          
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Tutorial modal functionality
+      const openTutorial = document.getElementById('open-tutorial');
+      const tutorialModal = document.getElementById('tutorial-modal');
+      const tutorialBackdrop = document.getElementById('tutorial-backdrop');
+      const tutorialClose = document.getElementById('tutorial-close');
+      
+      function openTutorialModal(e) { 
+        e && e.preventDefault(); 
+        tutorialModal.classList.remove('hidden'); 
+        document.body.classList.add('overflow-hidden'); 
+      }
+      function closeTutorialModal() { 
+        tutorialModal.classList.add('hidden'); 
+        document.body.classList.remove('overflow-hidden'); 
+      }
+      
+      openTutorial.addEventListener('click', openTutorialModal);
+      tutorialBackdrop.addEventListener('click', closeTutorialModal);
+      tutorialClose.addEventListener('click', closeTutorialModal);
+      document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeTutorialModal(); });
+    </script>
+  </body>
+</html> 

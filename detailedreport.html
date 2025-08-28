@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detailed Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-br from-blue-50 via-blue-100 to-purple-100 min-h-screen">
+    <a href="symptomreports.html" class="fixed top-4 left-4 z-20 flex items-center text-gray-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-gray-300 transition" style="background: none; box-shadow: none; padding: 0;">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+            <main class="w-full max-w-2xl mx-auto p-2 md:p-4 space-y-8">
+      <!-- Loading State -->
+      <div id="loading-state" class="text-center py-12">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-100 flex items-center justify-center">
+          <svg class="w-8 h-8 text-blue-600 animate-spin" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">Loading Report...</h3>
+        <p class="text-gray-500">Please wait while we load your assessment details</p>
+      </div>
+
+      <!-- Error State -->
+      <div id="error-state" class="hidden text-center py-12">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center">
+          <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">Report Not Found</h3>
+        <p class="text-gray-500 mb-6">The requested report could not be loaded. It may have been deleted or expired.</p>
+        <a href="symptomreports.html" class="inline-flex items-center gap-2 bg-[#199A8E] hover:bg-[#157c71] text-white font-medium rounded-lg px-6 py-3 text-sm transition">
+          <span>Back to Reports</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Report Content (Hidden by default) -->
+      <div id="report-content" class="hidden">
+        <!-- Assessment Report Header -->
+        <section class="bg-white rounded-2xl shadow p-4 md:p-6 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
+          <h2 class="text-lg md:text-xl font-bold text-gray-900">Detailed Assessment Report</h2>
+            <button id="download-report-btn" class="bg-[#199A8E] hover:bg-[#157c71] text-white font-medium rounded-lg px-4 py-1.5 flex items-center gap-2 text-sm shadow transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Download Report
+          </button>
+        </div>
+        <div class="flex flex-wrap items-center gap-3 text-gray-500 text-sm mb-4">
+            <span class="flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M8 7V3m8 4V3M3 11h18M5 19h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2z"/>
+              </svg>
+              <span id="report-date">Loading...</span>
+            </span>
+            <span class="flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M17.657 16.657A8 8 0 1 0 7.05 7.05a8 8 0 0 0 10.607 9.607z"/>
+                <path d="M15 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+              </svg>
+              <span id="report-location">Loading location...</span>
+            </span>
+        </div>
+        </section>
+
+        <!-- Environmental Assessment Card -->
+        <section class="bg-white rounded-2xl shadow p-4 md:p-6 mb-8">
+        <div class="bg-gradient-to-br from-green-50 via-blue-50 to-white rounded-xl p-4">
+          <h3 class="text-base font-semibold text-gray-900 mb-2">Environmental Assessment</h3>
+            <span id="aqi-display" class="inline-block bg-green-100 text-green-700 font-semibold rounded-full px-3 py-0.5 text-sm mb-2">Loading AQI...</span>
+            <p id="aqi-description" class="text-gray-600 mb-4 text-sm">Loading air quality information...</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="bg-white rounded-lg shadow p-3">
+              <div class="text-gray-400 text-xs mb-0.5">City</div>
+                <div id="city-display" class="text-base font-bold text-gray-900">Loading...</div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-3">
+              <div class="text-gray-400 text-xs mb-0.5">Humidity</div>
+                <div id="humidity-display" class="text-base font-bold text-gray-900">Loading...</div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-3">
+              <div class="text-gray-400 text-xs mb-0.5">Temperature</div>
+                <div id="temperature-display" class="text-base font-bold text-gray-900">Loading...</div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-3">
+              <div class="text-gray-400 text-xs mb-0.5">Air Quality</div>
+                <div id="aqi-value-display" class="text-base font-bold text-gray-900">Loading...</div>
+              </div>
+            </div>
+            
+        </div>
+      </section>
+
+      <!-- Disease Predictions Card -->
+        <section class="bg-white rounded-2xl shadow p-4 md:p-6 mb-8">
+        <h3 class="text-base font-semibold text-gray-900 mb-4">Disease Predictions</h3>
+          <div id="predictions-container" class="space-y-3">
+            <!-- Predictions will be loaded here dynamically -->
+          </div>
+        </section>
+
+        <!-- Symptoms Analysis Card -->
+        <section class="bg-white rounded-2xl shadow p-4 md:p-6 mb-8">
+          <h3 class="text-base font-semibold text-gray-900 mb-4">Symptoms Analysis</h3>
+          <div id="symptoms-container" class="space-y-3">
+            <!-- Symptoms will be loaded here dynamically -->
+          </div>
+        </section>
+
+        <!-- Medical Disclaimer & General Advice Card -->
+        <section class="bg-white rounded-2xl shadow p-4 md:p-6 mb-8">
+          <h3 class="text-base font-semibold text-gray-900 mb-4">Important Medical Information</h3>
+          
+          <!-- Medical Disclaimer -->
+          <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-4">
+            <div class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-yellow-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            <div>
+                <h4 class="text-sm font-semibold text-yellow-800 mb-2">Medical Disclaimer</h4>
+                <p class="text-sm text-yellow-700">
+                  <strong>This report is NOT a substitute for professional medical advice, diagnosis, or treatment.</strong> 
+                  The information provided is for educational purposes only and should not be used to make medical decisions.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- General Health Advice -->
+          <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+            <h4 class="text-sm font-semibold text-blue-800 mb-3">General Health Recommendations</h4>
+            <div class="space-y-2 text-sm text-blue-700">
+              <div class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
+                <span>If your symptoms worsen or persist, consult a healthcare professional immediately</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Seek emergency medical care if you experience severe difficulty breathing, chest pain, or other concerning symptoms</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Follow your doctor's advice and complete any prescribed treatments</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Maintain good hygiene practices and avoid close contact with others if you're experiencing symptoms</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Monitor your symptoms and keep a record of any changes or new symptoms</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      // Function to load and display the detailed report
+      function loadDetailedReport() {
+        try {
+          // Get the current report from localStorage
+          const currentReport = JSON.parse(localStorage.getItem('currentReport'));
+          
+          if (!currentReport) {
+            showErrorState();
+            return;
+          }
+          
+          // Hide loading, show content
+          document.getElementById('loading-state').classList.add('hidden');
+          document.getElementById('report-content').classList.remove('hidden');
+          
+          // Update header information with actual report creation time
+          const reportDate = new Date(currentReport.timestamp || Date.now());
+          document.getElementById('report-date').textContent = reportDate.toLocaleString();
+          
+          // Load disease predictions
+          loadPredictions(currentReport.predictions);
+          
+          // Load symptoms analysis
+          loadSymptoms(currentReport.symptoms);
+          
+          // Load environmental assessment data
+          loadEnvironmentalData();
+          
+        } catch (error) {
+          console.error('Error loading report:', error);
+          showErrorState();
+        }
+      }
+      
+      // Function to load disease predictions
+      function loadPredictions(predictions) {
+        const container = document.getElementById('predictions-container');
+        container.innerHTML = '';
+        
+        predictions.forEach((prediction, index) => {
+          const isTop = index === 0;
+          const bgClass = isTop ? 'bg-gradient-to-r from-blue-50 to-white border border-blue-100' : 'bg-gray-50';
+          const textClass = isTop ? 'text-blue-900' : 'text-gray-900';
+          const probClass = isTop ? 'text-[#199A8E]' : 'text-gray-400';
+          
+          // Get disease description based on disease name
+          const diseaseDescription = getDiseaseDescription(prediction.disease);
+          
+          // Cap probability at 90% and show medical guidance for high confidence
+          let displayProbability = prediction.probability;
+          let medicalGuidance = '';
+          
+          if (prediction.probability > 0.9) {
+            displayProbability = 0.9; // Cap at 90%
+            medicalGuidance = '<div class="text-red-600 text-xs mt-1 font-medium">⚠️ See medical professional as soon as possible</div>';
+          }
+          
+          const predictionDiv = document.createElement('div');
+          predictionDiv.className = `flex items-center justify-between ${bgClass} rounded-lg p-4`;
+          predictionDiv.innerHTML = `
+            <div>
+              <div class="text-base font-bold ${textClass}">${prediction.disease}</div>
+              <div class="text-gray-500 text-xs mt-0.5">${diseaseDescription}</div>
+              ${medicalGuidance}
+            </div>
+            <div class="text-xl font-bold ${probClass}">${(displayProbability * 100).toFixed(1)}%</div>
+          `;
+          
+          container.appendChild(predictionDiv);
+        });
+      }
+      
+      // Function to get disease descriptions
+      function getDiseaseDescription(diseaseName) {
+        const descriptions = {
+          'Chronic Bronchitis': 'A long-term inflammation of the bronchial tubes, the airways that carry air to and from the lungs.',
+          'Common Cold': 'A viral infectious disease of the upper respiratory tract.',
+          'Pneumonia': 'An infection that inflames the air sacs in one or both lungs, which may fill with fluid.',
+          'Asthma': 'A condition in which your airways narrow and swell and may produce extra mucus.',
+          'Seasonal Allergies': 'An allergic response to environmental triggers such as pollen, dust, or mold.',
+          'Bronchitis': 'Inflammation of the lining of bronchial tubes, which carry air to and from the lungs.',
+          'Sinusitis': 'Inflammation of the sinuses, usually caused by a viral or bacterial infection.',
+          'Upper Respiratory Infection': 'A viral infection that affects the nose, throat, and upper airways.'
+        };
+        
+        return descriptions[diseaseName] || 'A respiratory condition requiring medical evaluation.';
+      }
+      
+      // Function to load symptoms analysis
+      function loadSymptoms(symptoms) {
+        const container = document.getElementById('symptoms-container');
+        container.innerHTML = '';
+        
+        symptoms.forEach(symptom => {
+          const symptomDiv = document.createElement('div');
+          symptomDiv.className = 'bg-gray-50 rounded-lg p-4';
+          
+          // Show symptom name and follow-up answer if available
+          if (symptom.detail && symptom.detail.trim() !== '') {
+            symptomDiv.innerHTML = `
+              <div class="text-base font-bold text-gray-900">${symptom.name}</div>
+              <div class="text-gray-500 text-xs mt-0.5">${symptom.detail}</div>
+            `;
+          } else {
+            symptomDiv.innerHTML = `
+              <div class="text-base font-bold text-gray-900">${symptom.name}</div>
+            `;
+          }
+          
+          container.appendChild(symptomDiv);
+        });
+      }
+      
+
+      
+
+      
+            // Function to load environmental assessment data
+      function loadEnvironmentalData() {
+        try {
+          console.log('loadEnvironmentalData function called');
+          
+          // Get the current report to access saved environmental data
+          const currentReport = JSON.parse(localStorage.getItem('currentReport'));
+          console.log('Current report from localStorage:', currentReport);
+          
+          // Use saved environmental data from the report if available, otherwise fall back to localStorage
+          let aqiData, weatherData, userLocation;
+          
+          if (currentReport && currentReport.environmentalData) {
+            // Use saved environmental data from the report
+            aqiData = { value: currentReport.environmentalData.aqi };
+            weatherData = { 
+              temperature: currentReport.environmentalData.temperature, // Already in Celsius
+              humidity: currentReport.environmentalData.humidity,
+              city: currentReport.environmentalData.location
+            };
+            userLocation = { 
+              city: currentReport.environmentalData.location,
+              latitude: null,
+              longitude: null
+            };
+            
+            console.log('Using saved environmental data:', {
+              aqiData,
+              weatherData,
+              userLocation,
+              rawEnvironmentalData: currentReport.environmentalData
+            });
+          } else {
+            // Fall back to localStorage data
+            aqiData = JSON.parse(localStorage.getItem('aqiData') || '{}');
+            weatherData = JSON.parse(localStorage.getItem('weatherData') || '{}');
+            userLocation = JSON.parse(localStorage.getItem('userLocation') || '{}');
+            
+            // Add city to weatherData if not present
+            if (!weatherData.city && userLocation.city) {
+              weatherData.city = userLocation.city;
+            }
+            
+            console.log('Using localStorage fallback data:', {
+              aqiData,
+              weatherData,
+              userLocation
+            });
+          }
+          
+          // Update AQI display
+          console.log('Processing AQI data:', aqiData);
+          
+          if (aqiData.value) {
+            const aqiDisplay = document.getElementById('aqi-display');
+            const aqiDescription = document.getElementById('aqi-description');
+            const aqiValueDisplay = document.getElementById('aqi-value-display');
+            
+            console.log('AQI elements found:', {
+              aqiDisplay: !!aqiDisplay,
+              aqiDescription: !!aqiDescription,
+              aqiValueDisplay: !!aqiValueDisplay
+            });
+            
+            if (aqiDisplay) {
+              // Update AQI display with color coding
+              let bgClass = 'bg-green-100 text-green-700';
+              let level = 'Good';
+              
+              if (aqiData.value <= 50) {
+                bgClass = 'bg-green-100 text-green-700';
+                level = 'Good';
+              } else if (aqiData.value <= 100) {
+                bgClass = 'bg-yellow-100 text-yellow-700';
+                level = 'Moderate';
+              } else if (aqiData.value <= 150) {
+                bgClass = 'bg-orange-100 text-orange-700';
+                level = 'Unhealthy for Sensitive Groups';
+              } else if (aqiData.value <= 200) {
+                bgClass = 'bg-red-100 text-red-700';
+                level = 'Unhealthy';
+              } else if (aqiData.value <= 300) {
+                bgClass = 'bg-purple-100 text-purple-700';
+                level = 'Very Unhealthy';
+              } else {
+                bgClass = 'bg-red-800 text-white';
+                level = 'Hazardous';
+              }
+              
+              aqiDisplay.className = `inline-block font-semibold rounded-full px-3 py-0.5 text-sm mb-2 ${bgClass}`;
+              aqiDisplay.textContent = `AQI: ${aqiData.value} (${level})`;
+              console.log('AQI display updated:', aqiData.value, level);
+            }
+            
+            if (aqiDescription) {
+              aqiDescription.textContent = getAQIDescription(aqiData.value);
+              console.log('AQI description updated');
+            }
+            
+            if (aqiValueDisplay) {
+              aqiValueDisplay.textContent = aqiData.value;
+              console.log('AQI value display updated');
+            }
+          } else {
+            console.log('No AQI value found in aqiData:', aqiData);
+          }
+          
+          // Update weather data
+          console.log('Updating weather data:', weatherData);
+          console.log('Weather data structure:', {
+            hasTemperature: !!weatherData.temperature,
+            hasHumidity: !!weatherData.humidity,
+            temperatureValue: weatherData.temperature,
+            humidityValue: weatherData.humidity
+          });
+          
+          if (weatherData.temperature) {
+            const tempDisplay = document.getElementById('temperature-display');
+            console.log('Temperature display element found:', !!tempDisplay);
+            if (tempDisplay) {
+              // Temperature is already in Celsius
+              tempDisplay.textContent = `${weatherData.temperature}°C`;
+              console.log('Temperature updated to:', weatherData.temperature);
+            }
+          } else {
+            console.log('No temperature data available');
+            const tempDisplay = document.getElementById('temperature-display');
+            if (tempDisplay) {
+              tempDisplay.textContent = 'N/A';
+            }
+          }
+          
+          if (weatherData.humidity) {
+            const humidityDisplay = document.getElementById('humidity-display');
+            console.log('Humidity display element found:', !!humidityDisplay);
+            if (humidityDisplay) {
+              humidityDisplay.textContent = `${weatherData.humidity}%`;
+              console.log('Humidity updated to:', weatherData.humidity);
+            }
+          } else {
+            console.log('No humidity data available');
+            const humidityDisplay = document.getElementById('humidity-display');
+            if (humidityDisplay) {
+              humidityDisplay.textContent = 'N/A';
+            }
+          }
+          
+          if (weatherData.city) {
+            const cityDisplay = document.getElementById('city-display');
+            if (cityDisplay) {
+              cityDisplay.textContent = weatherData.city;
+              console.log('City updated to:', weatherData.city);
+            }
+          } else {
+            // Set default city if not available
+            const cityDisplay = document.getElementById('city-display');
+            if (cityDisplay) {
+              cityDisplay.textContent = 'N/A';
+              console.log('No city data available');
+            }
+          }
+          
+          // Update location if available
+          if (userLocation.city || userLocation.latitude) {
+            const locationSpan = document.getElementById('report-location');
+            if (locationSpan) {
+              if (userLocation.city) {
+                locationSpan.textContent = userLocation.city;
+              } else if (userLocation.latitude) {
+                locationSpan.textContent = `${parseFloat(userLocation.latitude).toFixed(2)}, ${parseFloat(userLocation.longitude).toFixed(2)}`;
+              }
+            }
+          } else {
+            // Show default location if none available
+            const locationSpan = document.getElementById('report-location');
+            if (locationSpan) {
+              locationSpan.textContent = 'Location not available';
+            }
+          }
+          
+          // Add debug information to help troubleshoot
+          console.log('Final environmental data display:', {
+            aqiData,
+            weatherData,
+            userLocation,
+            hasTemperature: !!weatherData.temperature,
+            hasHumidity: !!weatherData.humidity,
+            hasLocation: !!(userLocation.city || userLocation.latitude)
+          });
+          
+        } catch (error) {
+          console.error('Error loading environmental data:', error);
+        }
+      }
+      
+      // Function to get AQI description
+      function getAQIDescription(aqi) {
+        if (aqi <= 50) return 'Air quality is considered satisfactory, and air pollution poses little or no risk.';
+        if (aqi <= 100) return 'Air quality is acceptable; however, some pollutants may be a concern for a small number of people.';
+        if (aqi <= 150) return 'Members of sensitive groups may experience health effects. The general public is not likely to be affected.';
+        if (aqi <= 200) return 'Some members of the general public may experience health effects; members of sensitive groups may experience more serious effects.';
+        if (aqi <= 300) return 'Health alert: everyone may experience more serious health effects.';
+        return 'Health warning of emergency conditions: everyone is more likely to be affected.';
+      }
+      
+      // Function to show error state
+      function showErrorState() {
+        document.getElementById('loading-state').classList.add('hidden');
+        document.getElementById('error-state').classList.remove('hidden');
+      }
+      
+      // Function to debug environmental data
+      function debugEnvironmentalData() {
+        console.log('=== ENVIRONMENTAL DATA DEBUG ===');
+        
+        // Check current report
+        const currentReport = JSON.parse(localStorage.getItem('currentReport') || '{}');
+        console.log('Current Report:', currentReport);
+        
+        // Check AQI data
+        const aqiData = JSON.parse(localStorage.getItem('aqiData') || '{}');
+        console.log('AQI Data:', aqiData);
+        
+        // Check weather data
+        const weatherData = JSON.parse(localStorage.getItem('weatherData') || '{}');
+        console.log('Weather Data:', weatherData);
+        
+        // Check user location
+        const userLocation = JSON.parse(localStorage.getItem('userLocation') || '{}');
+        console.log('User Location:', userLocation);
+        
+        // Check symptom reports
+        const symptomReports = JSON.parse(localStorage.getItem('symptomReports') || '[]');
+        console.log('Symptom Reports:', symptomReports);
+        
+        // Show alert with key information
+        const info = `
+Environmental Data Debug:
+
+Current Report has environmentalData: ${!!currentReport.environmentalData}
+AQI Value: ${aqiData.value || 'N/A'}
+AQI City: ${aqiData.city || 'N/A'}
+Weather Temp: ${weatherData.temperature || 'N/A'}
+Weather Humidity: ${weatherData.humidity || 'N/A'}
+User City: ${userLocation.city || 'N/A'}
+        `;
+        
+        alert(info);
+      }
+      
+      // Function to download the report as PDF
+      function downloadReport() {
+        try {
+          // Get the current report data
+          const currentReport = JSON.parse(localStorage.getItem('currentReport'));
+          if (!currentReport) {
+            alert('No report data available to download.');
+            return;
+          }
+          
+          console.log('Downloading report for:', currentReport);
+          console.log('Report structure:', {
+            hasPredictions: !!currentReport.predictions,
+            hasSymptoms: !!currentReport.symptoms,
+            hasEnvironmentalData: !!currentReport.environmentalData,
+            environmentalData: currentReport.environmentalData
+          });
+          
+          // Create a new window with the report content
+          const reportWindow = window.open('', '_blank', 'width=800,height=600');
+          
+          // Get the formatted date
+          const reportDate = new Date(currentReport.timestamp || Date.now());
+          const formattedDate = reportDate.toLocaleString();
+          
+          // Use environmental data from the current report if available, otherwise fall back to localStorage
+          let aqiData, weatherData, userLocation;
+          
+          if (currentReport.environmentalData) {
+            // Use saved environmental data from the report
+            aqiData = { 
+              value: currentReport.environmentalData.aqi,
+              level: currentReport.environmentalData.aqiLevel
+            };
+            weatherData = { 
+              temperature: currentReport.environmentalData.temperature,
+              humidity: currentReport.environmentalData.humidity,
+              city: currentReport.environmentalData.location
+            };
+            userLocation = { 
+              city: currentReport.environmentalData.location
+            };
+            
+            console.log('Using report environmental data for download:', {
+              aqiData,
+              weatherData,
+              userLocation
+            });
+          } else {
+            // Fall back to localStorage data
+            aqiData = JSON.parse(localStorage.getItem('aqiData') || '{}');
+            weatherData = JSON.parse(localStorage.getItem('weatherData') || '{}');
+            userLocation = JSON.parse(localStorage.getItem('userLocation') || '{}');
+            
+            console.log('Using localStorage fallback for download:', {
+              aqiData,
+              weatherData,
+              userLocation
+            });
+          }
+          
+          // Create the HTML content for the report
+          const reportHTML = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <title>Breezo Assessment Report</title>
+              <style>
+                body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; color: #333; }
+                .header { text-align: center; border-bottom: 2px solid #199A8E; padding-bottom: 20px; margin-bottom: 30px; }
+                .section { margin-bottom: 30px; }
+                .section-title { color: #199A8E; font-size: 18px; font-weight: bold; margin-bottom: 15px; border-left: 4px solid #199A8E; padding-left: 15px; }
+                .prediction { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 4px solid #199A8E; }
+                .top-prediction { background: #e3f2fd; border-left-color: #1976d2; }
+                .symptom { background: #f5f5f5; padding: 10px; margin: 8px 0; border-radius: 6px; }
+                .environmental-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0; }
+                .env-item { background: white; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0; }
+                .env-label { color: #666; font-size: 12px; margin-bottom: 5px; }
+                .env-value { font-size: 16px; font-weight: bold; color: #333; }
+                .disclaimer { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 8px; margin: 20px 0; }
+                .disclaimer-title { color: #856404; font-weight: bold; margin-bottom: 10px; }
+                .recommendations { background: #d1ecf1; border: 1px solid #bee5eb; padding: 15px; border-radius: 8px; }
+                .recommendations-title { color: #0c5460; font-weight: bold; margin-bottom: 10px; }
+                .recommendation-item { margin: 8px 0; padding-left: 20px; position: relative; }
+                .recommendation-item:before { content: "•"; position: absolute; left: 0; color: #0c5460; }
+                @media print { body { margin: 20px; } .section { page-break-inside: avoid; } }
+              </style>
+            </head>
+            <body>
+              <div class="header">
+                <h1 style="color: #199A8E; margin: 0;">Breezo Assessment Report</h1>
+                <p style="color: #666; margin: 10px 0;">Generated on ${formattedDate}</p>
+                <p style="color: #666; margin: 5px 0;">Location: ${userLocation.city || 'Location not available'}</p>
+              </div>
+              
+              <div class="section">
+                <div class="section-title">Environmental Assessment</div>
+                <div class="environmental-grid">
+                  <div class="env-item">
+                    <div class="env-label">Air Quality Index</div>
+                    <div class="env-value">${aqiData.value || 'N/A'}</div>
+                  </div>
+                  <div class="env-item">
+                    <div class="env-label">Temperature</div>
+                    <div class="env-value">${weatherData.temperature ? weatherData.temperature + '°C' : 'N/A'}</div>
+                  </div>
+                  <div class="env-item">
+                    <div class="env-label">Humidity</div>
+                    <div class="env-value">${weatherData.humidity ? weatherData.humidity + '%' : 'N/A'}</div>
+                  </div>
+                  <div class="env-item">
+                    <div class="env-label">City</div>
+                    <div class="env-value">${weatherData.city || userLocation.city || 'N/A'}</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="section">
+                <div class="section-title">Disease Predictions</div>
+                ${currentReport.predictions.map((pred, index) => {
+                  const isTop = index === 0;
+                  const prob = pred.probability > 0.9 ? 0.9 : pred.probability;
+                  const medicalGuidance = pred.probability > 0.9 ? '<div style="color: #d32f2f; font-size: 12px; margin-top: 5px;">⚠️ See medical professional as soon as possible</div>' : '';
+                  
+                  return `
+                    <div class="prediction ${isTop ? 'top-prediction' : ''}">
+                      <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                          <div style="font-weight: bold; font-size: 16px;">${pred.disease}</div>
+                          <div style="color: #666; font-size: 12px; margin-top: 5px;">${getDiseaseDescription(pred.disease)}</div>
+                          ${medicalGuidance}
+                        </div>
+                        <div style="font-weight: bold; font-size: 18px; color: #199A8E;">${(prob * 100).toFixed(1)}%</div>
+          </div>
+        </div>
+                  `;
+                }).join('')}
+              </div>
+              
+              <div class="section">
+                <div class="section-title">Symptoms Analysis</div>
+                ${currentReport.symptoms.map(symptom => `
+                  <div class="symptom">
+                    <div style="font-weight: bold;">${symptom.name}</div>
+                    ${symptom.detail && symptom.detail.trim() !== '' ? `<div style="color: #666; font-size: 12px; margin-top: 5px;">${symptom.detail}</div>` : ''}
+                  </div>
+                `).join('')}
+          </div>
+              
+              <div class="section">
+                <div class="section-title">Important Medical Information</div>
+                
+                <div class="disclaimer">
+                  <div class="disclaimer-title">Medical Disclaimer</div>
+                  <p style="margin: 0; color: #856404;">
+                    <strong>This report is NOT a substitute for professional medical advice, diagnosis, or treatment.</strong> 
+                    The information provided is for educational purposes only and should not be used to make medical decisions.
+                  </p>
+          </div>
+                
+                <div class="recommendations">
+                  <div class="recommendations-title">General Health Recommendations</div>
+                  <div class="recommendation-item">If your symptoms worsen or persist, consult a healthcare professional immediately</div>
+                  <div class="recommendation-item">Seek emergency medical care if you experience severe difficulty breathing, chest pain, or other concerning symptoms</div>
+                  <div class="recommendation-item">Follow your doctor's advice and complete any prescribed treatments</div>
+                  <div class="recommendation-item">Maintain good hygiene practices and avoid close contact with others if you're experiencing symptoms</div>
+                  <div class="recommendation-item">Monitor your symptoms and keep a record of any changes or new symptoms</div>
+          </div>
+        </div>
+              
+              <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #666; font-size: 12px;">
+                <p>Generated by Breezo - Your AI-powered health companion</p>
+                <p>For medical concerns, always consult a qualified healthcare professional</p>
+              </div>
+            </body>
+            </html>
+          `;
+          
+          // Write the HTML to the new window
+          reportWindow.document.write(reportHTML);
+          reportWindow.document.close();
+          
+          // Wait for content to load, then trigger print
+          reportWindow.onload = function() {
+            setTimeout(() => {
+              reportWindow.print();
+            }, 500);
+          };
+          
+        } catch (error) {
+          console.error('Error downloading report:', error);
+          alert('Error generating report. Please try again.');
+        }
+      }
+      
+      // Load report when page loads
+      document.addEventListener('DOMContentLoaded', function() {
+        loadDetailedReport();
+        
+        // Add event listener for download button
+        const downloadBtn = document.getElementById('download-report-btn');
+        if (downloadBtn) {
+          downloadBtn.addEventListener('click', downloadReport);
+        }
+        
+        // Add event listener for debug button
+        const debugBtn = document.getElementById('debug-env-data');
+        if (debugBtn) {
+          debugBtn.addEventListener('click', debugEnvironmentalData);
+        }
+      });
+    </script>
+  </body>
+</html> 

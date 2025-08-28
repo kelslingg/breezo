@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(120deg, #e0f7fa 0%, #f8fafc 60%, #e6f4f1 100%);
+      }
+      .bg-blur {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+      .file-input-hidden {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+    </style>
+  </head>
+  <body class="min-h-screen bg-blur">
+    <a href="profile.html" class="fixed top-4 left-4 z-20 flex items-center text-gray-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-gray-300 transition" style="background: none; box-shadow: none; padding: 0;">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <main class="max-w-md mx-auto pt-10 pb-12 px-4 flex flex-col items-center">
+      <!-- Profile Image with Change Icon -->
+      <div class="relative flex flex-col items-center mb-4 photo-change-area">
+        <div class="relative">
+          <img id="profile-preview" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=96&h=96" alt="Profile" class="w-28 h-28 rounded-full object-cover border-4 border-white shadow" />
+          <div id="loading-spinner" class="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center hidden">
+            <svg class="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </div>
+          
+          <!-- Change Photo Button - Positioned at bottom right of photo -->
+          <label for="photo-input" class="absolute -bottom-2 -right-2 w-8 h-8 bg-[#199A8E] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#157c71] transition shadow-lg border-2 border-white z-10">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v8m4-4H8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </label>
+        </div>
+        
+        <input type="file" id="photo-input" class="file-input-hidden" accept="image/*" />
+        
+        <!-- Instructions and Controls - Positioned below with proper spacing -->
+        <div class="mt-6 flex flex-col items-center space-y-3">
+          <span class="text-gray-500 text-sm text-center">Click the + icon to change photo</span>
+          
+          <!-- File Info and Reset Button -->
+          <div class="flex flex-col items-center space-y-2">
+            <div id="file-info" class="text-xs text-gray-500 hidden text-center max-w-48 font-medium bg-gray-100 px-3 py-1 rounded-full"></div>
+            <button id="reset-photo" class="text-sm text-gray-400 hover:text-gray-600 underline">Reset to default</button>
+          </div>
+        </div>
+      </div>
+      <!-- Edit Form Card -->
+      <div class="w-full bg-white rounded-2xl shadow p-6 mb-16">
+        <div class="mb-4">
+          <label class="block text-gray-400 text-sm mb-1" for="edit-full-name">Full Name</label>
+          <input id="edit-full-name" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" placeholder="Enter your full name" />
+        </div>
+        <div>
+          <label class="block text-gray-400 text-sm mb-1" for="edit-email">Email</label>
+          <input id="edit-email" type="email" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" placeholder="Enter your email" />
+        </div>
+      </div>
+      <!-- Save Button -->
+      <button id="save-button" class="w-full max-w-sm bg-[#199A8E] hover:bg-[#157c71] text-white font-medium rounded-2xl py-3 text-base text-center shadow-lg transition-all duration-200 fixed left-1/2 -translate-x-1/2 bottom-8 hover:shadow-xl active:scale-95">Save Changes</button>
+    </main>
+
+    <script>
+      // Load saved profile photo and name on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        const savedPhoto = localStorage.getItem('profilePhoto');
+        if (savedPhoto) {
+          document.getElementById('profile-preview').src = savedPhoto;
+        }
+        // Prefill name and email from localStorage
+        try {
+          const savedDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
+          const nameInput = document.getElementById('edit-full-name');
+          const emailInput = document.getElementById('edit-email');
+          
+          if (savedDetails.fullName) {
+            nameInput.value = savedDetails.fullName;
+          }
+          
+          // Load email from userEmail or personalDetails
+          const savedEmail = localStorage.getItem('userEmail') || savedDetails.email;
+          if (savedEmail) {
+            emailInput.value = savedEmail;
+          }
+        } catch (_) {}
+      });
+
+      // Handle photo selection
+      document.getElementById('photo-input').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+          // Validate file type
+          if (!file.type.startsWith('image/')) {
+            alert('Please select an image file.');
+            return;
+          }
+          
+          // Validate file size (max 5MB)
+          if (file.size > 5 * 1024 * 1024) {
+            alert('Please select an image smaller than 5MB.');
+            return;
+          }
+
+          // Show loading state
+          const preview = document.getElementById('profile-preview');
+          const loadingSpinner = document.getElementById('loading-spinner');
+          preview.style.opacity = '0.5';
+          loadingSpinner.classList.remove('hidden');
+          
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+              preview.src = e.target.result;
+              preview.style.opacity = '1';
+              loadingSpinner.classList.add('hidden');
+              
+              // Show file info
+              const fileInfo = document.getElementById('file-info');
+              fileInfo.textContent = `Selected: ${file.name}`;
+              fileInfo.classList.remove('hidden');
+            };
+            img.onerror = function() {
+              alert('The selected image could not be loaded. Please try a different image.');
+              preview.style.opacity = '1';
+              loadingSpinner.classList.add('hidden');
+            };
+            img.src = e.target.result;
+          };
+          reader.onerror = function() {
+            alert('Error reading the image file. Please try again.');
+            preview.style.opacity = '1';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Handle save button
+      document.getElementById('save-button').addEventListener('click', async function() {
+        const currentPhotoSrc = document.getElementById('profile-preview').src;
+        const saveButton = document.getElementById('save-button');
+        const fileInput = document.getElementById('photo-input');
+        const nameInput = document.getElementById('edit-full-name');
+        
+        // Show saving state
+        saveButton.textContent = 'Saving...';
+        saveButton.disabled = true;
+        
+        try {
+          // Persist name and email to personalDetails (merge with existing details)
+          try {
+            const existing = JSON.parse(localStorage.getItem('personalDetails') || '{}');
+            existing.fullName = (nameInput.value || '').trim();
+            existing.email = (emailInput.value || '').trim();
+            localStorage.setItem('personalDetails', JSON.stringify(existing));
+            
+            // Also save email to userEmail for consistency
+            if (emailInput.value.trim()) {
+              localStorage.setItem('userEmail', emailInput.value.trim());
+            }
+          } catch (_) {}
+
+          // Check if a new photo was selected
+          if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            
+            // Create FormData for file upload
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // Upload photo to backend
+            const response = await fetch('/upload-profile-photo', {
+              method: 'POST',
+              body: formData
+            });
+            
+            if (!response.ok) {
+              throw new Error('Failed to upload photo');
+            }
+            
+            const result = await response.json();
+            
+            // Save the photo URL to localStorage
+            localStorage.setItem('profilePhoto', result.url);
+            localStorage.setItem('profilePhotoFilename', result.filename);
+            
+            // Update preview to use the uploaded URL
+            document.getElementById('profile-preview').src = result.url;
+          } else if (currentPhotoSrc !== 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=96&h=96') {
+            // If using a previously saved photo, keep it
+            localStorage.setItem('profilePhoto', currentPhotoSrc);
+          }
+          
+          // Small delay to show saving state, then redirect
+          setTimeout(() => {
+            window.location.href = 'profile.html';
+          }, 500);
+          
+        } catch (error) {
+          console.error('Error saving photo:', error);
+          // Graceful fallback: persist the current preview (Data URL) locally so the app still works offline
+          try {
+            if (currentPhotoSrc) {
+              localStorage.setItem('profilePhoto', currentPhotoSrc);
+            }
+            // Navigate back after fallback save
+            window.location.href = 'profile.html';
+            return;
+          } catch (_) {
+            // If even localStorage fails, restore button state
+            saveButton.textContent = 'Save Changes';
+            saveButton.disabled = false;
+            alert('Failed to save photo. Please try again.');
+          }
+        }
+      });
+
+      // Handle reset photo button
+      document.getElementById('reset-photo').addEventListener('click', function() {
+        const defaultPhoto = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=96&h=96';
+        document.getElementById('profile-preview').src = defaultPhoto;
+        localStorage.removeItem('profilePhoto');
+        localStorage.removeItem('profilePhotoFilename');
+        
+        // Hide file info
+        document.getElementById('file-info').classList.add('hidden');
+        
+        // Clear file input
+        document.getElementById('photo-input').value = '';
+      });
+    </script>
+  </body>
+</html> 

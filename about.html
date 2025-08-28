@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(120deg, #e0f7fa 0%, #f8fafc 60%, #e6f4f1 100%);
+      }
+      .bg-blur {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-blur">
+    <a href="profile.html" class="fixed top-4 left-4 z-20 flex items-center text-gray-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-gray-300 transition" style="background: none; box-shadow: none; padding: 0;">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <main class="max-w-xl mx-auto pt-10 pb-12 px-4 flex flex-col gap-8">
+      <!-- App Information -->
+      <div>
+        <div class="text-xs font-bold text-gray-400 mb-2 tracking-widest">APP INFORMATION</div>
+        <div class="bg-white rounded-2xl shadow divide-y divide-gray-100">
+          <div class="px-4 pt-4 pb-2">
+            <div class="text-sm text-gray-400 mb-1">Developer/designer names</div>
+            <div class="text-base text-gray-900">Yakovleva Kristina Yevgenievna</div>
+          </div>
+
+          <a href="#" class="flex items-center justify-between px-4 pt-4 pb-4 hover:bg-gray-50 transition">
+            <span class="text-base text-gray-900">Research references and paper</span>
+            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+      
+      <!-- How It Works -->
+      <div>
+        <div class="text-xs font-bold text-gray-400 mb-2 tracking-widest">HOW IT WORKS</div>
+        <div class="bg-white rounded-2xl shadow">
+          <button id="how-it-works-btn" class="w-full flex items-center justify-between px-4 py-4 hover:bg-gray-50 transition text-left">
+            <span class="text-base text-gray-900">How It Works</span>
+            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+      <!-- Version -->
+      <div>
+        <div class="text-xs font-bold text-gray-400 mb-2 tracking-widest">VERSION</div>
+        <div class="bg-white rounded-2xl shadow flex items-center justify-between px-4 py-4">
+          <span class="text-base text-gray-400">Version</span>
+          <span class="text-base text-gray-900">1.0.0</span>
+        </div>
+      </div>
+      <!-- Legal -->
+      <div>
+        <div class="text-xs font-bold text-gray-400 mb-2 tracking-widest">LEGAL</div>
+        <div class="bg-white rounded-2xl shadow divide-y divide-gray-100">
+          <button id="terms-of-service-btn" class="w-full flex items-center justify-between px-4 py-4 hover:bg-gray-50 transition text-left">
+            <span class="text-base text-gray-900">Terms of Service</span>
+            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button id="privacy-policy-btn" class="w-full flex items-center justify-between px-4 py-4 hover:bg-gray-50 transition text-left">
+            <span class="text-base text-gray-900">Privacy Policy</span>
+            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- How It Works Modal -->
+    <div id="how-it-works-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="how-it-works-backdrop"></div>
+      <div class="relative z-10 max-w-2xl w-[92%] md:w-full mx-auto mt-24 bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-[#199A8E] via-[#157c71] to-[#0f5f56]"></div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-[#199A8E] text-white flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <h2 class="text-xl font-semibold text-gray-900">How It Works</h2>
+            </div>
+            <button id="how-it-works-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          
+          <div class="space-y-6">
+            <div class="flex items-start gap-4">
+              <span class="w-8 h-8 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">1</span>
+              <div>
+                <h3 class="font-medium text-gray-900 text-base mb-2">Symptom Input</h3>
+                <p class="text-gray-600">You describe your respiratory symptoms using our guided questionnaire, which covers common respiratory conditions.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4">
+              <span class="w-8 h-8 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">2</span>
+              <div>
+                <h3 class="font-medium text-gray-900 text-base mb-2">AI Analysis</h3>
+                <p class="text-gray-600">Our AI model analyzes your symptoms against patterns from peer-reviewed medical literature and validated respiratory health datasets.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4">
+              <span class="w-8 h-8 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">3</span>
+              <div>
+                <h3 class="font-medium text-gray-900 text-base mb-2">Personalized Insights</h3>
+                <p class="text-gray-600">You receive evidence-based guidance on possible causes and recommended next steps, tailored to respiratory conditions common in Kazakhstan.</p>
+              </div>
+            </div>
+          </div>
+          
+
+          
+          <div class="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+            <div class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="text-sm text-blue-800">
+                <p class="font-medium mb-1">Privacy First</p>
+                <p>No personal health data is collected or stored. Your symptoms are analyzed locally and immediately discarded.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-6 flex justify-center">
+            <a href="datasources.html" class="inline-flex items-center gap-2 bg-[#199A8E] hover:bg-[#157c71] text-white font-medium rounded-lg px-6 py-3 text-sm transition">
+              <span>View our data sources</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacy-policy-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="privacy-policy-backdrop"></div>
+      <div class="relative z-10 max-w-4xl w-[95%] md:w-full bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)] max-h-[90vh]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-[#199A8E] via-[#157c71] to-[#0f5f56]"></div>
+        <div class="p-6 overflow-y-auto max-h-[calc(90vh-3rem)]">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-[#199A8E] text-white flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <h2 class="text-xl font-semibold text-gray-900">Privacy Policy</h2>
+            </div>
+            <button id="privacy-policy-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          
+          <div class="space-y-6 text-sm leading-relaxed">
+            <div>
+              <p class="text-gray-700 mb-4">
+                Breezo is committed to protecting your privacy. This Privacy Policy explains how we collect, use, store, and protect your information when you use our website and services. By accessing or using our website, you consent to the practices described in this policy.
+              </p>
+            </div>
+            
+            <div class="space-y-4">
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">1</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Information We Collect</h3>
+                  <p class="text-gray-700 mb-3">When you use our website, we may collect the following information:</p>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li><strong>Personal Information:</strong> Name and email address (required for account creation and login).</li>
+                    <li><strong>Health Information:</strong> Symptom data and related inputs voluntarily provided by you for the purpose of receiving AI-based guidance.</li>
+                    <li><strong>Technical Information:</strong> Usage patterns, device type, browser type, IP address, and crash reports to improve performance.</li>
+                  </ul>
+                  <p class="text-gray-700 mt-3">We do not collect phone numbers or payment details.</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">2</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">How We Use Your Information</h3>
+                  <p class="text-gray-700 mb-3">We use the information collected to:</p>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>Provide AI-based preliminary health guidance on respiratory symptoms.</li>
+                    <li>Improve the accuracy and safety of our AI models.</li>
+                    <li>Ensure secure and personalized user access.</li>
+                    <li>Analyze usage patterns to enhance website performance.</li>
+                    <li>Communicate with you regarding service updates or policy changes.</li>
+                  </ul>
+                  <p class="text-gray-700 mt-3">We will never sell or rent your information to third parties.</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">3</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Data Storage and Security</h3>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>Your personal and health data are stored securely in encrypted databases.</li>
+                    <li>Access to data is strictly limited to authorized personnel only.</li>
+                    <li>We take commercially reasonable measures (technical, organizational, and administrative) to protect your data against unauthorized access, loss, or misuse.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">4</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Data Sharing</h3>
+                  <p class="text-gray-700 mb-3">We do not share your data with advertisers or third parties without your consent. Data may only be shared in limited cases:</p>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>To comply with applicable laws or legal obligations.</li>
+                    <li>To protect the rights, safety, or property of Breezo, our users, or the public.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">5</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">User Rights</h3>
+                  <p class="text-gray-700 mb-3">As a user, you have the right to:</p>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>Access the personal data we hold about you.</li>
+                    <li>Request corrections to your personal information.</li>
+                    <li>Request deletion of your data at any time.</li>
+                    <li>Withdraw your consent to data processing.</li>
+                  </ul>
+                  <p class="text-gray-700 mt-3">Requests may be sent to: <a href="mailto:privacy@breezo.com" class="text-[#199A8E] hover:underline">privacy@breezo.com</a></p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">6</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Consent</h3>
+                  <p class="text-gray-700">
+                    By creating an account (using your name and email) and submitting symptom data, you explicitly consent to the collection and use of your information as outlined in this Privacy Policy.
+                  </p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">7</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Changes to This Policy</h3>
+                  <p class="text-gray-700">
+                    We may update this Privacy Policy from time to time. Significant changes will be communicated via email and posted on this page.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div id="terms-of-service-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="terms-of-service-backdrop"></div>
+      <div class="relative z-10 max-w-4xl w-[95%] md:w-full bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)] max-h-[90vh]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-[#199A8E] via-[#157c71] to-[#0f5f56]"></div>
+        <div class="p-6 overflow-y-auto max-h-[calc(90vh-3rem)]">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-[#199A8E] text-white flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <h2 class="text-xl font-semibold text-gray-900">Terms of Service</h2>
+            </div>
+            <button id="terms-of-service-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          
+          <div class="space-y-6 text-sm leading-relaxed">
+            <div>
+              <p class="text-gray-700 mb-4">
+                Welcome to Breezo. By accessing or using our website and services, you agree to the following Terms of Service. If you do not agree, please do not use our website.
+              </p>
+            </div>
+            
+            <div class="space-y-4">
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">1</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Purpose of the Service</h3>
+                  <p class="text-gray-700 mb-3">Our website provides an AI-assisted symptom guidance tool designed to offer general health information and educational insights about respiratory conditions. The purpose of this service is to help users better understand their symptoms and take informed next steps, such as consulting a healthcare professional.</p>
+                  <p class="text-gray-700">This service is not intended to provide medical advice, diagnosis, or treatment.</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">2</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">No Medical Advice Disclaimer</h3>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>The content provided by our website, including AI-generated outputs, is for informational purposes only.</li>
+                    <li>It does not constitute professional medical advice and should not be relied upon as a substitute for consultation with a qualified healthcare provider.</li>
+                    <li>Always seek the advice of a physician or other licensed health provider with any questions you may have regarding a medical condition.</li>
+                    <li>Never disregard professional medical advice or delay seeking it because of information provided by this website.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">3</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">User Responsibilities</h3>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>You agree to use this website responsibly and understand its limitations.</li>
+                    <li>You acknowledge that any decisions about your health should be made in consultation with a licensed medical professional.</li>
+                    <li>You agree not to use the website in emergencies. If you believe you may be experiencing a medical emergency, call your local emergency number immediately.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">4</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Limitation of Liability</h3>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>We make no warranties regarding the accuracy, reliability, or completeness of the AI outputs or other information on this website.</li>
+                    <li>To the maximum extent permitted by law, we disclaim all liability for any direct, indirect, incidental, consequential, or special damages arising from your use of the website, including reliance on information generated by our AI model.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">5</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Data Accuracy Disclaimer</h3>
+                  <p class="text-gray-700">
+                    While our AI is developed using peer-reviewed data and expert input, no guarantee is made that its outputs are medically accurate, complete, or applicable to every individual. The AI model should be viewed as a tool to support, not replace, professional healthcare judgment.
+                  </p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">6</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Changes to the Service</h3>
+                  <p class="text-gray-700">
+                    We reserve the right to update, modify, or discontinue our services at any time without prior notice. Your continued use of the website constitutes acceptance of any modifications.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @keyframes slideup { 
+        from { transform: translateY(40px); opacity: 0; } 
+        to { transform: translateY(0); opacity: 1; } 
+      }
+    </style>
+
+    <script>
+      // How It Works Modal functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('how-it-works-modal');
+        const button = document.getElementById('how-it-works-btn');
+        const backdrop = document.getElementById('how-it-works-backdrop');
+        const closeBtn = document.getElementById('how-it-works-close');
+        
+        function openModal() {
+          modal.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+        }
+        
+        function closeModal() {
+          modal.classList.add('hidden');
+          document.body.classList.remove('overflow-hidden');
+        }
+        
+        button.addEventListener('click', openModal);
+        backdrop.addEventListener('click', closeModal);
+        closeBtn.addEventListener('click', closeModal);
+        
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            closeModal();
+          }
+        });
+      });
+      
+      // Privacy Policy Modal functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const privacyModal = document.getElementById('privacy-policy-modal');
+        const privacyButton = document.getElementById('privacy-policy-btn');
+        const privacyBackdrop = document.getElementById('privacy-policy-backdrop');
+        const privacyCloseBtn = document.getElementById('privacy-policy-close');
+        
+        function openPrivacyModal() {
+          privacyModal.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+        }
+        
+        function closePrivacyModal() {
+          privacyModal.classList.add('hidden');
+          document.body.classList.remove('overflow-hidden');
+        }
+        
+        privacyButton.addEventListener('click', openPrivacyModal);
+        privacyBackdrop.addEventListener('click', closePrivacyModal);
+        privacyCloseBtn.addEventListener('click', closePrivacyModal);
+        
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && !privacyModal.classList.contains('hidden')) {
+            closePrivacyModal();
+          }
+        });
+      });
+      
+      // Terms of Service Modal functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const termsModal = document.getElementById('terms-of-service-modal');
+        const termsButton = document.getElementById('terms-of-service-btn');
+        const termsBackdrop = document.getElementById('terms-of-service-backdrop');
+        const termsCloseBtn = document.getElementById('terms-of-service-close');
+        
+        function openTermsModal() {
+          termsModal.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+        }
+        
+        function closeTermsModal() {
+          termsModal.classList.add('hidden');
+          document.body.classList.remove('overflow-hidden');
+        }
+        
+        termsButton.addEventListener('click', openTermsModal);
+        termsBackdrop.addEventListener('click', closeTermsModal);
+        termsCloseBtn.addEventListener('click', closeTermsModal);
+        
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && !termsModal.classList.contains('hidden')) {
+            closeTermsModal();
+          }
+        });
+      });
+    </script>
+  </body>
+</html> 

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(120deg, #d0f2f6 0%, #f0f4fa 60%, #cceee7 100%);
+      }
+      .bg-blur {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+      @keyframes slideup {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+      }
+      .animate-slideup { animation: slideup 0.25s cubic-bezier(.4,0,.2,1); }
+    </style>
+  </head>
+  <body class="min-h-screen bg-blur">
+    <a href="index.html" class="fixed top-4 left-4 z-20 flex items-center text-gray-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-gray-300 transition" style="background: none; box-shadow: none; padding: 0;">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <main class="max-w-xl mx-auto pt-8 pb-12 px-4">
+      <!-- Profile Header -->
+      <div class="flex flex-col items-center mb-8">
+        <img id="profile-photo" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=96&h=96" alt="Profile" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow" />
+        <div id="profile-name" class="mt-4 text-xl font-semibold text-gray-900">kristina</div>
+        <div id="profile-email" class="text-gray-500 text-sm mb-4">lees_bedrock.0s@icloud.com</div>
+        <a href="editprofile.html" class="bg-[#199A8E] hover:bg-[#157c71] text-white font-medium rounded-lg px-6 py-2 text-sm shadow transition text-center mt-0" role="button">Edit Profile</a>
+      </div>
+
+      <!-- Personal Information Section -->
+      <div class="mb-6">
+        <div class="text-xs font-bold text-gray-400 mb-2 tracking-widest">PERSONAL INFORMATION</div>
+        <div id="personal-info-section"></div>
+        <script>
+        function renderPersonalInfo() {
+          const section = document.getElementById('personal-info-section');
+          const saved = localStorage.getItem('personalDetails');
+          if (saved) {
+            const d = JSON.parse(saved);
+            section.innerHTML = `
+              <div class="bg-white rounded-xl shadow-sm px-4 py-4 mb-2">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-3">
+                    <span class="w-7 h-7 flex items-center justify-center rounded-full bg-blue-100">
+                      <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    </span>
+                    <span class="text-base text-gray-900 font-semibold">Personal Details</span>
+                  </div>
+                  <a href="personaldetails.html" class="text-[#199A8E] font-medium hover:underline">Change</a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm text-gray-700">
+                  <div><span class="font-medium">Name:</span> ${d.fullName || '-'}</div>
+                  <div><span class="font-medium">Email:</span> ${d.email || '-'}</div>
+                  <div><span class="font-medium">Date of Birth:</span> ${d.dob || '-'}</div>
+                  <div><span class="font-medium">Sex:</span> ${d.sex || '-'}</div>
+                  <div><span class="font-medium">Height:</span> ${d.height ? d.height + ' cm' : '-'}</div>
+                  <div><span class="font-medium">Weight:</span> ${d.weight ? d.weight + ' kg' : '-'}</div>
+                  <div><span class="font-medium">Blood Type:</span> ${d.bloodType || '-'}</div>
+                </div>
+              </div>
+            `;
+          } else {
+            section.innerHTML = `
+              <a href="personaldetails.html" class="flex items-center justify-between bg-white rounded-xl shadow-sm px-4 py-4 mb-2 hover:bg-gray-50 transition">
+                <div class="flex items-center gap-3">
+                  <span class="w-7 h-7 flex items-center justify-center rounded-full bg-blue-100">
+                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                  </span>
+                  <span class="text-base text-gray-900">Personal Details</span>
+                </div>
+                <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            `;
+          }
+        }
+        document.addEventListener('DOMContentLoaded', renderPersonalInfo);
+        
+        // Load saved profile photo
+        const savedPhoto = localStorage.getItem('profilePhoto');
+        if (savedPhoto) {
+          document.getElementById('profile-photo').src = savedPhoto;
+        } else {
+          // Try to load from backend if not in localStorage
+          fetch('/profile-photo')
+            .then(response => {
+              if (response.ok) {
+                return response.blob();
+              }
+              throw new Error('No profile photo found');
+            })
+            .then(blob => {
+              const photoUrl = URL.createObjectURL(blob);
+              document.getElementById('profile-photo').src = photoUrl;
+              localStorage.setItem('profilePhoto', photoUrl);
+            })
+            .catch(error => {
+              console.log('Using default profile photo');
+            });
+        }
+
+        // Load saved name and email
+        try {
+          const savedDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
+          if (savedDetails.fullName) {
+            document.getElementById('profile-name').textContent = savedDetails.fullName;
+          }
+          
+          // Load email from personalDetails or userEmail
+          const emailToShow = savedDetails.email || localStorage.getItem('userEmail');
+          if (emailToShow) {
+            document.getElementById('profile-email').textContent = emailToShow;
+          }
+        } catch (_) {}
+        </script>
+      </div>
+
+      <!-- Report History Section -->
+      <div class="mb-6">
+        <div class="text-xs font-bold text-gray-400 mb-2 tracking-widest">REPORT HISTORY</div>
+        <a href="symptomreports.html" class="flex items-center justify-between bg-white rounded-xl shadow-sm px-4 py-4 mb-2 hover:bg-gray-50 transition">
+          <div class="flex items-center gap-3">
+            <span class="w-7 h-7 flex items-center justify-center rounded-full bg-purple-100">
+              <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </span>
+            <span class="text-base text-gray-900">Symptom Reports</span>
+          </div>
+          <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <!-- Privacy & Support Section -->
+      <div class="mb-6">
+        <div class="text-xs font-bold text-gray-400 mb-2 tracking-widest">PRIVACY & SUPPORT</div>
+        <a href="#" id="language-row" class="flex items-center justify-between bg-white rounded-xl shadow-sm px-4 py-4 mb-2 hover:bg-gray-50 transition cursor-pointer">
+          <div class="flex items-center gap-3">
+            <span class="w-7 h-7 flex items-center justify-center rounded-full bg-blue-100">
+              <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
+            </span>
+            <span class="text-base text-gray-900">Language</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">English</span>
+            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+        <a href="privacy.html" class="flex items-center justify-between bg-white rounded-xl shadow-sm px-4 py-4 mb-2 hover:bg-gray-50 transition">
+          <div class="flex items-center gap-3">
+            <span class="w-7 h-7 flex items-center justify-center rounded-full bg-green-100">
+              <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 9.74-7 11-3.5-1.26-7-6-7-11V7l7-4z"/></svg>
+            </span>
+            <span class="text-base text-gray-900">Privacy Settings</span>
+          </div>
+          <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="help.html" class="flex items-center justify-between bg-white rounded-xl shadow-sm px-4 py-4 mb-2 hover:bg-gray-50 transition">
+          <div class="flex items-center gap-3">
+            <span class="w-7 h-7 flex items-center justify-center rounded-full bg-yellow-100">
+              <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 2-3 4"/><circle cx="12" cy="17" r="1"/></svg>
+            </span>
+            <span class="text-base text-gray-900">Help & Support</span>
+          </div>
+          <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="about.html" class="flex items-center justify-between bg-white rounded-xl shadow-sm px-4 py-4 mb-2 hover:bg-gray-50 transition">
+          <div class="flex items-center gap-3">
+            <span class="w-7 h-7 flex items-center justify-center rounded-full bg-orange-100">
+              <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </span>
+            <span class="text-base text-gray-900">About</span>
+          </div>
+          <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        
+        <!-- Logout Section -->
+        <div class="mt-8">
+          <div class="text-xs font-bold text-gray-400 mb-2 tracking-widest">ACCOUNT</div>
+          <button id="logout-btn" class="w-full flex items-center justify-center gap-3 bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-xl px-4 py-4 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Language Modal Overlay -->
+    <div id="language-modal" class="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-30 hidden">
+      <div class="w-full max-w-xl mx-auto rounded-t-2xl bg-white shadow-lg p-0 pb-4 animate-slideup px-4">
+        <div class="flex items-center justify-between pt-4 pb-2">
+          <span class="text-lg font-semibold">Language</span>
+          <button id="language-done" class="text-[#199A8E] font-semibold text-base">Done</button>
+        </div>
+        <div class="divide-y divide-gray-100">
+          <button class="w-full flex items-center py-4 gap-3 focus:outline-none group" data-lang="en">
+            <span class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 font-bold text-base">EN</span>
+            <span class="text-base text-gray-900 flex-1 text-left">English</span>
+            <span class="hidden group-[.selected]:block"><svg class="w-5 h-5 text-[#199A8E]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button class="w-full flex items-center py-4 gap-3 focus:outline-none group" data-lang="ru">
+            <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 text-gray-800 font-bold text-base">H</span>
+            <span class="text-base text-gray-900 flex-1 text-left">Russian</span>
+            <span class="hidden group-[.selected]:block"><svg class="w-5 h-5 text-[#199A8E]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    // Modal show/hide logic
+    const langRow = document.getElementById('language-row');
+    const langModal = document.getElementById('language-modal');
+    const langDone = document.getElementById('language-done');
+    const mainContent = document.querySelector('main');
+    langRow.addEventListener('click', e => { e.preventDefault(); langModal.classList.remove('hidden'); document.body.classList.add('overflow-hidden'); mainContent.classList.add('blur-sm'); });
+    langDone.addEventListener('click', () => { langModal.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); mainContent.classList.remove('blur-sm'); });
+    langModal.addEventListener('click', e => { if (e.target === langModal) { langModal.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); mainContent.classList.remove('blur-sm'); }});
+    // Optionally: handle selection and checkmark
+    const langBtns = langModal.querySelectorAll('button[data-lang]');
+    let selected = 'en';
+    function updateLangUI() {
+      langBtns.forEach(btn => {
+        if (btn.getAttribute('data-lang') === selected) {
+          btn.classList.add('bg-gray-50');
+          btn.classList.add('selected');
+          btn.querySelector('span:last-child').classList.remove('hidden');
+        } else {
+          btn.classList.remove('bg-gray-50');
+          btn.classList.remove('selected');
+          btn.querySelector('span:last-child').classList.add('hidden');
+        }
+      });
+    }
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        selected = btn.getAttribute('data-lang');
+        updateLangUI();
+      });
+    });
+    updateLangUI();
+    </script>
+
+    <script>
+      // Logout functionality
+      document.getElementById('logout-btn').addEventListener('click', function() {
+        // Check if user wants to be remembered
+        const rememberMe = localStorage.getItem('rememberMe');
+        const rememberedEmail = localStorage.getItem('rememberedEmail');
+        
+                 // Clear authentication data
+         localStorage.removeItem('isAuthenticated');
+         localStorage.removeItem('userEmail');
+         localStorage.removeItem('userName');
+         localStorage.removeItem('isGuest');
+         localStorage.removeItem('lastSignIn');
+         localStorage.removeItem('userId');
+ 
+        
+        // If user doesn't want to be remembered, clear remembered data
+        if (rememberMe !== 'true') {
+          localStorage.removeItem('rememberMe');
+          localStorage.removeItem('rememberedEmail');
+        }
+        
+        // Redirect to auth page
+        window.location.href = 'auth.html';
+      });
+    </script>
+  </body>
+</html> 

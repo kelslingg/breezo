@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome - Breezo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(120deg, #e0f7fa 0%, #f8fafc 60%, #e6f4f1 100%);
+      }
+      .bg-blur {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+      @keyframes slideup { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+      .animate-slideup { animation: slideup 0.25s cubic-bezier(.4,0,.2,1); }
+      
+      /* Auth error styling */
+      .auth-error {
+        animation: slideup 0.25s cubic-bezier(.4,0,.2,1);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-blur">
+    <main class="max-w-md mx-auto pt-16 pb-8 px-4 flex flex-col items-center">
+      <!-- Logo and Welcome -->
+      <div class="text-center mb-8 animate-slideup">
+        <div class="w-20 h-20 bg-[#199A8E] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <svg class="w-12 h-12 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 3l2.5 4.5L20 9l-4 3.5L17 18l-5-2.5L7 18l1-5.5L4 9l5.5-1.5L12 3z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome to Breezo</h1>
+        <p class="text-gray-600">Your AI-powered health companion</p>
+      </div>
+
+      <!-- Auth Forms Container -->
+      <div class="w-full bg-white rounded-2xl shadow-xl overflow-hidden animate-slideup">
+        <!-- Tab Navigation -->
+        <div class="flex">
+          <button id="signin-tab" class="flex-1 py-4 text-center font-medium text-[#199A8E] border-b-2 border-[#199A8E] bg-gray-50">
+            Sign In
+          </button>
+          <button id="signup-tab" class="flex-1 py-4 text-center font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700">
+            Sign Up
+          </button>
+        </div>
+
+        <!-- Sign In Form -->
+        <div id="signin-form" class="p-6">
+          <form class="space-y-4">
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-2" for="signin-email">Email</label>
+              <input type="email" id="signin-email" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-transparent" placeholder="Enter your email" />
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-2" for="signin-password">Password</label>
+              <input type="password" id="signin-password" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-transparent" placeholder="Enter your password" />
+            </div>
+            <div class="flex items-center justify-between">
+              <label class="flex items-center">
+                <input type="checkbox" class="w-4 h-4 text-[#199A8E] border-gray-300 rounded focus:ring-[#199A8E]" />
+                <span class="ml-2 text-sm text-gray-600">Remember me</span>
+              </label>
+              <a href="#" class="text-sm text-[#199A8E] hover:underline">Forgot password?</a>
+            </div>
+            <div class="flex items-start">
+              <input type="checkbox" id="signin-terms" required class="w-4 h-4 mt-1 text-[#199A8E] border-gray-300 rounded focus:ring-[#199A8E]" />
+              <label for="signin-terms" class="ml-2 text-sm text-gray-600">
+                I agree to the <button type="button" id="signin-terms-link" class="text-[#199A8E] hover:underline">Terms of Service</button> and <button type="button" id="signin-privacy-link" class="text-[#199A8E] hover:underline">Privacy Policy</button>
+              </label>
+            </div>
+            <button type="submit" class="w-full bg-[#199A8E] hover:bg-[#157c71] text-white font-medium py-3 rounded-xl transition duration-200">
+              Sign In
+            </button>
+          </form>
+        </div>
+
+        <!-- Sign Up Form -->
+        <div id="signup-form" class="p-6 hidden">
+          <form class="space-y-4">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2" for="signup-firstname">First Name</label>
+                <input type="text" id="signup-firstname" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-transparent" placeholder="First name" />
+              </div>
+              <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2" for="signup-lastname">Last Name</label>
+                <input type="text" id="signup-lastname" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-transparent" placeholder="Last name" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-2" for="signup-email">Email</label>
+              <input type="email" id="signup-email" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-transparent" placeholder="Enter your email" />
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-2" for="signup-password">Password</label>
+              <input type="password" id="signup-password" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-transparent" placeholder="Create a password" />
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-2" for="signup-confirm-password">Confirm Password</label>
+              <input type="password" id="signup-confirm-password" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-transparent" placeholder="Confirm your password" />
+            </div>
+            <div class="flex items-start">
+              <input type="checkbox" id="signup-terms" required class="w-4 h-4 mt-1 text-[#199A8E] border-gray-300 rounded focus:ring-[#199A8E]" />
+              <label for="signup-terms" class="ml-2 text-sm text-gray-600">
+                I agree to the <button type="button" id="signup-terms-link" class="text-[#199A8E] hover:underline">Terms of Service</button> and <button type="button" id="signup-privacy-link" class="text-[#199A8E] hover:underline">Privacy Policy</button>
+              </label>
+            </div>
+            <button type="submit" class="w-full bg-[#199A8E] hover:bg-[#157c71] text-white font-medium py-3 rounded-xl transition duration-200">
+              Create Account
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Demo Access -->
+      <div class="mt-6 text-center animate-slideup">
+        <p class="text-gray-500 text-sm mb-3">Want to try without signing up?</p>
+        <button id="demo-access" class="text-[#199A8E] hover:text-[#157c71] font-medium underline">
+          Continue as Guest
+        </button>
+      </div>
+    </main>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacy-policy-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="privacy-policy-backdrop"></div>
+      <div class="relative z-10 max-w-4xl w-[95%] md:w-full bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)] max-h-[90vh]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-[#199A8E] via-[#157c71] to-[#0f5f56]"></div>
+        <div class="p-6 overflow-y-auto max-h-[calc(90vh-3rem)]">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-[#199A8E] text-white flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <h2 class="text-xl font-semibold text-gray-900">Privacy Policy</h2>
+            </div>
+            <button id="privacy-policy-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          
+          <div class="space-y-6 text-sm leading-relaxed">
+            <div>
+              <p class="text-gray-700 mb-4">
+                Breezo is committed to protecting your privacy. This Privacy Policy explains how we collect, use, store, and protect your information when you use our website and services. By accessing or using our website, you consent to the practices described in this policy.
+              </p>
+            </div>
+            
+            <div class="space-y-4">
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">1</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Information We Collect</h3>
+                  <p class="text-gray-700 mb-3">When you use our website, we may collect the following information:</p>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li><strong>Personal Information:</strong> Name and email address (required for account creation and login).</li>
+                    <li><strong>Health Information:</strong> Symptom data and related inputs voluntarily provided by you for the purpose of receiving AI-based guidance.</li>
+                    <li><strong>Technical Information:</strong> Usage patterns, device type, browser type, IP address, and crash reports to improve performance.</li>
+                  </ul>
+                  <p class="text-gray-700 mt-3">We do not collect phone numbers or payment details.</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">2</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">How We Use Your Information</h3>
+                  <p class="text-gray-700 mb-3">We use the information collected to:</p>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>Provide AI-based preliminary health guidance on respiratory symptoms.</li>
+                    <li>Improve the accuracy and safety of our AI models.</li>
+                    <li>Ensure secure and personalized user access.</li>
+                    <li>Analyze usage patterns to enhance website performance.</li>
+                    <li>Communicate with you regarding service updates or policy changes.</li>
+                  </ul>
+                  <p class="text-gray-700 mt-3">We will never sell or rent your information to third parties.</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">3</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Data Storage and Security</h3>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>Your personal and health data are stored securely in encrypted databases.</li>
+                    <li>Access to data is strictly limited to authorized personnel only.</li>
+                    <li>We take commercially reasonable measures (technical, organizational, and administrative) to protect your data against unauthorized access, loss, or misuse.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">4</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Data Sharing</h3>
+                  <p class="text-gray-700 mb-3">We do not share your data with advertisers or third parties without your consent. Data may only be shared in limited cases:</p>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>To comply with applicable laws or legal obligations.</li>
+                    <li>To protect the rights, safety, or property of Breezo, our users, or the public.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">5</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">User Rights</h3>
+                  <p class="text-gray-700 mb-3">As a user, you have the right to:</p>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>Access the personal data we hold about you.</li>
+                    <li>Request corrections to your personal information.</li>
+                    <li>Request deletion of your data at any time.</li>
+                    <li>Withdraw your consent to data processing.</li>
+                  </ul>
+                  <p class="text-gray-700 mt-3">Requests may be sent to: <a href="mailto:privacy@breezo.com" class="text-[#199A8E] hover:underline">privacy@breezo.com</a></p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">6</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Consent</h3>
+                  <p class="text-gray-700">
+                    By creating an account (using your name and email) and submitting symptom data, you explicitly consent to the collection and use of your information as outlined in this Privacy Policy.
+                  </p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">7</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Changes to This Policy</h3>
+                  <p class="text-gray-700">
+                    We may update this Privacy Policy from time to time. Significant changes will be communicated via email and posted on this page.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div id="terms-of-service-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="terms-of-service-backdrop"></div>
+      <div class="relative z-10 max-w-4xl w-[95%] md:w-full bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)] max-h-[90vh]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-[#199A8E] via-[#157c71] to-[#0f5f56]"></div>
+        <div class="p-6 overflow-y-auto max-h-[calc(90vh-3rem)]">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-[#199A8E] text-white flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <h2 class="text-xl font-semibold text-gray-900">Terms of Service</h2>
+            </div>
+            <button id="terms-of-service-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+          </div>
+          
+          <div class="space-y-6 text-sm leading-relaxed">
+            <div>
+              <p class="text-gray-700 mb-4">
+                Welcome to Breezo. By accessing or using our website and services, you agree to the following Terms of Service.
+              </p>
+            </div>
+            
+            <div class="space-y-4">
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">1</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Purpose of the Service</h3>
+                  <p class="text-gray-700 mb-3">Our website provides an AI-assisted symptom guidance tool designed to offer general health information and educational insights about respiratory conditions. The purpose of this service is to help users better understand their symptoms and take informed next steps, such as consulting a healthcare professional.</p>
+                  <p class="text-gray-700">This service is not intended to provide medical advice, diagnosis, or treatment.</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">2</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">No Medical Advice Disclaimer</h3>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>The content provided by our website, including AI-generated outputs, is for informational purposes only.</li>
+                    <li>It does not constitute professional medical advice and should not be relied upon as a substitute for consultation with a qualified healthcare provider.</li>
+                    <li>Always seek the advice of a physician or other licensed health provider with any questions you may have regarding a medical condition.</li>
+                    <li>Never disregard professional medical advice or delay seeking it because of information provided by this website.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">3</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">User Responsibilities</h3>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>You agree to use this website responsibly and understand its limitations.</li>
+                    <li>You acknowledge that any decisions about your health should be made in consultation with a licensed medical professional.</li>
+                    <li>You agree not to use the website in emergencies. If you believe you may be experiencing a medical emergency, call your local emergency number immediately.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">4</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Limitation of Liability</h3>
+                  <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li>We make no warranties regarding the accuracy, reliability, or completeness of the AI outputs or other information on this website.</li>
+                    <li>To the maximum extent permitted by law, we disclaim all liability for any direct, indirect, incidental, consequential, or special damages arising from your use of the website, including reliance on information generated by our AI model.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">5</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Data Accuracy Disclaimer</h3>
+                  <p class="text-gray-700">
+                    While our AI is developed using peer-reviewed data and expert input, no guarantee is made that its outputs are medically accurate, complete, or applicable to every individual. The AI model should be viewed as a tool to support, not replace, professional healthcare judgment.
+                  </p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <span class="w-6 h-6 rounded-full bg-[#199A8E] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">6</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Changes to the Service</h3>
+                  <p class="text-gray-700">
+                    We reserve the right to update, modify, or discontinue our services at any time without prior notice. Your continued use of the website constitutes acceptance of any modifications.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Tab switching functionality
+      const signinTab = document.getElementById('signin-tab');
+      const signupTab = document.getElementById('signup-tab');
+      const signinForm = document.getElementById('signin-form');
+      const signupForm = document.getElementById('signup-form');
+
+      function switchToSignIn() {
+        signinTab.classList.add('text-[#199A8E]', 'border-[#199A8E]', 'bg-gray-50');
+        signinTab.classList.remove('text-gray-500', 'border-transparent');
+        signupTab.classList.remove('text-[#199A8E]', 'border-[#199A8E]', 'bg-gray-50');
+        signupTab.classList.add('text-gray-500', 'border-transparent');
+        signinForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+      }
+
+      function switchToSignUp() {
+        signupTab.classList.add('text-[#199A8E]', 'border-[#199A8E]', 'bg-gray-50');
+        signupTab.classList.remove('text-gray-500', 'border-transparent');
+        signinTab.classList.remove('text-[#199A8E]', 'border-[#199A8E]', 'bg-gray-50');
+        signinTab.classList.add('text-gray-500', 'border-transparent');
+        signupForm.classList.remove('hidden');
+        signinForm.classList.add('hidden');
+      }
+
+      signinTab.addEventListener('click', switchToSignIn);
+      signupTab.addEventListener('click', switchToSignUp);
+      
+      // ===== USER AUTHENTICATION SYSTEM =====
+      
+      // Function to check if user exists
+      function userExists(email) {
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        return users.some(user => user.email === email);
+      }
+      
+      // Function to create a new user account
+      function createUserAccount(firstName, lastName, email, password) {
+        try {
+          const users = JSON.parse(localStorage.getItem('users') || '[]');
+          
+          // Generate unique user ID
+          const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          
+          const newUser = {
+            id: userId,
+            email: email,
+            password: hashPassword(password), // Hash password for security
+            fullName: `${firstName} ${lastName}`,
+            firstName: firstName,
+            lastName: lastName,
+            createdAt: new Date().toISOString(),
+            lastSignIn: new Date().toISOString(),
+            isNewUser: true,
+            personalDetails: null,
+            locationPermission: null,
+            symptomReports: []
+          };
+          
+          users.push(newUser);
+          localStorage.setItem('users', JSON.stringify(users));
+          
+          return newUser;
+        } catch (error) {
+          console.error('Error creating user account:', error);
+          return null;
+        }
+      }
+      
+      // Function to authenticate existing user
+      function authenticateUser(email, password) {
+        try {
+          const users = JSON.parse(localStorage.getItem('users') || '[]');
+          const user = users.find(u => u.email === email);
+          
+          if (user && verifyPassword(password, user.password)) {
+            // Update last sign in
+            user.lastSignIn = new Date().toISOString();
+            user.isNewUser = false; // User has signed in before
+            
+            // Save updated user data
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userIndex = users.findIndex(u => u.id === user.id);
+            if (userIndex !== -1) {
+              users[userIndex] = user;
+              localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            return user;
+          }
+          
+          return null;
+        } catch (error) {
+          console.error('Error authenticating user:', error);
+          return null;
+        }
+      }
+      
+      // Simple password hashing (in production, use proper bcrypt)
+      function hashPassword(password) {
+        // This is a simple hash for demo purposes
+        // In production, use proper password hashing libraries
+        let hash = 0;
+        for (let i = 0; i < password.length; i++) {
+          const char = password.charCodeAt(i);
+          hash = ((hash << 5) - hash) + char;
+          hash = hash & hash; // Convert to 32-bit integer
+        }
+        return hash.toString();
+      }
+      
+      // Function to verify password
+      function verifyPassword(password, hashedPassword) {
+        return hashPassword(password) === hashedPassword;
+      }
+      
+      // Function to show authentication errors
+      function showAuthError(message) {
+        // Remove any existing error messages
+        const existingError = document.querySelector('.auth-error');
+        if (existingError) {
+          existingError.remove();
+        }
+        
+        // Create error message element
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'auth-error bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm';
+        errorDiv.textContent = message;
+        
+        // Insert error message at the top of the form
+        const signinForm = document.getElementById('signin-form');
+        const signupForm = document.getElementById('signup-form');
+        
+        if (signinForm.classList.contains('hidden')) {
+          // Show error in signup form
+          signupForm.querySelector('form').insertBefore(errorDiv, signupForm.querySelector('form').firstChild);
+        } else {
+          // Show error in signin form
+          signinForm.querySelector('form').insertBefore(errorDiv, signinForm.querySelector('form').firstChild);
+        }
+        
+        // Auto-remove error after 5 seconds
+        setTimeout(() => {
+          if (errorDiv.parentNode) {
+            errorDiv.remove();
+          }
+        }, 5000);
+      }
+      
+      // ===== END USER AUTHENTICATION SYSTEM =====
+      
+      // Function to load user data based on email
+      function loadUserData(email) {
+        // Try to load existing user data from localStorage
+        const existingDetails = localStorage.getItem('personalDetails');
+        if (existingDetails) {
+          try {
+            const details = JSON.parse(existingDetails);
+            if (details.email === email && details.fullName) {
+              localStorage.setItem('userName', details.fullName);
+            }
+          } catch (_) {}
+        }
+        
+        // Load user-specific data if available
+        const userData = localStorage.getItem(`user_${email}`);
+        if (userData) {
+          try {
+            const user = JSON.parse(userData);
+            if (user.fullName) {
+              localStorage.setItem('userName', user.fullName);
+            }
+            if (user.personalDetails) {
+              localStorage.setItem('personalDetails', JSON.stringify(user.personalDetails));
+            }
+          } catch (_) {}
+        }
+      }
+      
+      // Function to save user data
+      function saveUserData(email, data) {
+        const userData = {
+          email: email,
+          lastUpdated: new Date().toISOString(),
+          ...data
+        };
+        localStorage.setItem(`user_${email}`, JSON.stringify(userData));
+      }
+      
+      // Function to auto-fill forms with remembered data
+      function autoFillForms() {
+        const rememberedEmail = localStorage.getItem('rememberedEmail');
+        if (rememberedEmail) {
+          // Auto-fill email in sign-in form
+          document.getElementById('signin-email').value = rememberedEmail;
+          
+          // Check the "Remember me" checkbox
+          document.querySelector('#signin-form input[type="checkbox"]').checked = true;
+          
+          // Try to load user data
+          loadUserData(rememberedEmail);
+        }
+      }
+
+      // Form submission handling
+      document.querySelector('#signin-form form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('signin-email').value;
+        const password = document.getElementById('signin-password').value;
+        const rememberMe = document.querySelector('#signin-form input[type="checkbox"]').checked;
+        const termsAccepted = document.getElementById('signin-terms').checked;
+        
+        if (!termsAccepted) {
+          showAuthError('You must accept the Terms of Service and Privacy Policy to continue.');
+          return;
+        }
+        
+        if (email && password) {
+          // Check if user exists and validate password
+          const user = authenticateUser(email, password);
+          
+          if (user) {
+            // Store authentication state
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userName', user.fullName);
+            localStorage.setItem('lastSignIn', new Date().toISOString());
+            localStorage.setItem('userId', user.id);
+            
+            // Handle "Remember Me" functionality
+            if (rememberMe) {
+              localStorage.setItem('rememberMe', 'true');
+              localStorage.setItem('rememberedEmail', email);
+            } else {
+              localStorage.removeItem('rememberMe');
+              localStorage.removeItem('rememberedEmail');
+            }
+            
+            // Load existing user data
+            loadUserData(email);
+            
+
+            
+            window.location.href = 'index.html';
+          } else {
+            showAuthError('Invalid email or password. Please try again.');
+          }
+        } else {
+          showAuthError('Please enter both email and password.');
+        }
+      });
+
+      document.querySelector('#signup-form form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const firstName = document.getElementById('signup-firstname').value;
+        const lastName = document.getElementById('signup-lastname').value;
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('signup-confirm-password').value;
+        const terms = document.getElementById('signup-terms').checked;
+        
+        if (password !== confirmPassword) {
+          showAuthError('Passwords do not match');
+          return;
+        }
+        
+        if (!terms) {
+          showAuthError('You must accept the Terms of Service and Privacy Policy to continue.');
+          return;
+        }
+        
+        if (firstName && lastName && email && password) {
+          // Check if user already exists
+          if (userExists(email)) {
+            showAuthError('An account with this email already exists. Please sign in instead.');
+            return;
+          }
+          
+          // Create new user account
+          const newUser = createUserAccount(firstName, lastName, email, password);
+          
+          if (newUser) {
+            // Store authentication state
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userName', newUser.fullName);
+            localStorage.setItem('lastSignIn', new Date().toISOString());
+            localStorage.setItem('userId', newUser.id);
+
+            
+            // Save comprehensive user data
+            const personalDetails = {
+              fullName: `${firstName} ${lastName}`,
+              email: email
+            };
+            localStorage.setItem('personalDetails', JSON.stringify(personalDetails));
+            
+            // Save user-specific data for future sign-ins
+            saveUserData(email, {
+              fullName: `${firstName} ${lastName}`,
+              personalDetails: personalDetails
+            });
+            
+            window.location.href = 'index.html';
+          } else {
+            showAuthError('Error creating account. Please try again.');
+          }
+        }
+      });
+
+      // Demo access
+      document.getElementById('demo-access').addEventListener('click', function() {
+        // Create a demo user account
+        const demoUser = createUserAccount('Demo', 'User', 'support@breezo.com', 'demo123');
+        
+        if (demoUser) {
+          localStorage.setItem('isAuthenticated', 'true');
+          localStorage.setItem('userEmail', 'support@breezo.com');
+          localStorage.setItem('userName', 'Demo User');
+          localStorage.setItem('userId', demoUser.id);
+          localStorage.setItem('isGuest', 'true');
+
+          window.location.href = 'index.html';
+        } else {
+          alert('Error creating demo account. Please try again.');
+        }
+      });
+
+      // Modal functionality for Privacy Policy and Terms of Service
+      function setupModals() {
+        // Privacy Policy Modal
+        const privacyModal = document.getElementById('privacy-policy-modal');
+        const privacyBackdrop = document.getElementById('privacy-policy-backdrop');
+        const privacyCloseBtn = document.getElementById('privacy-policy-close');
+        
+        function openPrivacyModal() {
+          privacyModal.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+        }
+        
+        function closePrivacyModal() {
+          privacyModal.classList.add('hidden');
+          document.body.classList.remove('overflow-hidden');
+        }
+        
+        // Terms of Service Modal
+        const termsModal = document.getElementById('terms-of-service-modal');
+        const termsBackdrop = document.getElementById('terms-of-service-backdrop');
+        const termsCloseBtn = document.getElementById('terms-of-service-close');
+        
+        function openTermsModal() {
+          termsModal.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+        }
+        
+        function closeTermsModal() {
+          termsModal.classList.add('hidden');
+          document.body.classList.remove('overflow-hidden');
+        }
+        
+        // Event listeners for Privacy Policy
+        document.getElementById('signin-privacy-link').addEventListener('click', openPrivacyModal);
+        document.getElementById('signup-privacy-link').addEventListener('click', openPrivacyModal);
+        privacyBackdrop.addEventListener('click', closePrivacyModal);
+        privacyCloseBtn.addEventListener('click', closePrivacyModal);
+        
+        // Event listeners for Terms of Service
+        document.getElementById('signin-terms-link').addEventListener('click', openTermsModal);
+        document.getElementById('signup-terms-link').addEventListener('click', openTermsModal);
+        termsBackdrop.addEventListener('click', closeTermsModal);
+        termsCloseBtn.addEventListener('click', closeTermsModal);
+        
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            if (!privacyModal.classList.contains('hidden')) {
+              closePrivacyModal();
+            }
+            if (!termsModal.classList.contains('hidden')) {
+              closeTermsModal();
+            }
+          }
+        });
+      }
+      
+      // Auto-fill forms with remembered data
+      autoFillForms();
+      
+      // Setup modals
+      setupModals();
+      
+      // Check if user is already authenticated
+      if (localStorage.getItem('isAuthenticated') === 'true') {
+        window.location.href = 'index.html';
+      }
+    </script>
+  </body>
+</html>
