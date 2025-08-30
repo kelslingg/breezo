@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome - Breezo</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-functions-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="firebase-config.js"></script>
+    <script src="firebase-services.js"></script>
+    
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -373,64 +384,70 @@
         return users.some(user => user.email === email);
       }
       
-      // Function to create a new user account
-      function createUserAccount(firstName, lastName, email, password) {
+      // Function to create a new user account using Firebase
+      async function createUserAccount(firstName, lastName, email, password) {
         try {
-          const users = JSON.parse(localStorage.getItem('users') || '[]');
-          
-          // Generate unique user ID
-          const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-          
-          const newUser = {
-            id: userId,
-            email: email,
-            password: hashPassword(password), // Hash password for security
-            fullName: `${firstName} ${lastName}`,
-            firstName: firstName,
-            lastName: lastName,
-            createdAt: new Date().toISOString(),
-            lastSignIn: new Date().toISOString(),
-            isNewUser: true,
-            personalDetails: null,
-            locationPermission: null,
-            symptomReports: []
-          };
-          
-          users.push(newUser);
-          localStorage.setItem('users', JSON.stringify(users));
-          
-          return newUser;
+          const result = await firebaseServices.signUp(email, password, `${firstName} ${lastName}`);
+          if (result.success) {
+            // Create local user object for compatibility
+            const newUser = {
+              id: result.user.uid,
+              email: email,
+              fullName: `${firstName} ${lastName}`,
+              firstName: firstName,
+              lastName: lastName,
+              createdAt: new Date().toISOString(),
+              lastSignIn: new Date().toISOString(),
+              isNewUser: true,
+              personalDetails: null,
+              locationPermission: null,
+              symptomReports: []
+            };
+            
+            // Store in localStorage for backward compatibility
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userName', newUser.fullName);
+            localStorage.setItem('userId', newUser.id);
+            localStorage.setItem('isAuthenticated', 'true');
+            
+            return newUser;
+          } else {
+            throw new Error(result.error);
+          }
         } catch (error) {
-          console.error('Error creating user account:', error);
+          console.error('Firebase sign up error:', error);
           return null;
         }
       }
       
-      // Function to authenticate existing user
-      function authenticateUser(email, password) {
+      // Function to authenticate existing user using Firebase
+      async function authenticateUser(email, password) {
         try {
-          const users = JSON.parse(localStorage.getItem('users') || '[]');
-          const user = users.find(u => u.email === email);
-          
-          if (user && verifyPassword(password, user.password)) {
-            // Update last sign in
-            user.lastSignIn = new Date().toISOString();
-            user.isNewUser = false; // User has signed in before
+          const result = await firebaseServices.signIn(email, password);
+          if (result.success) {
+            // Create local user object for compatibility
+            const user = {
+              id: result.user.uid,
+              email: email,
+              fullName: result.user.displayName || 'User',
+              firstName: result.user.displayName?.split(' ')[0] || 'User',
+              lastName: result.user.displayName?.split(' ').slice(1).join(' ') || '',
+              lastSignIn: new Date().toISOString(),
+              isNewUser: false
+            };
             
-            // Save updated user data
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-            const userIndex = users.findIndex(u => u.id === user.id);
-            if (userIndex !== -1) {
-              users[userIndex] = user;
-              localStorage.setItem('users', JSON.stringify(users));
-            }
+            // Store in localStorage for backward compatibility
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userName', user.fullName);
+            localStorage.setItem('userId', user.id);
+            localStorage.setItem('isAuthenticated', 'true');
             
             return user;
+          } else {
+            return null;
           }
-          
-          return null;
         } catch (error) {
-          console.error('Error authenticating user:', error);
+          console.error('Firebase sign in error:', error);
           return null;
         }
       }

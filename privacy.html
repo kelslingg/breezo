@@ -66,8 +66,8 @@
           <div class="px-4 pt-4 pb-4">
             <div class="font-semibold text-gray-900 mb-2">Manage Your Data</div>
             <div class="flex flex-col gap-1">
-              <a href="#" class="text-[#199A8E] hover:underline text-sm">Request my data</a>
-              <a href="#" class="text-[#199A8E] hover:underline text-sm">Delete my account</a>
+              <button id="request-data-btn" class="text-left text-[#199A8E] hover:underline text-sm">Request my data</button>
+              <button id="delete-account-btn" class="text-left text-[#199A8E] hover:underline text-sm">Delete my account</button>
             </div>
           </div>
           <!-- How We Use AI -->
@@ -357,6 +357,167 @@
       dataRightsBackdrop.addEventListener('click', closeDataRightsModal);
       dataRightsClose.addEventListener('click', closeDataRightsModal);
       document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeDataRightsModal(); });
+    </script>
+
+    <!-- Delete Account Warning Modal -->
+    <div id="delete-account-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="delete-account-backdrop"></div>
+      <div class="relative z-10 max-w-md w-full mx-4 bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-red-400 to-red-600"></div>
+        <div class="p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <h3 class="text-lg font-semibold text-gray-900">Delete Account</h3>
+          </div>
+          
+          <div class="space-y-4">
+            <p class="text-gray-700">⚠️ <strong>Warning:</strong> This action cannot be undone. Deleting your account will permanently remove:</p>
+            
+            <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+              <ul class="text-sm text-red-800 space-y-2">
+                <li>• All your symptom reports and health data</li>
+                <li>• Your personal profile and settings</li>
+                <li>• Your account credentials and email</li>
+                <li>• All stored preferences and history</li>
+              </ul>
+            </div>
+            
+            <p class="text-sm text-gray-600">Are you sure you want to proceed with deleting your account?</p>
+          </div>
+          
+          <div class="flex gap-3 mt-6">
+            <button id="cancel-delete" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+              Cancel
+            </button>
+            <button id="confirm-delete" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+              Delete Account
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Request Confirmation Modal -->
+    <div id="data-request-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" id="data-request-backdrop"></div>
+      <div class="relative z-10 max-w-md w-full mx-4 bg-white rounded-2xl shadow-xl overflow-hidden animate-[slideup_.25s_cubic-bezier(.4,0,.2,1)]">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-green-400 to-green-600"></div>
+        <div class="p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <h3 class="text-lg font-semibold text-gray-900">Data Request Sent</h3>
+          </div>
+          
+          <div class="space-y-4">
+            <div class="bg-green-50 border border-green-200 rounded-xl p-4 text-center">
+              <svg class="w-12 h-12 text-green-600 mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <p class="text-green-800 font-medium">Request Submitted Successfully!</p>
+            </div>
+            
+            <div class="text-center">
+              <p class="text-gray-700 mb-2">Your data export request has been sent to our team.</p>
+              <p class="text-sm text-gray-600">⏰ <strong>Wait time:</strong> 2 business days</p>
+              <p class="text-xs text-gray-500 mt-2">You will receive an email with your data once it's ready.</p>
+            </div>
+          </div>
+          
+          <button id="close-data-request" class="w-full mt-6 px-4 py-2 bg-[#199A8E] text-white rounded-lg hover:bg-[#157c71] transition">
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Delete Account Modal functionality
+      const deleteAccountBtn = document.getElementById('delete-account-btn');
+      const deleteAccountModal = document.getElementById('delete-account-modal');
+      const deleteAccountBackdrop = document.getElementById('delete-account-backdrop');
+      const cancelDeleteBtn = document.getElementById('cancel-delete');
+      const confirmDeleteBtn = document.getElementById('confirm-delete');
+      
+      function openDeleteAccountModal() {
+        deleteAccountModal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+      }
+      
+      function closeDeleteAccountModal() {
+        deleteAccountModal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      }
+      
+      function deleteUserAccount() {
+        const userEmail = localStorage.getItem('userEmail');
+        
+        // Remove all user-related data
+        if (userEmail) {
+          // Remove user-specific data
+          localStorage.removeItem(`user_${userEmail}`);
+          localStorage.removeItem('userEmail');
+          localStorage.removeItem('isAuthenticated');
+          localStorage.removeItem('userName');
+          localStorage.removeItem('userId');
+        }
+        
+        // Remove general data
+        localStorage.removeItem('personalDetails');
+        localStorage.removeItem('profilePhoto');
+        localStorage.removeItem('profilePhotoFilename');
+        localStorage.removeItem('symptomReports');
+        localStorage.removeItem('aqiData');
+        localStorage.removeItem('userLocation');
+        localStorage.removeItem('rememberedEmail');
+        localStorage.removeItem('hasVisitedBefore');
+        
+        // Close modal and redirect to auth page
+        closeDeleteAccountModal();
+        window.location.href = 'auth.html';
+      }
+      
+      deleteAccountBtn.addEventListener('click', openDeleteAccountModal);
+      deleteAccountBackdrop.addEventListener('click', closeDeleteAccountModal);
+      cancelDeleteBtn.addEventListener('click', closeDeleteAccountModal);
+      confirmDeleteBtn.addEventListener('click', deleteUserAccount);
+      document.addEventListener('keydown', (e) => { 
+        if(e.key === 'Escape' && !deleteAccountModal.classList.contains('hidden')) {
+          closeDeleteAccountModal();
+        }
+      });
+      
+      // Data Request Modal functionality
+      const requestDataBtn = document.getElementById('request-data-btn');
+      const dataRequestModal = document.getElementById('data-request-modal');
+      const dataRequestBackdrop = document.getElementById('data-request-backdrop');
+      const closeDataRequestBtn = document.getElementById('close-data-request');
+      
+      function openDataRequestModal() {
+        dataRequestModal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+      }
+      
+      function closeDataRequestModal() {
+        dataRequestModal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      }
+      
+      requestDataBtn.addEventListener('click', openDataRequestModal);
+      dataRequestBackdrop.addEventListener('click', closeDataRequestModal);
+      closeDataRequestBtn.addEventListener('click', closeDataRequestModal);
+      document.addEventListener('keydown', (e) => { 
+        if(e.key === 'Escape' && !dataRequestModal.classList.contains('hidden')) {
+          closeDataRequestModal();
+        }
+      });
     </script>
   </body>
 </html> 

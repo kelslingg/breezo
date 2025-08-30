@@ -57,7 +57,6 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm text-gray-700">
                   <div><span class="font-medium">Name:</span> ${d.fullName || '-'}</div>
-                  <div><span class="font-medium">Email:</span> ${d.email || '-'}</div>
                   <div><span class="font-medium">Date of Birth:</span> ${d.dob || '-'}</div>
                   <div><span class="font-medium">Sex:</span> ${d.sex || '-'}</div>
                   <div><span class="font-medium">Height:</span> ${d.height ? d.height + ' cm' : '-'}</div>
@@ -112,8 +111,8 @@
             document.getElementById('profile-name').textContent = savedDetails.fullName;
           }
           
-          // Load email from personalDetails or userEmail
-          const emailToShow = savedDetails.email || localStorage.getItem('userEmail');
+          // Load email from userEmail (sign-in email)
+          const emailToShow = localStorage.getItem('userEmail');
           if (emailToShow) {
             document.getElementById('profile-email').textContent = emailToShow;
           }

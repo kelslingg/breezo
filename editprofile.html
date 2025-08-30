@@ -63,10 +63,7 @@
           <label class="block text-gray-400 text-sm mb-1" for="edit-full-name">Full Name</label>
           <input id="edit-full-name" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" placeholder="Enter your full name" />
         </div>
-        <div>
-          <label class="block text-gray-400 text-sm mb-1" for="edit-email">Email</label>
-          <input id="edit-email" type="email" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" placeholder="Enter your email" />
-        </div>
+
       </div>
       <!-- Save Button -->
       <button id="save-button" class="w-full max-w-sm bg-[#199A8E] hover:bg-[#157c71] text-white font-medium rounded-2xl py-3 text-base text-center shadow-lg transition-all duration-200 fixed left-1/2 -translate-x-1/2 bottom-8 hover:shadow-xl active:scale-95">Save Changes</button>
@@ -79,20 +76,13 @@
         if (savedPhoto) {
           document.getElementById('profile-preview').src = savedPhoto;
         }
-        // Prefill name and email from localStorage
+        // Prefill name from localStorage
         try {
           const savedDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
           const nameInput = document.getElementById('edit-full-name');
-          const emailInput = document.getElementById('edit-email');
           
           if (savedDetails.fullName) {
             nameInput.value = savedDetails.fullName;
-          }
-          
-          // Load email from userEmail or personalDetails
-          const savedEmail = localStorage.getItem('userEmail') || savedDetails.email;
-          if (savedEmail) {
-            emailInput.value = savedEmail;
           }
         } catch (_) {}
       });
@@ -159,17 +149,11 @@
         saveButton.disabled = true;
         
         try {
-          // Persist name and email to personalDetails (merge with existing details)
+          // Persist name to personalDetails (merge with existing details)
           try {
             const existing = JSON.parse(localStorage.getItem('personalDetails') || '{}');
             existing.fullName = (nameInput.value || '').trim();
-            existing.email = (emailInput.value || '').trim();
             localStorage.setItem('personalDetails', JSON.stringify(existing));
-            
-            // Also save email to userEmail for consistency
-            if (emailInput.value.trim()) {
-              localStorage.setItem('userEmail', emailInput.value.trim());
-            }
           } catch (_) {}
 
           // Check if a new photo was selected

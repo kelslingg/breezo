@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Self-Diagnosis</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-functions-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="firebase-config.js"></script>
+    <script src="firebase-services.js"></script>
+    
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -28,27 +39,31 @@
     <a href="index.html" class="fixed top-4 left-4 z-20 flex items-center text-gray-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-gray-300 transition" style="background: none; box-shadow: none; padding: 0;">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <main id="input-main" class="max-w-xl mx-auto flex flex-1 flex-col justify-center items-center min-h-[80vh] px-4">
-              <div class="w-full max-w-md mx-auto flex flex-col items-center justify-center gap-6">
-          <div class="w-full bg-white rounded-2xl shadow p-6 flex flex-col gap-4">
-
-            
-            <!-- Search Bar -->
-          <div class="w-full flex flex-col items-center mb-6 !bg-transparent !border-0 !shadow-none" id="symptom-search-container" style="background: none; box-shadow: none; border: none;">
-            <div class="relative w-full max-w-xl !bg-transparent !border-0 !shadow-none" style="background: none; box-shadow: none; border: none;">
-              <span class="absolute left-4 top-1/2 -translate-y-1/2 flex items-center">
-                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <main id="input-main" class="max-w-2xl mx-auto flex flex-1 flex-col justify-center items-center min-h-[80vh] px-4">
+      <div class="w-full max-w-2xl mx-auto flex flex-col items-center justify-center gap-8">
+        
+        <!-- Combined Search and Suggested Symptoms Section -->
+        <div class="w-full bg-white rounded-2xl shadow-lg p-6">
+          <!-- Search Bar -->
+          <div class="w-full max-w-lg mx-auto mb-6" id="symptom-search-container">
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 flex items-center">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="M21 21l-4.35-4.35"/>
+                </svg>
               </span>
-              <input id="symptom-input" type="text" autocomplete="off" placeholder="Start typing a symptom..." class="w-full pl-10 pr-4 py-3 bg-white/80 border border-gray-300 rounded-xl text-gray-900 text-base focus:outline-none focus:ring-2 focus:ring-[#199A8E] placeholder-gray-400 shadow-sm" />
+              <input id="symptom-input" type="text" autocomplete="off" placeholder="Start typing a symptom..." class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] focus:bg-white transition-all duration-200 placeholder-gray-400" />
             </div>
-            <div id="selected-symptoms" class="hidden"></div>
+            <div id="selected-symptoms" class="hidden mt-3"></div>
           </div>
-          <!-- Suggested Symptoms List -->
-          <div class="w-full flex flex-col items-center mb-2 !bg-transparent !border-0 !shadow-none" style="background: none; box-shadow: none; border: none;">
-            <div class="text-gray-400 text-base mb-2 w-full max-w-xl !bg-transparent" style="background: none;">Suggested symptoms</div>
-            <div class="text-gray-300 text-sm mb-3 w-full max-w-xl !bg-transparent text-center" style="background: none;">Some symptoms have follow-up questions for more accurate results</div>
-            <div id="suggested-symptoms-list" class="w-full max-w-xl flex flex-col gap-1 !bg-transparent !border-0 !shadow-none" style="background: none; border: none; box-shadow: none;"></div>
+
+          <!-- Suggested Symptoms -->
+          <div class="text-center mb-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Suggested Symptoms</h3>
+            <p class="text-gray-500 text-sm">Some symptoms have follow-up questions for more accurate results</p>
           </div>
+          <div id="suggested-symptoms-list" class="w-full flex flex-col gap-2"></div>
         </div>
       </div>
     </main>
@@ -415,11 +430,11 @@
           const hasFollowUp = !!FOLLOW_UPS[symptom];
           const item = document.createElement('button');
           item.type = 'button';
-          item.className = `w-full text-left px-3 py-2 rounded-lg text-base font-normal mb-1 cursor-pointer transition ${isSelected ? 'bg-[#c7e6e2] text-gray-900' : 'bg-transparent text-gray-900 hover:bg-[#e6f4f1]'}`;
+          item.className = `w-full text-left px-4 py-3 rounded-xl text-base font-medium cursor-pointer transition-all duration-200 border border-gray-200 hover:border-[#199A8E] hover:shadow-md ${isSelected ? 'bg-[#e6f4f1] text-[#199A8E] border-[#199A8E] shadow-sm' : 'bg-white text-gray-700 hover:bg-gray-50'}`;
           item.innerHTML = `
             <div class="flex items-center justify-between">
               <span>${symptom}</span>
-              ${hasFollowUp ? '<span class="text-xs text-[#199A8E] bg-[#e0f7fa] px-2 py-1 rounded-full">Follow-up</span>' : ''}
+              ${hasFollowUp ? '<span class="text-xs text-[#199A8E] bg-[#e6f4f1] px-3 py-1.5 rounded-full font-medium border border-[#199A8E]/20">Follow-up</span>' : ''}
             </div>
           `;
           item.onclick = () => selectSymptom(symptom);
@@ -495,7 +510,7 @@
                   selectedSymptoms.forEach(symptom => {
           const tag = document.createElement('button');
           tag.type = 'button';
-          tag.className = 'bg-[#c7e6e2] text-gray-800 px-4 py-2 rounded-xl text-base font-medium mr-2 mb-2 shadow-sm transition hover:bg-[#b2dfdb] focus:outline-none';
+          tag.className = 'bg-[#e6f4f1] text-[#199A8E] px-4 py-3 rounded-xl text-base font-medium mr-3 mb-3 shadow-md transition-all duration-200 hover:bg-[#d1e7dd] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:ring-offset-2 border border-[#199A8E]/20';
           
           // Show symptom name and follow-up answer if available
           const followUpAnswer = symptomFollowUps[symptom];
@@ -538,7 +553,7 @@
         follow.options.forEach(opt => {
           const btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'border-2 border-[#199A8E] text-[#199A8E] bg-white hover:bg-[#e0f7fa] font-medium rounded-full px-6 py-3 text-base transition focus:outline-none shadow-sm min-w-[120px]';
+          btn.className = 'border-2 border-[#199A8E] text-[#199A8E] bg-white hover:bg-[#e6f4f1] font-medium rounded-2xl px-8 py-4 text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:ring-offset-2 shadow-md hover:shadow-lg min-w-[140px]';
           btn.textContent = opt.label;
           btn.onclick = () => {
             followUpAnswer = opt.value;
@@ -581,7 +596,7 @@
         listDiv.innerHTML = '';
         selectedSymptoms.forEach(symptom => {
           const card = document.createElement('div');
-          card.className = 'w-full bg-white/90 rounded-xl border border-gray-200 flex items-center justify-between px-6 py-4';
+          card.className = 'w-full bg-white rounded-2xl border border-gray-200 flex items-center justify-between px-6 py-5 shadow-md hover:shadow-lg transition-all duration-200';
           const left = document.createElement('div');
           left.className = 'flex flex-col';
           const label = document.createElement('div');
@@ -591,14 +606,14 @@
           // Show follow-up answer if present
           if (symptomFollowUps[symptom]) {
             const pill = document.createElement('div');
-            pill.className = 'inline-block bg-[#c7e6e2] text-[#199A8E] px-3 py-1.5 rounded-xl text-sm font-normal mt-2 break-words whitespace-normal w-full';
+            pill.className = 'inline-block bg-[#e6f4f1] text-[#199A8E] px-3 py-2 rounded-xl text-sm font-medium mt-2 break-words whitespace-normal w-full border border-[#199A8E]/20';
             pill.textContent = symptomFollowUps[symptom];
             left.appendChild(pill);
           }
           card.appendChild(left);
           // Remove button
           const removeBtn = document.createElement('button');
-          removeBtn.className = 'text-gray-400 hover:text-red-500 text-2xl font-bold ml-4 focus:outline-none';
+          removeBtn.className = 'text-gray-400 hover:text-red-500 text-2xl font-bold ml-4 focus:outline-none focus:ring-2 focus:ring-red-200 rounded-full p-1 transition-all duration-200';
           removeBtn.innerHTML = '&times;';
           removeBtn.onclick = () => {
             removeSymptom(symptom);
@@ -694,23 +709,20 @@
                 console.warn('Running from file:// protocol - this may cause CORS issues');
               }
               
-              const response = await fetch('http://localhost:5001/predict', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ symptoms: symptoms, age: age, sex: sex })
-              });
-              
-              console.log('Response status:', response.status);
-              console.log('Response headers:', response.headers);
-              
-              if (!response.ok) {
-                const errorText = await response.text();
-                console.error('Response not OK:', response.status, errorText);
-                throw new Error(`API error: ${response.status} ${errorText}`);
+              // Use Firebase ML prediction instead of local Flask server
+              if (!window.firebaseServices) {
+                throw new Error('Firebase services not ready. Please refresh the page and try again.');
               }
               
-              const data = await response.json();
-              console.log('Response data:', data);
+              const predictionResult = await window.firebaseServices.getMLPrediction(symptoms, age, sex);
+              
+              if (!predictionResult.success) {
+                throw new Error(`ML prediction failed: ${predictionResult.error}`);
+              }
+              
+              const data = predictionResult.predictions;
+              
+              console.log('ML prediction successful:', data);
               
               if (!Array.isArray(data) || data.length === 0) {
                 throw new Error('Invalid response format from API');
@@ -905,8 +917,9 @@
           // Get current AQI and location data from localStorage
           const aqiData = JSON.parse(localStorage.getItem('aqiData') || '{}');
           const userLocation = JSON.parse(localStorage.getItem('userLocation') || '{}');
+          const storedWeatherData = JSON.parse(localStorage.getItem('weatherData') || '{}');
           
-          if (!aqiData.value && !aqiData.city && !userLocation.city) {
+          if (!aqiData.aqi && !aqiData.value && !aqiData.city && !userLocation.city) {
             // No environmental data available
             container.innerHTML = `
               <div class="text-center py-6">
@@ -923,60 +936,55 @@
             return;
           }
           
-          // Fetch fresh weather data if we have coordinates or city
-          let weatherData = null;
+          // Use ONLY IQAir data - ignore any other weather sources
+          let weatherData = {};
+          
+          // Get temperature ONLY from IQAir data
+          if (aqiData.temperature !== null && aqiData.temperature !== undefined) {
+            weatherData.temperature = aqiData.temperature;
+            console.log('✅ Using temperature from IQAir:', aqiData.temperature);
+          } else if (aqiData.weather && aqiData.weather.tp !== null && aqiData.weather.tp !== undefined) {
+            weatherData.temperature = aqiData.weather.tp;
+            console.log('✅ Using temperature from IQAir weather:', aqiData.weather.tp);
+          } else {
+            console.log('❌ No temperature data from IQAir');
+            weatherData.temperature = null;
+          }
+          
+          // Get humidity ONLY from IQAir data
+          if (aqiData.humidity !== null && aqiData.humidity !== undefined) {
+            weatherData.humidity = aqiData.humidity;
+            console.log('✅ Using humidity from IQAir:', aqiData.humidity);
+          } else if (aqiData.weather && aqiData.weather.hu !== null && aqiData.weather.hu !== undefined) {
+            weatherData.humidity = aqiData.weather.hu;
+            console.log('✅ Using humidity from IQAir weather:', aqiData.weather.hu);
+          } else {
+            console.log('❌ No humidity data from IQAir');
+            weatherData.humidity = null;
+          }
           let coordinates = null;
           
-          // First try to get coordinates from AQI data
+          // Get coordinates if available
           if (aqiData.lat && aqiData.lon) {
             coordinates = { lat: aqiData.lat, lon: aqiData.lon };
             console.log('Using coordinates from AQI data:', coordinates);
-          } else if (aqiData.city) {
-            // If no coordinates but we have city, try to get coordinates first
-            try {
-              console.log('Getting coordinates for city:', aqiData.city);
-              const geoResponse = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(aqiData.city)}&limit=1&appid=71335327a6465f6e51613d7670f2f7aa`);
-              if (geoResponse.ok) {
-                const geoData = await geoResponse.json();
-                if (geoData.length > 0) {
-                  coordinates = { lat: geoData[0].lat, lon: geoData[0].lon };
-                  console.log('Got coordinates for city:', coordinates);
-                }
-              }
-            } catch (error) {
-              console.error('Error getting coordinates for city:', error);
-            }
           }
           
-          // Now fetch weather data if we have coordinates using IQAir
-          if (coordinates) {
-            try {
-              console.log('Fetching weather data for coordinates using IQAir:', coordinates);
-              const weatherResponse = await fetch(`http://api.airvisual.com/v2/nearest_city?lat=${coordinates.lat}&lon=${coordinates.lon}&key=ed2a35ef-6af9-4905-810d-47875737716d`);
-              if (weatherResponse.ok) {
-                const iqairData = await weatherResponse.json();
-                if (iqairData.status === 'success') {
-                  weatherData = {
-                    main: {
-                      temp: iqairData.data.current.weather.tp,
-                      humidity: iqairData.data.current.weather.hu
-                    }
-                  };
-                  console.log('IQAir weather data fetched successfully:', weatherData);
-                }
-              }
-            } catch (error) {
-              console.error('Error fetching weather data from IQAir:', error);
-            }
-          } else {
-            console.log('No coordinates available for weather data fetch');
-          }
+          // Log the raw weather data for debugging
+          console.log('Raw weather data before processing:', {
+            weatherData: weatherData,
+            aqiDataTemp: aqiData.temperature,
+            aqiDataHumidity: aqiData.humidity,
+            aqiDataWeather: aqiData.weather
+          });
+          
+          console.log('Using stored weather data (validated):', weatherData);
           
           // Determine location display
           const locationDisplay = aqiData.city || userLocation.city || 'Local Analysis';
           
           // Get AQI level and color
-          const aqiValue = aqiData.value || 'N/A';
+          const aqiValue = aqiData.aqi || aqiData.value || 'N/A';
           const aqiLevel = aqiData.level || getAQILevel(aqiValue);
           const aqiColor = getAQIColor(aqiLevel);
           const aqiDescription = getAQIDescription(aqiValue);
@@ -986,7 +994,26 @@
             aqiData: aqiData,
             userLocation: userLocation,
             coordinates: coordinates,
-            weatherData: weatherData
+            weatherData: weatherData,
+            storedWeatherData: storedWeatherData
+          });
+          
+          // Log the AQI data structure specifically
+          console.log('AQI data structure:', {
+            hasWeather: !!aqiData.weather,
+            weatherKeys: aqiData.weather ? Object.keys(aqiData.weather) : [],
+            temperature: aqiData.temperature,
+            humidity: aqiData.humidity,
+            weatherTemp: aqiData.weather?.tp,
+            weatherHumidity: aqiData.weather?.hu
+          });
+          
+          // Log the final values being displayed
+          console.log('Final display values:', {
+            temperature: weatherData?.temperature,
+            humidity: weatherData?.humidity,
+            aqi: aqiValue,
+            city: locationDisplay
           });
           
           // Populate the container
@@ -1004,11 +1031,17 @@
               </div>
               <div class="bg-white rounded-lg shadow p-3">
                 <div class="text-gray-400 text-xs mb-0.5">Temperature</div>
-                <div class="text-base font-bold text-gray-900">${weatherData ? Math.round(weatherData.main.temp) + '°C' : 'N/A'}</div>
+                <div class="text-base font-bold text-gray-900">${(() => {
+                  const temp = weatherData?.temperature || aqiData?.temperature || aqiData?.weather?.tp;
+                  return temp !== null && temp !== undefined ? Math.round(temp) + '°C' : 'N/A';
+                })()}</div>
               </div>
               <div class="bg-white rounded-lg shadow p-3">
                 <div class="text-gray-400 text-xs mb-0.5">Humidity</div>
-                <div class="text-base font-bold text-gray-900">${weatherData ? weatherData.main.humidity + '%' : 'N/A'}</div>
+                <div class="text-base font-bold text-gray-900">${(() => {
+                  const hum = weatherData?.humidity || aqiData?.humidity || aqiData?.weather?.hu;
+                  return hum !== null && hum !== undefined ? hum + '%' : 'N/A';
+                })()}</div>
               </div>
               <div class="bg-white rounded-lg shadow p-3">
                 <div class="text-gray-400 text-xs mb-0.5">Air Quality</div>
@@ -1114,53 +1147,10 @@
           
           console.log('Available data for saving:', { aqiData, userLocation });
           
-          // Fetch fresh weather data for the report
-          let freshWeatherData = null;
-          let coordinates = null;
+          // Use stored environmental data directly
+          console.log('Using stored environmental data for report:', aqiData);
           
-          // First try to get coordinates from AQI data
-          if (aqiData.lat && aqiData.lon) {
-            coordinates = { lat: aqiData.lat, lon: aqiData.lon };
-            console.log('Using coordinates from AQI data for report:', coordinates);
-          } else if (aqiData.city) {
-            // If no coordinates but we have city, try to get coordinates first
-            try {
-              console.log('Getting coordinates for city in report:', aqiData.city);
-              const geoResponse = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(aqiData.city)}&limit=1&appid=71335327a6465f6e51613d7670f2f7aa`);
-              if (geoResponse.ok) {
-                const geoData = await geoResponse.json();
-                if (geoData.length > 0) {
-                  coordinates = { lat: geoData[0].lat, lon: geoData[0].lon };
-                  console.log('Got coordinates for city in report:', coordinates);
-                }
-              }
-            } catch (error) {
-              console.error('Error getting coordinates for city in report:', error);
-            }
-          }
-          
-          // Now fetch weather data if we have coordinates using IQAir
-          if (coordinates) {
-            try {
-              console.log('Fetching weather data for report coordinates using IQAir:', coordinates);
-              const weatherResponse = await fetch(`http://api.airvisual.com/v2/nearest_city?lat=${coordinates.lat}&lon=${coordinates.lon}&key=ed2a35ef-6af9-4905-810d-47875737716d`);
-              if (weatherResponse.ok) {
-                const iqairData = await weatherResponse.json();
-                if (iqairData.status === 'success') {
-                  freshWeatherData = {
-                    temperature: Math.round(iqairData.data.current.weather.tp),
-                    humidity: iqairData.data.current.weather.hu,
-                    description: getWeatherDescription(iqairData.data.current.weather.tp, iqairData.data.current.weather.hu)
-                  };
-                  console.log('Fresh IQAir weather data fetched for report:', freshWeatherData);
-                }
-              }
-            } catch (error) {
-              console.error('Error fetching fresh weather data from IQAir for report:', error);
-            }
-          } else {
-            console.log('No coordinates available for weather data fetch in report');
-          }
+          // Environmental data is already stored in aqiData - no need to fetch fresh data
           
           const report = {
             id: Date.now(), // Unique identifier
@@ -1187,21 +1177,21 @@
               disease: predictions[0].disease,
               probability: predictions[0].probability
             },
-            // Include environmental data: AQI from stored state, fresh weather data
+            // Include environmental data from stored AQI data
             environmentalData: {
-              aqi: aqiData.value || null,
-              aqiLevel: aqiData.level || null,
-              temperature: freshWeatherData ? freshWeatherData.temperature : null,
-              humidity: freshWeatherData ? freshWeatherData.humidity : null,
+              aqi: aqiData.aqi || aqiData.value || null,
+              aqiLevel: getAQILevel(aqiData.aqi || aqiData.value) || null,
+              temperature: aqiData.temperature || null,
+              humidity: aqiData.humidity || null,
               location: aqiData.city || userLocation.city || null
             }
           };
           
           console.log('Environmental data being saved:', {
-            aqi: aqiData.value,
-            aqiLevel: aqiData.level,
-            temperature: freshWeatherData ? freshWeatherData.temperature : null,
-            humidity: freshWeatherData ? freshWeatherData.humidity : null,
+            aqi: aqiData.aqi || aqiData.value,
+            aqiLevel: getAQILevel(aqiData.aqi || aqiData.value),
+            temperature: aqiData.temperature,
+            humidity: aqiData.humidity,
             location: aqiData.city || userLocation.city
           });
           

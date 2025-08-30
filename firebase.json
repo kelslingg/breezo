@@ -1,0 +1,29 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/*.py",
+      "**/*.pkl",
+      "**/*.joblib",
+      "**/__pycache__/**",
+      "**/*.ipynb",
+      "**/uploads/**",
+      "**/models/**",
+      "**/notebooks/**",
+      "**/data/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "functions": {
+    "source": "breezo",
+    "runtime": "nodejs18"
+  }
+}
