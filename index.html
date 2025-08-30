@@ -616,23 +616,29 @@
        
 
        
-       // Function to fetch AQI data
+       // Function to fetch AQI data using your IQAir API key
        async function fetchAQIData(lat, lon, city = null) {
          try {
+           console.log('🔑 Using your IQAir API key: ed2a35ef-6af9-4905-810d-47875737716d');
+           
            let aqiData = null;
            let weatherData = null;
            
            if (city) {
+             console.log(`🌍 Fetching data for city: ${city}`);
              // Fetch data by city name
              aqiData = await fetchAQIByCity(city);
              weatherData = await fetchWeatherByCity(city);
            } else if (lat && lon) {
+             console.log(`📍 Fetching data for coordinates: ${lat}, ${lon}`);
              // Fetch data by coordinates
              aqiData = await fetchAQIByCoords(lat, lon);
              weatherData = await fetchWeatherByCoords(lat, lon);
            }
            
            if (aqiData) {
+             console.log('✅ AQI data received:', aqiData);
+             
              // Save AQI data with all properties preserved
              const aqiDataToSave = {
                ...aqiData,
@@ -650,6 +656,7 @@
              }
              
              localStorage.setItem('aqiData', JSON.stringify(aqiDataToSave));
+             console.log('💾 AQI data saved to localStorage');
              
              // Update userLocation when city changes
              if (city) {
@@ -668,9 +675,6 @@
                  console.log('🔄 AQI card updated with new city:', city);
                }, 100);
              }
-             
-             // Log the data being saved for debugging
-             console.log('Saving AQI data:', aqiDataToSave);
            }
            
            // Since IQAir provides both AQI and weather data, we can use aqiData for both
@@ -685,15 +689,11 @@
                location: city || `${lat.toFixed(2)}, ${lon.toFixed(2)}`
              };
              
-             console.log('🌡️ Creating weather data from IQAir:', {
-               original: { temperature: aqiData.temperature, humidity: aqiData.humidity },
-               processed: weatherDataFromAQI
-             });
+             console.log('🌡️ Creating weather data from IQAir:', weatherDataFromAQI);
              
              // Save weather data
              localStorage.setItem('weatherData', JSON.stringify(weatherDataFromAQI));
-             
-             console.log('🌡️ Weather data saved from IQAir:', weatherDataFromAQI);
+             console.log('💾 Weather data saved to localStorage');
            }
            
            // Update AQI display with the combined data
@@ -709,9 +709,8 @@
            }
            
          } catch (error) {
-           console.error('Error fetching environmental data:', error);
-           // Fallback to demo data if API fails
-           fetchDemoData(lat, lon, city);
+           console.error('❌ Error fetching environmental data:', error);
+           throw error; // Don't fallback to demo data, let the error be handled
          }
        }
        
@@ -758,8 +757,8 @@
          try {
            console.log(`🔍 Fetching AQI data for coordinates: ${lat}, ${lon}`);
            
-           // Using IQAir API for accurate AQI data
-           const response = await fetch(`http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lon}&key=${API_CONFIG.IQAIR_API_KEY}`);
+           // Using IQAir API for accurate AQI data with your API key
+           const response = await fetch(`https://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lon}&key=ed2a35ef-6af9-4905-810d-47875737716d`);
            
            if (!response.ok) {
              throw new Error('Failed to fetch AQI data');
@@ -1038,7 +1037,7 @@
            const { lat, lon } = geoData[0];
            
            // Get weather data from IQAir API
-           const response = await fetch(`http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lon}&key=${API_CONFIG.IQAIR_API_KEY}`);
+           const response = await fetch(`https://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lon}&key=ed2a35ef-6af9-4905-810d-47875737716d`);
            
            if (!response.ok) {
              throw new Error('Failed to fetch weather data from IQAir');
@@ -1073,7 +1072,7 @@
            console.log(`🌤️ Fetching weather data for coordinates: ${lat}, ${lon} using IQAir`);
            
            // Get weather data from IQAir API
-           const response = await fetch(`http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lon}&key=${API_CONFIG.IQAIR_API_KEY}`);
+           const response = await fetch(`https://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lon}&key=ed2a35ef-6af9-4905-810d-47875737716d`);
            
            if (!response.ok) {
              throw new Error('Failed to fetch weather data from IQAir');
