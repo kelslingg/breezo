@@ -17,6 +17,22 @@
     </style>
   </head>
   <body class="min-h-screen bg-blur">
+    <!-- AUTHENTICATION CHECK - NO BYPASSING ALLOWED -->
+    <script>
+      // Immediate auth check - redirect if not logged in
+      (function() {
+        const isAuthenticated = localStorage.getItem('isAuthenticated');
+        const userEmail = localStorage.getItem('userEmail');
+        
+        if (!isAuthenticated || !userEmail) {
+          console.log('❌ Unauthorized access attempt, redirecting to auth');
+          window.location.href = 'auth.html';
+          return;
+        }
+        console.log('✅ User authenticated:', userEmail);
+      })();
+    </script>
+    
     <a href="profile.html" class="fixed top-4 left-4 z-20 flex items-center text-gray-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-gray-300 transition" style="background: none; box-shadow: none; padding: 0;">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>

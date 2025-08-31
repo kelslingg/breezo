@@ -138,26 +138,36 @@
     </div>
 
     <script>
-        // Simulate loading time and redirect
+        // Check authentication immediately - no bypassing allowed
+        function checkAuth() {
+            const personalDetails = localStorage.getItem('personalDetails');
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            const userEmail = localStorage.getItem('userEmail');
+            
+            // STRICT AUTH CHECK: User must be authenticated with valid email
+            if (!isAuthenticated || !userEmail) {
+                console.log('❌ User not authenticated, redirecting to auth page');
+                window.location.href = 'auth.html';
+                return;
+            }
+            
+            // User is authenticated, now check profile completion
+            if (personalDetails) {
+                console.log('✅ User authenticated with complete profile, going to main page');
+                window.location.href = 'index.html';
+            } else {
+                console.log('⚠️ User authenticated but needs to complete profile');
+                window.location.href = 'personaldetails.html';
+            }
+        }
+        
+        // Simulate loading time and then check auth
         setTimeout(() => {
             const container = document.getElementById('loadingContainer');
             container.classList.add('fade-out');
             
             setTimeout(() => {
-                // Check if user has personal details, redirect accordingly
-                const personalDetails = localStorage.getItem('personalDetails');
-                const isAuthenticated = localStorage.getItem('isAuthenticated');
-                
-                if (isAuthenticated && personalDetails) {
-                    // User is logged in and has details, go to main page
-                    window.location.href = 'index.html';
-                } else if (isAuthenticated) {
-                    // User is logged in but needs to complete profile
-                    window.location.href = 'personaldetails.html';
-                } else {
-                    // New user, go to auth page
-                    window.location.href = 'auth.html';
-                }
+                checkAuth();
             }, 500);
         }, 3000); // Show loading for 3 seconds
     </script>

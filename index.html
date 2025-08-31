@@ -12,6 +12,22 @@
     </style>
   </head>
   <body class="bg-gradient-to-br from-blue-50 via-blue-100 to-purple-100 min-h-screen">
+    <!-- AUTHENTICATION CHECK - NO BYPASSING ALLOWED -->
+    <script>
+      // Immediate auth check - redirect if not logged in
+      (function() {
+        const isAuthenticated = localStorage.getItem('isAuthenticated');
+        const userEmail = localStorage.getItem('userEmail');
+        
+        if (!isAuthenticated || !userEmail) {
+          console.log('❌ Unauthorized access attempt, redirecting to auth');
+          window.location.href = 'auth.html';
+          return;
+        }
+        console.log('✅ User authenticated:', userEmail);
+      })();
+    </script>
+    
     <!-- NAVBAR -->
     <nav class="w-full bg-white shadow flex items-center justify-between px-6 py-4">
               <div class="text-xl font-bold text-blue-600 tracking-tight">Breezo</div>
