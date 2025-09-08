@@ -559,7 +559,7 @@
       }
 
       // Form submission handling
-      document.querySelector('#signin-form form').addEventListener('submit', function(e) {
+      document.querySelector('#signin-form form').addEventListener('submit', async function(e) {
         e.preventDefault();
         const email = document.getElementById('signin-email').value;
         const password = document.getElementById('signin-password').value;
@@ -572,41 +572,54 @@
         }
         
         if (email && password) {
-          // Check if user exists and validate password
-          const user = authenticateUser(email, password);
+          // Show loading state
+          const submitBtn = e.target.querySelector('button[type="submit"]');
+          const originalText = submitBtn.textContent;
+          submitBtn.textContent = 'Signing In...';
+          submitBtn.disabled = true;
           
-          if (user) {
-            // Store authentication state
-            localStorage.setItem('isAuthenticated', 'true');
-            localStorage.setItem('userEmail', email);
-            localStorage.setItem('userName', user.fullName);
-            localStorage.setItem('lastSignIn', new Date().toISOString());
-            localStorage.setItem('userId', user.id);
+          try {
+            // Check if user exists and validate password with Firebase
+            const user = await authenticateUser(email, password);
             
-            // Handle "Remember Me" functionality
-            if (rememberMe) {
-              localStorage.setItem('rememberMe', 'true');
-              localStorage.setItem('rememberedEmail', email);
+            if (user) {
+              // Store authentication state
+              localStorage.setItem('isAuthenticated', 'true');
+              localStorage.setItem('userEmail', email);
+              localStorage.setItem('userName', user.fullName);
+              localStorage.setItem('lastSignIn', new Date().toISOString());
+              localStorage.setItem('userId', user.id);
+              
+              // Handle "Remember Me" functionality
+              if (rememberMe) {
+                localStorage.setItem('rememberMe', 'true');
+                localStorage.setItem('rememberedEmail', email);
+              } else {
+                localStorage.removeItem('rememberMe');
+                localStorage.removeItem('rememberedEmail');
+              }
+              
+              // Load existing user data
+              loadUserData(email);
+              
+              window.location.href = 'index.html';
             } else {
-              localStorage.removeItem('rememberMe');
-              localStorage.removeItem('rememberedEmail');
+              showAuthError('Invalid email or password. Please check your credentials and try again.');
             }
-            
-            // Load existing user data
-            loadUserData(email);
-            
-
-            
-            window.location.href = 'index.html';
-          } else {
-            showAuthError('Invalid email or password. Please try again.');
+          } catch (error) {
+            console.error('Sign in error:', error);
+            showAuthError('Sign in failed. Please try again.');
+          } finally {
+            // Reset button state
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
           }
         } else {
           showAuthError('Please enter both email and password.');
         }
       });
 
-      document.querySelector('#signup-form form').addEventListener('submit', function(e) {
+      document.querySelector('#signup-form form').addEventListener('submit', async function(e) {
         e.preventDefault();
         const firstName = document.getElementById('signup-firstname').value;
         const lastName = document.getElementById('signup-lastname').value;
@@ -626,58 +639,71 @@
         }
         
         if (firstName && lastName && email && password) {
-          // Check if user already exists
-          if (userExists(email)) {
-            showAuthError('An account with this email already exists. Please sign in instead.');
-            return;
-          }
+          // Show loading state
+          const submitBtn = e.target.querySelector('button[type="submit"]');
+          const originalText = submitBtn.textContent;
+          submitBtn.textContent = 'Creating Account...';
+          submitBtn.disabled = true;
           
-          // Create new user account
-          const newUser = createUserAccount(firstName, lastName, email, password);
-          
-          if (newUser) {
-            // Store authentication state
-            localStorage.setItem('isAuthenticated', 'true');
-            localStorage.setItem('userEmail', email);
-            localStorage.setItem('userName', newUser.fullName);
-            localStorage.setItem('lastSignIn', new Date().toISOString());
-            localStorage.setItem('userId', newUser.id);
-
+          try {
+            // Create new user account with Firebase
+            const newUser = await createUserAccount(firstName, lastName, email, password);
             
-            // Save comprehensive user data
-            const personalDetails = {
-              fullName: `${firstName} ${lastName}`,
-              email: email
-            };
-            localStorage.setItem('personalDetails', JSON.stringify(personalDetails));
-            
-            // Save user-specific data for future sign-ins
-            saveUserData(email, {
-              fullName: `${firstName} ${lastName}`,
-              personalDetails: personalDetails
-            });
-            
-            window.location.href = 'index.html';
-          } else {
-            showAuthError('Error creating account. Please try again.');
+            if (newUser) {
+              // Store authentication state
+              localStorage.setItem('isAuthenticated', 'true');
+              localStorage.setItem('userEmail', email);
+              localStorage.setItem('userName', newUser.fullName);
+              localStorage.setItem('lastSignIn', new Date().toISOString());
+              localStorage.setItem('userId', newUser.id);
+              
+              // Save comprehensive user data
+              const personalDetails = {
+                fullName: `${firstName} ${lastName}`,
+                email: email
+              };
+              localStorage.setItem('personalDetails', JSON.stringify(personalDetails));
+              
+              // Save user-specific data for future sign-ins
+              saveUserData(email, {
+                fullName: `${firstName} ${lastName}`,
+                personalDetails: personalDetails
+              });
+              
+              window.location.href = 'index.html';
+            } else {
+              showAuthError('Error creating account. This email may already be registered. Please try signing in instead.');
+            }
+          } catch (error) {
+            console.error('Sign up error:', error);
+            showAuthError('Account creation failed. Please try again.');
+          } finally {
+            // Reset button state
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
           }
         }
       });
 
       // Demo access
-      document.getElementById('demo-access').addEventListener('click', function() {
-        // Create a demo user account
-        const demoUser = createUserAccount('Demo', 'User', 'support@breezo.com', 'demo123');
-        
-        if (demoUser) {
-          localStorage.setItem('isAuthenticated', 'true');
-          localStorage.setItem('userEmail', 'support@breezo.com');
-          localStorage.setItem('userName', 'Demo User');
-          localStorage.setItem('userId', demoUser.id);
-          localStorage.setItem('isGuest', 'true');
+      document.getElementById('demo-access').addEventListener('click', async function() {
+        try {
+          // Create a demo user account
+          const demoUser = await createUserAccount('Demo', 'User', 'support@breezo.com', 'demo123');
+          
+          if (demoUser) {
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('userEmail', 'support@breezo.com');
+            localStorage.setItem('userName', 'Demo User');
+            localStorage.setItem('userId', demoUser.id);
+            localStorage.setItem('isGuest', 'true');
 
-          window.location.href = 'index.html';
-        } else {
+            window.location.href = 'index.html';
+          } else {
+            alert('Error creating demo account. Please try again.');
+          }
+        } catch (error) {
+          console.error('Demo access error:', error);
           alert('Error creating demo account. Please try again.');
         }
       });
