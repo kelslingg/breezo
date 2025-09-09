@@ -621,7 +621,7 @@
               // Load existing user data
               loadUserData(email);
               
-              window.location.href = 'index.html';
+              window.location.href = 'dashboard.html';
             } else {
               showAuthError('This email is not registered. Please sign up first to create an account.');
             }
@@ -696,7 +696,7 @@
                 personalDetails: personalDetails
               });
               
-              window.location.href = 'index.html';
+              window.location.href = 'dashboard.html';
             } else {
               showAuthError('Error creating account. This email may already be registered. Please try signing in instead.');
             }
@@ -724,7 +724,7 @@
             localStorage.setItem('userId', demoUser.id);
             localStorage.setItem('isGuest', 'true');
 
-            window.location.href = 'index.html';
+            window.location.href = 'dashboard.html';
           } else {
             alert('Error creating demo account. Please try again.');
           }
@@ -799,7 +799,7 @@
       
       // Check if user is already authenticated
       if (localStorage.getItem('isAuthenticated') === 'true') {
-        window.location.href = 'index.html';
+        window.location.href = 'dashboard.html';
       }
     </script>
   </body>
