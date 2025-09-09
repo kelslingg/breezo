@@ -109,27 +109,27 @@
         </div>
       </section>
 
-      <!-- AIR QUALITY CARD -->
+            <!-- AIR QUALITY CARD -->
       <div id="aqi-card" class="w-full max-w-xl bg-white rounded-2xl shadow p-6 flex flex-col space-y-2 cursor-pointer">
         <!-- AQI Display (always visible) -->
         <div class="space-y-2">
           <div class="flex items-center justify-between mb-2">
-            <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-2">
               <span class="w-3 h-3 rounded-full" id="aqi-location-indicator" style="background-color: #a259d9;"></span>
-              <span class="text-base font-semibold text-gray-800" id="aqi-location-text">Click to set location</span>
-            </div>
+          <span class="text-base font-semibold text-gray-800" id="aqi-location-text">Click to set location</span>
+        </div>
           </div>
           <div class="flex flex-col items-center justify-center">
-            <div class="text-5xl font-extrabold text-gray-900 leading-tight" id="aqi-value">--</div>
+          <div class="text-5xl font-extrabold text-gray-900 leading-tight" id="aqi-value">--</div>
             <div class="text-base font-semibold" id="aqi-level" style="color: #a259d9; margin-top: 0.25rem;">Set location to see AQI</div>
-          </div>
+        </div>
           <div class="text-center text-sm text-gray-500 mt-1 mb-2" id="aqi-description">Click the card to set your location and view air quality data</div>
           
           <div class="w-full flex items-center mt-2 mb-1">
             <div class="w-full h-2 rounded-full bg-gradient-to-r from-green-400 via-yellow-400 via-60% to-purple-600 relative">
-              <div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-gray-400 rounded-full shadow" id="aqi-indicator" style="margin-left:-8px; left: 0%;"></div>
-            </div>
+            <div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-gray-400 rounded-full shadow" id="aqi-indicator" style="margin-left:-8px; left: 0%;"></div>
           </div>
+        </div>
           <div class="text-xs text-gray-400 text-right w-full mt-1" id="aqi-update-time">Click to get started</div>
         </div>
       </div>
@@ -815,17 +815,17 @@
              country: country,
              temperature: current.weather.tp,
              humidity: current.weather.hu,
-             timestamp: new Date().toISOString()
+           timestamp: new Date().toISOString()
            });
            
            return {
              value: aqiValue,
              level: getAQILevel(aqiValue),
-             city: city,
+           city: city,
              country: country,
              temperature: current.weather.tp,
              humidity: current.weather.hu,
-             timestamp: new Date().toISOString(),
+           timestamp: new Date().toISOString(),
              source: 'IQAir'
            };
            
@@ -1068,7 +1068,7 @@
            
            const current = data.data.current;
            
-           return {
+             return {
              temperature: Math.round(current.weather.tp),
              humidity: current.weather.hu,
              pollenLevel: getPollenLevel(current.weather.hu, getWeatherType(current.weather.tp)),
@@ -1103,7 +1103,7 @@
            
            const current = data.data.current;
            
-           return {
+             return {
              temperature: Math.round(current.weather.tp),
              humidity: current.weather.hu,
              pollenLevel: getPollenLevel(current.weather.hu, getWeatherType(current.weather.tp)),
