@@ -225,20 +225,25 @@
       </div>
     </div>
     <div id="warning-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-50 via-blue-100 to-purple-100 backdrop-blur-xl">
-      <div class="flex flex-col items-center justify-center w-full max-w-md mx-auto px-4 py-12">
+      <div class="flex flex-col items-center justify-center w-full max-w-lg mx-auto px-6 py-12">
         <div class="flex flex-col items-center">
-          <div class="mb-8 mt-2">
-            <svg class="w-16 h-16 text-[#199A8E] mx-auto" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 48 48">
-              <path d="M24 40s-12-7.333-12-17.333C12 14.667 16.667 12 24 12s12 2.667 12 10.667C36 32.667 24 40 24 40z" stroke="#199A8E" stroke-width="2.5" fill="none"/>
-            </svg>
+          <!-- Lungs Icon Container -->
+          <div class="mb-6 mt-2">
+            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl mx-auto" style="box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);">
+              <div class="lungs-icon" style="width: 70px; height: 56px; position: relative;">
+                <div class="trachea" style="position: absolute; width: 7px; height: 24px; background: rgba(25, 154, 142, 0.7); border-radius: 3.5px; left: 50%; top: 4px; transform: translateX(-50%);"></div>
+                <div class="lung-left" style="position: absolute; width: 30px; height: 42px; background: rgba(25, 154, 142, 0.6); border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%; left: 0; top: 7px; transform: rotate(-25deg);"></div>
+                <div class="lung-right" style="position: absolute; width: 30px; height: 42px; background: rgba(25, 154, 142, 0.6); border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%; right: 0; top: 7px; transform: rotate(25deg);"></div>
+              </div>
+            </div>
           </div>
-          <div class="text-3xl font-normal text-gray-900 mb-6 text-center" style="font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">Self-Diagnosis</div>
-          <div class="bg-white rounded-2xl shadow-lg p-8 w-full mb-8 flex flex-col items-center" style="box-shadow: 0 4px 24px 0 rgba(0,0,0,0.07);">
-            <div class="text-lg text-gray-900 text-center mb-2">This app currently supports diagnosis for <span class="text-[#199A8E] font-medium">respiratory diseases only</span></div>
-            <div class="text-gray-700 text-center text-base">We're working on expanding our diagnostic capabilities to serve you better.</div>
+          <div class="text-3xl font-bold text-gray-900 mb-6 text-center tracking-tight" style="font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">Self-Diagnosis</div>
+          <div class="bg-white rounded-3xl shadow-xl p-8 w-full mb-6 flex flex-col items-center" style="box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);">
+            <div class="text-xl text-gray-900 text-center mb-3 font-semibold">This app currently supports diagnosis for <span class="text-[#199A8E] font-bold">respiratory diseases only</span></div>
+            <div class="text-gray-600 text-center text-lg">We're working on expanding our diagnostic capabilities to serve you better.</div>
           </div>
-          <div class="text-center text-base text-red-500 font-normal mb-8">This is not a substitute for professional medical advice.<br/>Always consult with a healthcare provider for proper diagnosis and treatment.</div>
-          <button id="continue-warning" class="w-full max-w-xs bg-[#199A8E] hover:bg-[#157c71] text-white font-semibold rounded-xl py-3 text-base text-center shadow transition">Continue</button>
+          <div class="text-center text-lg text-red-600 font-medium mb-8 leading-relaxed">This is not a substitute for professional medical advice.<br/>Always consult with a healthcare provider for proper diagnosis and treatment.</div>
+          <button id="continue-warning" class="w-full max-w-sm bg-[#199A8E] hover:bg-[#157c71] text-white font-bold rounded-2xl py-4 text-lg text-center shadow-xl transition-all duration-200 hover:shadow-2xl transform hover:scale-105" style="box-shadow: 0 10px 25px rgba(25, 154, 142, 0.3);">Continue</button>
         </div>
       </div>
     </div>
