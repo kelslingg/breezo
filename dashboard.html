@@ -53,7 +53,7 @@
         <div class="flex items-center space-x-4">
           <img id="home-profile-photo" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=96&h=96" alt="profile" class="w-16 h-16 rounded-full object-cover border-4 border-white shadow" />
           <div>
-            <div id="home-greeting" class="text-2xl md:text-3xl font-bold text-gray-900 mb-1">Good evening, Kr</div>
+            <div id="home-greeting" class="text-2xl md:text-3xl font-bold text-gray-900 mb-1">Good evening, User</div>
             <div class="text-sm text-gray-500">How are you feeling today?</div>
           </div>
         </div>
@@ -448,7 +448,68 @@
       
       // ===== END API CONFIGURATION =====
       
-      // Function to load and display profile photos
+      // ===== CENTRALIZED USER DATA MANAGEMENT =====
+      
+      // Function to get user data consistently across all screens
+      function getUserData() {
+        const userEmail = localStorage.getItem('userEmail');
+        const personalDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
+        const profilePhoto = localStorage.getItem('profilePhoto');
+        
+        return {
+          email: userEmail,
+          name: personalDetails.fullName || localStorage.getItem('userName') || 'User',
+          photo: profilePhoto || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=96&h=96',
+          personalDetails: personalDetails
+        };
+      }
+      
+      // Function to save user data consistently
+      function saveUserData(data) {
+        if (data.name) {
+          localStorage.setItem('userName', data.name);
+          // Also save to personalDetails for consistency
+          const personalDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
+          personalDetails.fullName = data.name;
+          localStorage.setItem('personalDetails', JSON.stringify(personalDetails));
+        }
+        if (data.photo) {
+          localStorage.setItem('profilePhoto', data.photo);
+        }
+        if (data.personalDetails) {
+          localStorage.setItem('personalDetails', JSON.stringify(data.personalDetails));
+        }
+      }
+      
+      // Function to update all UI elements with user data
+      function updateUserUI() {
+        const userData = getUserData();
+        
+        // Update name in greeting
+        const greet = document.getElementById('home-greeting');
+        if (greet) {
+          const prefix = greet.textContent.includes(',') ? greet.textContent.split(',')[0] : 'Good evening';
+          greet.textContent = `${prefix}, ${userData.name}`;
+        }
+        
+        // Update profile photos
+        if (userData.photo) {
+          const homePhoto = document.getElementById('home-profile-photo');
+          const navPhoto = document.getElementById('nav-profile-photo');
+          const navIcon = document.getElementById('nav-profile-icon');
+          
+          if (homePhoto) homePhoto.src = userData.photo;
+          if (navPhoto) {
+            navPhoto.src = userData.photo;
+            navPhoto.style.display = 'block';
+          }
+          if (navIcon) navIcon.style.display = 'none';
+        }
+      }
+      
+      // ===== END CENTRALIZED USER DATA MANAGEMENT =====
+      
+       // Function to load and display profile photos
        function loadProfilePhotos() {
         const savedPhoto = localStorage.getItem('profilePhoto');
         
@@ -459,9 +520,13 @@
           // Update navbar profile photo
           const navPhoto = document.getElementById('nav-profile-photo');
           const navIcon = document.getElementById('nav-profile-icon');
-          navPhoto.src = savedPhoto;
-          navPhoto.style.display = 'block';
-          navIcon.style.display = 'none';
+          if (navPhoto) {
+            navPhoto.src = savedPhoto;
+            navPhoto.style.display = 'block';
+          }
+          if (navIcon) {
+            navIcon.style.display = 'none';
+          }
         } else {
           // Try to load from backend if not in localStorage
           fetch('/profile-photo')
@@ -480,9 +545,13 @@
               // Update navbar profile photo
               const navPhoto = document.getElementById('nav-profile-photo');
               const navIcon = document.getElementById('nav-profile-icon');
-              navPhoto.src = photoUrl;
-              navPhoto.style.display = 'block';
-              navIcon.style.display = 'none';
+              if (navPhoto) {
+                navPhoto.src = photoUrl;
+                navPhoto.style.display = 'block';
+              }
+              if (navIcon) {
+                navIcon.style.display = 'none';
+              }
               
               // Save to localStorage
               localStorage.setItem('profilePhoto', photoUrl);
@@ -497,14 +566,12 @@
        function loadUserName() {
          try {
            const savedDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
-           const userName = savedDetails.fullName || localStorage.getItem('userName');
+           const userName = savedDetails.fullName || localStorage.getItem('userName') || 'User';
            
-           if (userName) {
-             const greet = document.getElementById('home-greeting');
-             // Keep the time-of-day greeting prefix if present
-             const prefix = greet.textContent.includes(',') ? greet.textContent.split(',')[0] : 'Good evening';
-             greet.textContent = `${prefix}, ${userName}`;
-           }
+           const greet = document.getElementById('home-greeting');
+           // Keep the time-of-day greeting prefix if present
+           const prefix = greet.textContent.includes(',') ? greet.textContent.split(',')[0] : 'Good evening';
+           greet.textContent = `${prefix}, ${userName}`;
          } catch (_) {}
        }
        
@@ -1470,8 +1537,7 @@
            }
          }
          
-         loadProfilePhotos();
-         loadUserName();
+         updateUserUI();
          loadLastReport();
          
          // Check if location permission is needed

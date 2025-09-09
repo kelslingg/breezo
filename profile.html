@@ -45,8 +45,8 @@
       <!-- Profile Header -->
       <div class="flex flex-col items-center mb-8">
         <img id="profile-photo" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=96&h=96" alt="Profile" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow" />
-        <div id="profile-name" class="mt-4 text-xl font-semibold text-gray-900">kristina</div>
-        <div id="profile-email" class="text-gray-500 text-sm mb-4">lees_bedrock.0s@icloud.com</div>
+        <div id="profile-name" class="mt-4 text-xl font-semibold text-gray-900">Loading...</div>
+        <div id="profile-email" class="text-gray-500 text-sm mb-4">Loading...</div>
         <a href="editprofile.html" class="bg-[#199A8E] hover:bg-[#157c71] text-white font-medium rounded-lg px-6 py-2 text-sm shadow transition text-center mt-0" role="button">Edit Profile</a>
       </div>
 
@@ -97,42 +97,27 @@
         }
         document.addEventListener('DOMContentLoaded', renderPersonalInfo);
         
-        // Load saved profile photo
-        const savedPhoto = localStorage.getItem('profilePhoto');
-        if (savedPhoto) {
-          document.getElementById('profile-photo').src = savedPhoto;
-        } else {
-          // Try to load from backend if not in localStorage
-          fetch('/profile-photo')
-            .then(response => {
-              if (response.ok) {
-                return response.blob();
-              }
-              throw new Error('No profile photo found');
-            })
-            .then(blob => {
-              const photoUrl = URL.createObjectURL(blob);
-              document.getElementById('profile-photo').src = photoUrl;
-              localStorage.setItem('profilePhoto', photoUrl);
-            })
-            .catch(error => {
-              console.log('Using default profile photo');
-            });
-        }
-
-        // Load saved name and email
+        // Load saved profile photo, name and email using centralized function
         try {
-          const savedDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
-          if (savedDetails.fullName) {
-            document.getElementById('profile-name').textContent = savedDetails.fullName;
-          }
-          
-          // Load email from userEmail (sign-in email)
-          const emailToShow = localStorage.getItem('userEmail');
-          if (emailToShow) {
-            document.getElementById('profile-email').textContent = emailToShow;
-          }
+          const userData = getUserData();
+          document.getElementById('profile-photo').src = userData.photo;
+          document.getElementById('profile-name').textContent = userData.name;
+          document.getElementById('profile-email').textContent = userData.email || 'No email';
         } catch (_) {}
+        
+        // Centralized user data management function
+        function getUserData() {
+          const userEmail = localStorage.getItem('userEmail');
+          const personalDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
+          const profilePhoto = localStorage.getItem('profilePhoto');
+          
+          return {
+            email: userEmail,
+            name: personalDetails.fullName || localStorage.getItem('userName') || 'User',
+            photo: profilePhoto || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=96&h=96',
+            personalDetails: personalDetails
+          };
+        }
         </script>
       </div>
 
