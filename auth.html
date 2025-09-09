@@ -423,27 +423,46 @@
       // Function to authenticate existing user using Firebase
       async function authenticateUser(email, password) {
         try {
+          // First, try to sign in with Firebase
           const result = await firebaseServices.signIn(email, password);
+          
           if (result.success) {
-            // Create local user object for compatibility
-            const user = {
-              id: result.user.uid,
-              email: email,
-              fullName: result.user.displayName || 'User',
-              firstName: result.user.displayName?.split(' ')[0] || 'User',
-              lastName: result.user.displayName?.split(' ').slice(1).join(' ') || '',
-              lastSignIn: new Date().toISOString(),
-              isNewUser: false
-            };
+            // Check if this user exists in our Firestore database
+            // This ensures they signed up through our system, not just any random email
+            const userDoc = await firebaseServices.db.collection('users').doc(result.user.uid).get();
             
-            // Store in localStorage for backward compatibility
-            localStorage.setItem('userEmail', email);
-            localStorage.setItem('userName', user.fullName);
-            localStorage.setItem('userId', user.id);
-            localStorage.setItem('isAuthenticated', 'true');
-            
-            return user;
+            if (userDoc.exists) {
+              // User exists in our database - they properly signed up
+              const userData = userDoc.data();
+              
+              // Create local user object for compatibility
+              const user = {
+                id: result.user.uid,
+                email: email,
+                fullName: userData.fullName || result.user.displayName || 'User',
+                firstName: userData.fullName?.split(' ')[0] || result.user.displayName?.split(' ')[0] || 'User',
+                lastName: userData.fullName?.split(' ').slice(1).join(' ') || result.user.displayName?.split(' ').slice(1).join(' ') || '',
+                lastSignIn: new Date().toISOString(),
+                isNewUser: false
+              };
+              
+              // Store in localStorage for backward compatibility
+              localStorage.setItem('userEmail', email);
+              localStorage.setItem('userName', user.fullName);
+              localStorage.setItem('userId', user.id);
+              localStorage.setItem('isAuthenticated', 'true');
+              
+              return user;
+            } else {
+              // User doesn't exist in our database - they didn't sign up properly
+              // Sign them out immediately
+              await firebaseServices.signOut();
+              console.log('❌ User not found in database - must sign up first');
+              return null;
+            }
           } else {
+            // Firebase sign-in failed
+            console.log('❌ Firebase sign-in failed:', result.error);
             return null;
           }
         } catch (error) {
@@ -604,7 +623,7 @@
               
               window.location.href = 'index.html';
             } else {
-              showAuthError('Invalid email or password. Please check your credentials and try again.');
+              showAuthError('This email is not registered. Please sign up first to create an account.');
             }
           } catch (error) {
             console.error('Sign in error:', error);
@@ -646,6 +665,13 @@
           submitBtn.disabled = true;
           
           try {
+            // Check if user already exists in our database first
+            const existingUserQuery = await firebaseServices.db.collection('users').where('email', '==', email).get();
+            if (!existingUserQuery.empty) {
+              showAuthError('An account with this email already exists. Please sign in instead.');
+              return;
+            }
+            
             // Create new user account with Firebase
             const newUser = await createUserAccount(firstName, lastName, email, password);
             
