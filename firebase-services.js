@@ -193,6 +193,45 @@ class FirebaseServices {
     }
   }
 
+  // Save all user data to Firestore
+  async saveUserData(userId, userData) {
+    try {
+      if (!this.db) {
+        throw new Error('Firestore not ready');
+      }
+      
+      await this.db.collection('users').doc(userId).set({
+        ...userData,
+        lastUpdated: new Date()
+      }, { merge: true });
+      
+      return { success: true };
+    } catch (error) {
+      console.error('Save user data error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  // Load all user data from Firestore
+  async loadUserData(userId) {
+    try {
+      if (!this.db) {
+        throw new Error('Firestore not ready');
+      }
+      
+      const userDoc = await this.db.collection('users').doc(userId).get();
+      
+      if (userDoc.exists) {
+        return { success: true, data: userDoc.data() };
+      } else {
+        return { success: false, error: 'User not found' };
+      }
+    } catch (error) {
+      console.error('Load user data error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
   async saveSymptomReport(userId, report) {
     try {
       if (!this.db) {

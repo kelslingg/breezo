@@ -479,6 +479,32 @@
         if (data.personalDetails) {
           localStorage.setItem('personalDetails', JSON.stringify(data.personalDetails));
         }
+        
+        // Save to Firestore for persistence
+        saveUserDataToFirestore();
+      }
+      
+      // Function to save all user data to Firestore
+      async function saveUserDataToFirestore() {
+        try {
+          const userId = localStorage.getItem('userId');
+          if (!userId || !window.firebaseServices) return;
+          
+          const userData = {
+            email: localStorage.getItem('userEmail'),
+            fullName: localStorage.getItem('userName'),
+            personalDetails: JSON.parse(localStorage.getItem('personalDetails') || '{}'),
+            profilePhoto: localStorage.getItem('profilePhoto'),
+            aqiData: JSON.parse(localStorage.getItem('aqiData') || '{}'),
+            userLocation: JSON.parse(localStorage.getItem('userLocation') || '{}'),
+            symptomReports: JSON.parse(localStorage.getItem('symptomReports') || '[]')
+          };
+          
+          await window.firebaseServices.saveUserData(userId, userData);
+          console.log('✅ User data saved to Firestore');
+        } catch (error) {
+          console.error('❌ Error saving user data to Firestore:', error);
+        }
       }
       
       // Function to update all UI elements with user data
@@ -505,6 +531,25 @@
           }
           if (navIcon) navIcon.style.display = 'none';
         }
+      }
+      
+      // Function to set up automatic data persistence
+      function setupDataPersistence() {
+        // Save data to Firestore whenever localStorage changes
+        const originalSetItem = localStorage.setItem;
+        localStorage.setItem = function(key, value) {
+          originalSetItem.apply(this, arguments);
+          
+          // Save to Firestore for important user data
+          if (['personalDetails', 'profilePhoto', 'aqiData', 'userLocation', 'symptomReports'].includes(key)) {
+            setTimeout(() => saveUserDataToFirestore(), 1000); // Debounce saves
+          }
+        };
+        
+        // Also save when page is about to unload
+        window.addEventListener('beforeunload', () => {
+          saveUserDataToFirestore();
+        });
       }
       
       // ===== END CENTRALIZED USER DATA MANAGEMENT =====
@@ -1539,6 +1584,9 @@
          
          updateUserUI();
          loadLastReport();
+         
+         // Set up automatic saving of user data to Firestore
+         setupDataPersistence();
          
          // Check if location permission is needed
 

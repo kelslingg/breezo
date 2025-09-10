@@ -410,6 +410,17 @@
             localStorage.setItem('userId', newUser.id);
             localStorage.setItem('isAuthenticated', 'true');
             
+            // Save initial user data to Firestore
+            await firebaseServices.saveUserData(newUser.id, {
+              email: email,
+              fullName: `${firstName} ${lastName}`,
+              personalDetails: null,
+              profilePhoto: null,
+              aqiData: null,
+              userLocation: null,
+              symptomReports: []
+            });
+            
             return newUser;
           } else {
             throw new Error(result.error);
@@ -451,6 +462,23 @@
               localStorage.setItem('userName', user.fullName);
               localStorage.setItem('userId', user.id);
               localStorage.setItem('isAuthenticated', 'true');
+              
+              // Load and restore all user data from Firestore
+              if (userData.personalDetails) {
+                localStorage.setItem('personalDetails', JSON.stringify(userData.personalDetails));
+              }
+              if (userData.profilePhoto) {
+                localStorage.setItem('profilePhoto', userData.profilePhoto);
+              }
+              if (userData.aqiData) {
+                localStorage.setItem('aqiData', JSON.stringify(userData.aqiData));
+              }
+              if (userData.userLocation) {
+                localStorage.setItem('userLocation', JSON.stringify(userData.userLocation));
+              }
+              if (userData.symptomReports) {
+                localStorage.setItem('symptomReports', JSON.stringify(userData.symptomReports));
+              }
               
               return user;
             } else {
