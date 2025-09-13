@@ -259,6 +259,13 @@
          localStorage.removeItem('isGuest');
          localStorage.removeItem('lastSignIn');
          localStorage.removeItem('userId');
+         
+         // Clear all user-specific data
+         localStorage.removeItem('personalDetails');
+         localStorage.removeItem('profilePhoto');
+         localStorage.removeItem('aqiData');
+         localStorage.removeItem('userLocation');
+         localStorage.removeItem('symptomReports');
  
         
         // If user doesn't want to be remembered, clear remembered data

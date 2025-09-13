@@ -404,6 +404,13 @@
               symptomReports: []
             };
             
+            // Clear any existing user data first
+            localStorage.removeItem('personalDetails');
+            localStorage.removeItem('profilePhoto');
+            localStorage.removeItem('aqiData');
+            localStorage.removeItem('userLocation');
+            localStorage.removeItem('symptomReports');
+            
             // Store in localStorage for backward compatibility
             localStorage.setItem('userEmail', email);
             localStorage.setItem('userName', newUser.fullName);
@@ -456,6 +463,13 @@
                 lastSignIn: new Date().toISOString(),
                 isNewUser: false
               };
+              
+              // Clear any existing user data first
+              localStorage.removeItem('personalDetails');
+              localStorage.removeItem('profilePhoto');
+              localStorage.removeItem('aqiData');
+              localStorage.removeItem('userLocation');
+              localStorage.removeItem('symptomReports');
               
               // Store in localStorage for backward compatibility
               localStorage.setItem('userEmail', email);
