@@ -53,14 +53,14 @@
       <form id="personal-details-form" class="w-full bg-white rounded-2xl shadow p-6 space-y-5">
         <div>
           <label class="block text-gray-400 text-sm mb-1" for="fullName">Full Name</label>
-          <input id="fullName" name="fullName" type="text" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200 placeholder-gray-400" placeholder="Enter your name" />
+          <input id="fullName" name="fullName" type="text" class="w-full border border-gray-200 rounded-xl px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200 placeholder-gray-400" placeholder="Enter your name" />
         </div>
 
         <div>
           <label class="block text-blue-600 text-sm mb-1 font-medium" for="dob">
             <span class="cursor-pointer hover:text-blue-700 transition-colors duration-200" id="dob-label-highlight">Date of Birth</span> *
           </label>
-          <input id="dob" name="dob" type="date" class="w-full border border-blue-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white shadow-sm transition-all duration-200" required />
+          <input id="dob" name="dob" type="date" class="w-full border border-blue-200 rounded-xl px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white shadow-sm transition-all duration-200" required />
         </div>
         <div>
           <label class="block text-blue-600 text-sm mb-1 font-medium" for="sex">
@@ -91,9 +91,9 @@
         <!-- Height Field with Unit Selection -->
         <div>
           <label class="block text-gray-400 text-sm mb-1" for="height">Height</label>
-          <div class="flex gap-2">
-            <input id="height" name="height" type="number" min="0" step="0.1" class="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200 placeholder-gray-400" placeholder="Enter height" />
-            <select id="heightUnit" name="heightUnit" class="w-24 border border-gray-200 rounded-xl px-3 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200">
+          <div class="flex gap-3">
+            <input id="height" name="height" type="number" min="0" step="0.1" class="flex-1 border border-gray-200 rounded-xl px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200 placeholder-gray-400" placeholder="Enter height" />
+            <select id="heightUnit" name="heightUnit" class="w-20 border border-gray-200 rounded-xl px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200 text-center font-medium">
               <option value="cm">cm</option>
               <option value="ft">ft</option>
             </select>
@@ -104,9 +104,9 @@
         <!-- Weight Field with Unit Selection -->
         <div>
           <label class="block text-gray-400 text-sm mb-1" for="weight">Weight</label>
-          <div class="flex gap-2">
-            <input id="weight" name="weight" type="number" min="0" step="0.1" class="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200 placeholder-gray-400" placeholder="Enter weight" />
-            <select id="weightUnit" name="weightUnit" class="w-24 border border-gray-200 rounded-xl px-3 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200">
+          <div class="flex gap-3">
+            <input id="weight" name="weight" type="number" min="0" step="0.1" class="flex-1 border border-gray-200 rounded-xl px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200 placeholder-gray-400" placeholder="Enter weight" />
+            <select id="weightUnit" name="weightUnit" class="w-20 border border-gray-200 rounded-xl px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200 text-center font-medium">
               <option value="kg">kg</option>
               <option value="lbs">lbs</option>
             </select>
@@ -115,7 +115,7 @@
         </div>
         <div>
           <label class="block text-gray-400 text-sm mb-1" for="bloodType">Blood Type</label>
-          <select id="bloodType" name="bloodType" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200">
+          <select id="bloodType" name="bloodType" class="w-full border border-gray-200 rounded-xl px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200">
             <option value="" disabled selected>Select blood type</option>
             <option value="A+">A+</option>
             <option value="A-">A-</option>
