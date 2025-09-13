@@ -510,12 +510,14 @@
       // Function to update all UI elements with user data
       function updateUserUI() {
         const userData = getUserData();
+        console.log('🔄 Updating UI with user data:', userData);
         
         // Update name in greeting
         const greet = document.getElementById('home-greeting');
         if (greet) {
           const prefix = greet.textContent.includes(',') ? greet.textContent.split(',')[0] : 'Good evening';
           greet.textContent = `${prefix}, ${userData.name}`;
+          console.log('✅ Updated greeting to:', greet.textContent);
         }
         
         // Update profile photos
@@ -684,7 +686,6 @@
            const personalDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
            const hasAge = personalDetails.dob && calculateAge(personalDetails.dob);
            const hasGender = personalDetails.sex;
-           console.log('Personal details check:', { hasAge, hasGender, personalDetails });
            
            if (hasAge && hasGender) {
              // Personal details are complete, proceed to self-assessment
@@ -1590,21 +1591,7 @@
        
        // Check authentication on page load
        document.addEventListener('DOMContentLoaded', function() {
-         // Debug: Check if any modals are visible when they shouldn't be
-         console.log('🔍 Checking for visible modals...');
-         const modals = ['personal-details-modal', 'aqi-info-modal', 'aqi-modal-overlay'];
-         modals.forEach(modalId => {
-           const modal = document.getElementById(modalId);
-           if (modal) {
-             const isHidden = modal.classList.contains('hidden');
-             console.log(`Modal ${modalId}: hidden=${isHidden}, classes=${modal.className}`);
-           }
-         });
          
-         // Debug: Add click listener to document to test if clicks work at all
-         document.addEventListener('click', (e) => {
-           console.log('🖱️ Document click detected:', e.target);
-         });
          
          // Check if user is authenticated
          if (localStorage.getItem('isAuthenticated') !== 'true') {
@@ -1740,13 +1727,10 @@
          
          function openAqiModal() {
            console.log('Opening AQI modal...');
-           console.log('AQI modal element:', aqiModal);
            if (aqiModal) {
              try {
-               console.log('Removing hidden class from modal...');
                aqiModal.classList.remove('hidden');
                document.body.classList.add('overflow-hidden');
-               console.log('Modal classes after removal:', aqiModal.className);
                // Update location management section when modal opens
                updateLocationManagementSection();
                console.log('AQI modal opened successfully');
@@ -1825,16 +1809,11 @@
          }
          
          if (aqiCard) {
-           aqiCard.addEventListener('click', (e) => {
-             e.preventDefault();
-             e.stopPropagation();
+           aqiCard.addEventListener('click', () => {
              console.log('AQI card clicked!');
-             console.log('AQI card element:', aqiCard);
-             console.log('AQI modal element:', aqiModal);
              openAqiModal();
            });
            console.log('AQI card event listener added successfully');
-           console.log('AQI card element found:', aqiCard);
          } else {
            console.error('AQI card element not found');
          }
