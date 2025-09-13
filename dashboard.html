@@ -1722,10 +1722,13 @@
          
          function openAqiModal() {
            console.log('Opening AQI modal...');
+           console.log('AQI modal element:', aqiModal);
            if (aqiModal) {
              try {
+               console.log('Removing hidden class from modal...');
                aqiModal.classList.remove('hidden');
                document.body.classList.add('overflow-hidden');
+               console.log('Modal classes after removal:', aqiModal.className);
                // Update location management section when modal opens
                updateLocationManagementSection();
                console.log('AQI modal opened successfully');
@@ -1804,11 +1807,16 @@
          }
          
          if (aqiCard) {
-           aqiCard.addEventListener('click', () => {
+           aqiCard.addEventListener('click', (e) => {
+             e.preventDefault();
+             e.stopPropagation();
              console.log('AQI card clicked!');
+             console.log('AQI card element:', aqiCard);
+             console.log('AQI modal element:', aqiModal);
              openAqiModal();
            });
            console.log('AQI card event listener added successfully');
+           console.log('AQI card element found:', aqiCard);
          } else {
            console.error('AQI card element not found');
          }
