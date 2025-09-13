@@ -141,7 +141,7 @@
 
       <!-- SELF-ASSESSMENT BUTTON -->
       <button id="self-assessment-btn"
-        class="w-full max-w-xl flex items-center bg-[#199A8E] rounded-2xl shadow px-4 py-2 mt-2 mb-2 focus:outline-none transition group hover:bg-[#157c71]"
+        class="w-full max-w-xl flex items-center bg-[#199A8E] rounded-2xl shadow px-4 py-2 mt-2 mb-2 focus:outline-none transition group hover:bg-[#157c71] cursor-pointer"
         role="button"
         onclick="checkPersonalDetailsAndProceed()"
       >
@@ -679,10 +679,12 @@
 
        // Function to check personal details and proceed
        function checkPersonalDetailsAndProceed() {
+         console.log('Self-assessment button clicked!');
          try {
            const personalDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
            const hasAge = personalDetails.dob && calculateAge(personalDetails.dob);
            const hasGender = personalDetails.sex;
+           console.log('Personal details check:', { hasAge, hasGender, personalDetails });
            
            if (hasAge && hasGender) {
              // Personal details are complete, proceed to self-assessment
@@ -1588,6 +1590,22 @@
        
        // Check authentication on page load
        document.addEventListener('DOMContentLoaded', function() {
+         // Debug: Check if any modals are visible when they shouldn't be
+         console.log('🔍 Checking for visible modals...');
+         const modals = ['personal-details-modal', 'aqi-info-modal', 'aqi-modal-overlay'];
+         modals.forEach(modalId => {
+           const modal = document.getElementById(modalId);
+           if (modal) {
+             const isHidden = modal.classList.contains('hidden');
+             console.log(`Modal ${modalId}: hidden=${isHidden}, classes=${modal.className}`);
+           }
+         });
+         
+         // Debug: Add click listener to document to test if clicks work at all
+         document.addEventListener('click', (e) => {
+           console.log('🖱️ Document click detected:', e.target);
+         });
+         
          // Check if user is authenticated
          if (localStorage.getItem('isAuthenticated') !== 'true') {
            // Check if user should be remembered
