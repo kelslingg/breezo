@@ -510,14 +510,12 @@
       // Function to update all UI elements with user data
       function updateUserUI() {
         const userData = getUserData();
-        console.log('🔄 Updating UI with user data:', userData);
         
         // Update name in greeting
         const greet = document.getElementById('home-greeting');
         if (greet) {
           const prefix = greet.textContent.includes(',') ? greet.textContent.split(',')[0] : 'Good evening';
           greet.textContent = `${prefix}, ${userData.name}`;
-          console.log('✅ Updated greeting to:', greet.textContent);
         }
         
         // Update profile photos
@@ -681,7 +679,6 @@
 
        // Function to check personal details and proceed
        function checkPersonalDetailsAndProceed() {
-         console.log('Self-assessment button clicked!');
          try {
            const personalDetails = JSON.parse(localStorage.getItem('personalDetails') || '{}');
            const hasAge = personalDetails.dob && calculateAge(personalDetails.dob);
@@ -1302,7 +1299,7 @@
        }
        
        // Fallback function for demo data if API fails
-       function fetchDemoData(lat, lon, city) {
+       async function fetchDemoData(lat, lon, city) {
          const aqiValue = Math.floor(Math.random() * 150) + 20; // 20-170
          const weatherData = {
            temperature: Math.floor(Math.random() * 40) + 50, // 50-90°F
@@ -1591,8 +1588,6 @@
        
        // Check authentication on page load
        document.addEventListener('DOMContentLoaded', function() {
-         
-         
          // Check if user is authenticated
          if (localStorage.getItem('isAuthenticated') !== 'true') {
            // Check if user should be remembered
@@ -1726,22 +1721,10 @@
          }
          
          function openAqiModal() {
-           console.log('Opening AQI modal...');
            if (aqiModal) {
-             try {
-               aqiModal.classList.remove('hidden');
-               document.body.classList.add('overflow-hidden');
-               // Update location management section when modal opens
-               updateLocationManagementSection();
-               console.log('AQI modal opened successfully');
-             } catch (error) {
-               console.error('Error opening AQI modal:', error);
-               // Still try to show the modal even if location update fails
-               aqiModal.classList.remove('hidden');
-               document.body.classList.add('overflow-hidden');
-             }
-           } else {
-             console.error('AQI modal element not found');
+             aqiModal.classList.remove('hidden');
+             document.body.classList.add('overflow-hidden');
+             updateLocationManagementSection();
            }
          }
          
@@ -1809,13 +1792,7 @@
          }
          
          if (aqiCard) {
-           aqiCard.addEventListener('click', () => {
-             console.log('AQI card clicked!');
-             openAqiModal();
-           });
-           console.log('AQI card event listener added successfully');
-         } else {
-           console.error('AQI card element not found');
+           aqiCard.addEventListener('click', openAqiModal);
          }
          
 
