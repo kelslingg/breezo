@@ -92,7 +92,7 @@
         <div>
           <label class="block text-gray-400 text-sm mb-1" for="height">Height</label>
           <div class="flex gap-3">
-            <input id="height" name="height" type="number" min="0" step="0.1" class="flex-1 border border-gray-200 rounded-xl px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200 placeholder-gray-400" placeholder="Enter height" />
+            <input id="height" name="height" type="text" class="flex-1 border border-gray-200 rounded-xl px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200 placeholder-gray-400" placeholder="e.g. 5'8 or 175" />
             <select id="heightUnit" name="heightUnit" class="w-16 border border-gray-200 rounded-xl px-2 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] focus:border-[#199A8E] bg-white shadow-sm transition-all duration-200 text-center text-sm">
               <option value="cm">cm</option>
               <option value="ft">ft</option>
@@ -483,26 +483,53 @@
         
         // Height conversion
         function updateHeightConversion() {
-          const value = parseFloat(heightInput.value);
-          if (!value || value <= 0) {
+          const inputValue = heightInput.value.trim();
+          if (!inputValue) {
             heightConversion.classList.add('hidden');
             return;
           }
           
           const unit = heightUnit.value;
-          let convertedValue, convertedUnit, convertedText;
+          let convertedText;
           
           if (unit === 'cm') {
-            // Convert cm to feet and inches
-            const totalInches = value / 2.54;
+            // Input is in cm, convert to feet and inches
+            const cmValue = parseFloat(inputValue);
+            if (isNaN(cmValue) || cmValue <= 0) {
+              heightConversion.classList.add('hidden');
+              return;
+            }
+            const totalInches = cmValue / 2.54;
             const feet = Math.floor(totalInches / 12);
             const inches = Math.round((totalInches % 12) * 10) / 10;
             convertedText = `${feet}'${inches}"`;
-            convertedValue = `${feet} ft ${inches} in`;
           } else {
-            // Convert feet to cm
-            convertedValue = Math.round(value * 30.48);
-            convertedText = `${convertedValue} cm`;
+            // Input is in feet/inches format, convert to cm
+            let totalInches = 0;
+            
+            // Check if input contains apostrophe (feet/inches format)
+            if (inputValue.includes("'")) {
+              const parts = inputValue.split("'");
+              const feet = parseFloat(parts[0]) || 0;
+              const inches = parseFloat(parts[1].replace(/"/g, '')) || 0;
+              totalInches = feet * 12 + inches;
+            } else {
+              // Just feet
+              const feet = parseFloat(inputValue);
+              if (isNaN(feet) || feet <= 0) {
+                heightConversion.classList.add('hidden');
+                return;
+              }
+              totalInches = feet * 12;
+            }
+            
+            if (totalInches <= 0) {
+              heightConversion.classList.add('hidden');
+              return;
+            }
+            
+            const cmValue = Math.round(totalInches * 2.54);
+            convertedText = `${cmValue} cm`;
           }
           
           heightConversion.textContent = `≈ ${convertedText}`;
