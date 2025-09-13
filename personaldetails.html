@@ -86,13 +86,30 @@
             <input type="hidden" id="sex" name="sex" required />
           </div>
         </div>
+        <!-- Height Field with Unit Selection -->
         <div>
           <label class="block text-gray-400 text-sm mb-1" for="height">Height</label>
-          <input id="height" name="height" type="number" min="0" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" placeholder="Height" />
+          <div class="flex gap-2">
+            <input id="height" name="height" type="number" min="0" step="0.1" class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" placeholder="Enter height" />
+            <select id="heightUnit" name="heightUnit" class="w-20 border border-gray-200 rounded-lg px-2 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] bg-white/70 text-sm">
+              <option value="cm">cm</option>
+              <option value="ft">ft</option>
+            </select>
+          </div>
+          <div id="heightConversion" class="text-xs text-gray-500 mt-1 hidden"></div>
         </div>
+
+        <!-- Weight Field with Unit Selection -->
         <div>
           <label class="block text-gray-400 text-sm mb-1" for="weight">Weight</label>
-          <input id="weight" name="weight" type="number" min="0" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" placeholder="Weight" />
+          <div class="flex gap-2">
+            <input id="weight" name="weight" type="number" min="0" step="0.1" class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E]" placeholder="Enter weight" />
+            <select id="weightUnit" name="weightUnit" class="w-20 border border-gray-200 rounded-lg px-2 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#199A8E] bg-white/70 text-sm">
+              <option value="kg">kg</option>
+              <option value="lbs">lbs</option>
+            </select>
+          </div>
+          <div id="weightConversion" class="text-xs text-gray-500 mt-1 hidden"></div>
         </div>
         <div>
           <label class="block text-gray-400 text-sm mb-1" for="bloodType">Blood Type</label>
@@ -185,7 +202,9 @@
           if (data.dob) form.dob.value = data.dob;
           if (data.sex) form.sex.value = data.sex;
           if (data.height) form.height.value = data.height;
+          if (data.heightUnit) form.heightUnit.value = data.heightUnit;
           if (data.weight) form.weight.value = data.weight;
+          if (data.weightUnit) form.weightUnit.value = data.weightUnit;
           if (data.bloodType) form.bloodType.value = data.bloodType;
         }
         
@@ -194,6 +213,9 @@
         
         // Set up biological sex label click functionality
         setupSexLabelClick();
+        
+        // Set up measurement unit conversion
+        setupMeasurementConversion();
         
 
         form.onsubmit = function(e) {
@@ -210,7 +232,9 @@
             dob: form.dob.value,
             sex: form.sex.value,
             height: form.height.value,
+            heightUnit: form.heightUnit.value,
             weight: form.weight.value,
+            weightUnit: form.weightUnit.value,
             bloodType: form.bloodType.value
           };
           
@@ -324,6 +348,107 @@
             document.body.style.overflow = 'auto';
           }
         });
+      }
+
+      // Function to set up measurement unit conversion
+      function setupMeasurementConversion() {
+        const heightInput = document.getElementById('height');
+        const heightUnit = document.getElementById('heightUnit');
+        const heightConversion = document.getElementById('heightConversion');
+        
+        const weightInput = document.getElementById('weight');
+        const weightUnit = document.getElementById('weightUnit');
+        const weightConversion = document.getElementById('weightConversion');
+        
+        // Height conversion
+        function updateHeightConversion() {
+          const value = parseFloat(heightInput.value);
+          if (!value || value <= 0) {
+            heightConversion.classList.add('hidden');
+            return;
+          }
+          
+          const unit = heightUnit.value;
+          let convertedValue, convertedUnit, convertedText;
+          
+          if (unit === 'cm') {
+            // Convert cm to feet and inches
+            const totalInches = value / 2.54;
+            const feet = Math.floor(totalInches / 12);
+            const inches = Math.round((totalInches % 12) * 10) / 10;
+            convertedText = `${feet}'${inches}"`;
+            convertedValue = `${feet} ft ${inches} in`;
+          } else {
+            // Convert feet to cm
+            convertedValue = Math.round(value * 30.48);
+            convertedText = `${convertedValue} cm`;
+          }
+          
+          heightConversion.textContent = `≈ ${convertedText}`;
+          heightConversion.classList.remove('hidden');
+        }
+        
+        // Weight conversion
+        function updateWeightConversion() {
+          const value = parseFloat(weightInput.value);
+          if (!value || value <= 0) {
+            weightConversion.classList.add('hidden');
+            return;
+          }
+          
+          const unit = weightUnit.value;
+          let convertedValue, convertedText;
+          
+          if (unit === 'kg') {
+            // Convert kg to lbs
+            convertedValue = Math.round(value * 2.205 * 10) / 10;
+            convertedText = `${convertedValue} lbs`;
+          } else {
+            // Convert lbs to kg
+            convertedValue = Math.round(value / 2.205 * 10) / 10;
+            convertedText = `${convertedValue} kg`;
+          }
+          
+          weightConversion.textContent = `≈ ${convertedText}`;
+          weightConversion.classList.remove('hidden');
+        }
+        
+        // Add event listeners
+        heightInput.addEventListener('input', updateHeightConversion);
+        heightUnit.addEventListener('change', updateHeightConversion);
+        
+        weightInput.addEventListener('input', updateWeightConversion);
+        weightUnit.addEventListener('change', updateWeightConversion);
+        
+        // Set default units based on user preference or locale
+        setDefaultUnits();
+      }
+      
+      // Function to set default units based on user preference
+      function setDefaultUnits() {
+        // Check if user has previously set units
+        const saved = localStorage.getItem('personalDetails');
+        if (saved) {
+          const data = JSON.parse(saved);
+          if (data.heightUnit) {
+            document.getElementById('heightUnit').value = data.heightUnit;
+          }
+          if (data.weightUnit) {
+            document.getElementById('weightUnit').value = data.weightUnit;
+          }
+          return;
+        }
+        
+        // Set default units based on locale (US uses imperial, others use metric)
+        const isUS = Intl.DateTimeFormat().resolvedOptions().timeZone.includes('America');
+        
+        if (isUS) {
+          document.getElementById('heightUnit').value = 'ft';
+          document.getElementById('weightUnit').value = 'lbs';
+        } else {
+          document.getElementById('heightUnit').value = 'cm';
+          document.getElementById('weightUnit').value = 'kg';
+        }
       }
 
     </script>
