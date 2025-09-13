@@ -155,12 +155,25 @@
       }
       
       // Delete a report
-      function deleteReport(reportId) {
+      async function deleteReport(reportId) {
         if (confirm('Are you sure you want to delete this report?')) {
           try {
             const reports = JSON.parse(localStorage.getItem('symptomReports') || '[]');
             const updatedReports = reports.filter(report => report.id !== reportId);
             localStorage.setItem('symptomReports', JSON.stringify(updatedReports));
+            
+            // Save to Firestore under user's email
+            try {
+              const userId = localStorage.getItem('userId');
+              if (userId && window.firebaseServices) {
+                await window.firebaseServices.saveUserData(userId, {
+                  symptomReports: updatedReports
+                });
+                console.log('✅ Updated symptom reports saved to Firestore');
+              }
+            } catch (error) {
+              console.error('❌ Error saving updated reports to Firestore:', error);
+            }
             
             // Reload the reports
             loadReports();

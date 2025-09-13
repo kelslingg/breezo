@@ -1214,6 +1214,19 @@
           // Save back to localStorage
           localStorage.setItem('symptomReports', JSON.stringify(existingReports));
           
+          // Save to Firestore under user's email
+          try {
+            const userId = localStorage.getItem('userId');
+            if (userId && window.firebaseServices) {
+              await window.firebaseServices.saveUserData(userId, {
+                symptomReports: existingReports
+              });
+              console.log('✅ Symptom reports saved to Firestore');
+            }
+          } catch (error) {
+            console.error('❌ Error saving reports to Firestore:', error);
+          }
+          
           console.log('Report saved successfully with environmental data:', report);
           
         } catch (error) {

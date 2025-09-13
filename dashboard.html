@@ -786,6 +786,19 @@
              localStorage.setItem('aqiData', JSON.stringify(aqiDataToSave));
              console.log('💾 AQI data saved to localStorage');
              
+             // Save to Firestore under user's email
+             try {
+               const userId = localStorage.getItem('userId');
+               if (userId && window.firebaseServices) {
+                 await window.firebaseServices.saveUserData(userId, {
+                   aqiData: aqiDataToSave
+                 });
+                 console.log('✅ AQI data saved to Firestore');
+               }
+             } catch (error) {
+               console.error('❌ Error saving AQI data to Firestore:', error);
+             }
+             
              // Update userLocation when city changes
              if (city) {
                const userLocation = {
@@ -796,6 +809,19 @@
                };
                localStorage.setItem('userLocation', JSON.stringify(userLocation));
                console.log('📍 Updated user location:', userLocation);
+               
+               // Save to Firestore under user's email
+               try {
+                 const userId = localStorage.getItem('userId');
+                 if (userId && window.firebaseServices) {
+                   await window.firebaseServices.saveUserData(userId, {
+                     userLocation: userLocation
+                   });
+                   console.log('✅ User location saved to Firestore');
+                 }
+               } catch (error) {
+                 console.error('❌ Error saving location to Firestore:', error);
+               }
                
                // Force update the AQI card display to show the new location immediately
                setTimeout(() => {
@@ -1282,13 +1308,27 @@
          };
          
          // Save demo data
-         localStorage.setItem('aqiData', JSON.stringify({
+         const demoAqiData = {
            value: aqiValue,
            level: getAQILevel(aqiValue),
            timestamp: new Date().toISOString(),
            location: city || (lat && lon ? `${lat.toFixed(2)}, ${lon.toFixed(2)}` : 'Unknown'),
            isDemo: true
-         }));
+         };
+         localStorage.setItem('aqiData', JSON.stringify(demoAqiData));
+         
+         // Save to Firestore under user's email
+         try {
+           const userId = localStorage.getItem('userId');
+           if (userId && window.firebaseServices) {
+             await window.firebaseServices.saveUserData(userId, {
+               aqiData: demoAqiData
+             });
+             console.log('✅ Demo AQI data saved to Firestore');
+           }
+         } catch (error) {
+           console.error('❌ Error saving demo AQI data to Firestore:', error);
+         }
          
          localStorage.setItem('weatherData', JSON.stringify({
            ...weatherData,
