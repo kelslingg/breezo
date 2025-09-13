@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+l<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -41,7 +41,7 @@
     <div id="tip-bar" class="w-full flex justify-center mt-8 px-4">
       <div class="relative flex items-center gap-3 bg-white rounded-xl px-5 py-3 w-full max-w-xl shadow text-green-700">
         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#199A8E" stroke-width="2"/><path d="M12 8v4m0 4h.01" stroke="#199A8E" stroke-width="2" stroke-linecap="round"/></svg>
-        <span class="text-base font-medium">Stay hydrated and check AQI before going outside!</span>
+        <span id="tip-text" class="text-base font-medium">Stay hydrated and check AQI before going outside!</span>
         <button onclick="document.getElementById('tip-bar').style.display='none'" class="absolute top-2 right-2 text-gray-400 hover:text-red-400 rounded-full w-6 h-6 flex items-center justify-center text-lg font-bold focus:outline-none" aria-label="Close tip">&times;</button>
       </div>
     </div>
@@ -1586,6 +1586,30 @@
          }
        }
        
+       // Function to show random tip
+       function showRandomTip() {
+         const tips = [
+           "Stay hydrated and check AQI before going outside!",
+           "Monitor air quality during peak traffic hours for better health.",
+           "Keep windows closed when outdoor AQI is high.",
+           "Use air purifiers indoors when air quality is poor.",
+           "Exercise indoors when outdoor air quality is unhealthy.",
+           "Check pollen levels if you have seasonal allergies.",
+           "Wear a mask outdoors when AQI exceeds 100.",
+           "Plan outdoor activities for early morning when air is cleaner.",
+           "Keep indoor plants to help purify your home's air.",
+           "Avoid outdoor exercise when AQI is in the unhealthy range.",
+           "Use HEPA filters in your home's ventilation system.",
+           "Stay informed about local air quality conditions daily."
+         ];
+         
+         const randomIndex = Math.floor(Math.random() * tips.length);
+         const tipText = document.getElementById('tip-text');
+         if (tipText) {
+           tipText.textContent = tips[randomIndex];
+         }
+       }
+       
        // Check authentication on page load
        document.addEventListener('DOMContentLoaded', function() {
          // Check if user is authenticated
@@ -1627,6 +1651,9 @@
          
          // Set up automatic saving of user data to Firestore
          setupDataPersistence();
+         
+         // Show random tip
+         showRandomTip();
          
          // Check if location permission is needed
 
