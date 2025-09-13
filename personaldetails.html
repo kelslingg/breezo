@@ -57,7 +57,9 @@
         </div>
 
         <div>
-          <label class="block text-blue-600 text-sm mb-1 font-medium" for="dob">Date of Birth *</label>
+          <label class="block text-blue-600 text-sm mb-1 font-medium" for="dob">
+            <span class="cursor-pointer hover:text-blue-700 transition-colors duration-200" id="dob-label-highlight">Date of Birth</span> *
+          </label>
           <input id="dob" name="dob" type="date" class="w-full border border-blue-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white shadow-sm transition-all duration-200" required />
         </div>
         <div>
@@ -191,6 +193,69 @@
         </div>
       </div>
     </div>
+
+    <!-- Date of Birth Info Modal -->
+    <div id="dob-info-modal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900">Why Exact Age Matters</h3>
+            <button id="close-dob-modal" class="text-gray-400 hover:text-gray-600 transition-colors">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-100">
+              <h4 class="font-medium text-blue-900 mb-2">AI Model Accuracy</h4>
+              <p class="text-sm text-blue-800">Our machine learning model uses precise age data to provide more accurate respiratory health assessments by considering age-related physiological changes and disease risk patterns.</p>
+            </div>
+            
+            <div class="space-y-3">
+              <div class="flex items-start gap-3">
+                <div class="w-2 h-2 bg-[#199A8E] rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h5 class="font-medium text-gray-900 text-sm">Lung Development</h5>
+                  <p class="text-xs text-gray-600">Lung function peaks in early adulthood and gradually declines with age, affecting respiratory capacity</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-3">
+                <div class="w-2 h-2 bg-[#199A8E] rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h5 class="font-medium text-gray-900 text-sm">Disease Risk Patterns</h5>
+                  <p class="text-xs text-gray-600">Respiratory diseases like COPD and lung cancer are more common in older adults</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-3">
+                <div class="w-2 h-2 bg-[#199A8E] rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h5 class="font-medium text-gray-900 text-sm">Immune System Changes</h5>
+                  <p class="text-xs text-gray-600">Age affects immune response to respiratory infections and recovery patterns</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-3">
+                <div class="w-2 h-2 bg-[#199A8E] rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h5 class="font-medium text-gray-900 text-sm">Treatment Considerations</h5>
+                  <p class="text-xs text-gray-600">Medication dosages and treatment approaches vary significantly by age group</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-[#e6f4f1] rounded-xl p-4 border border-[#199A8E]/20">
+              <p class="text-sm text-[#199A8E] font-medium text-center">
+                💡 This information helps our AI provide personalized, accurate health insights tailored to your specific age group.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <script>
       // Pre-fill form if data exists
       document.addEventListener('DOMContentLoaded', function() {
@@ -213,6 +278,9 @@
         
         // Set up biological sex label click functionality
         setupSexLabelClick();
+        
+        // Set up Date of Birth modal functionality
+        setupDOBModal();
         
         // Set up measurement unit conversion
         setupMeasurementConversion();
@@ -323,6 +391,41 @@
         
         // Open modal when label is clicked
         sexLabel.addEventListener('click', function() {
+          modal.classList.remove('hidden');
+          document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+        
+        // Close modal when close button is clicked
+        closeButton.addEventListener('click', function() {
+          modal.classList.add('hidden');
+          document.body.style.overflow = 'auto'; // Restore scrolling
+        });
+        
+        // Close modal when clicking outside
+        modal.addEventListener('click', function(e) {
+          if (e.target === modal) {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+          }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+          }
+        });
+      }
+
+      // Function to set up Date of Birth modal
+      function setupDOBModal() {
+        const dobLabel = document.getElementById('dob-label-highlight');
+        const modal = document.getElementById('dob-info-modal');
+        const closeButton = document.getElementById('close-dob-modal');
+        
+        // Open modal when label is clicked
+        dobLabel.addEventListener('click', function() {
           modal.classList.remove('hidden');
           document.body.style.overflow = 'hidden'; // Prevent background scrolling
         });
