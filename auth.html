@@ -127,13 +127,7 @@
         </div>
       </div>
 
-      <!-- Demo Access -->
-      <div class="mt-6 text-center animate-slideup">
-        <p class="text-gray-500 text-sm mb-3">Want to try without signing up?</p>
-        <button id="demo-access" class="text-[#199A8E] hover:text-[#157c71] font-medium underline">
-          Continue as Guest
-        </button>
-      </div>
+      
     </main>
 
     <!-- Privacy Policy Modal -->
@@ -754,29 +748,7 @@
         }
       });
 
-      // Demo access
-      document.getElementById('demo-access').addEventListener('click', async function() {
-        try {
-          // Create a demo user account
-          const demoUser = await createUserAccount('Demo', 'User', 'support@breezo.com', 'demo123');
-          
-          if (demoUser) {
-            localStorage.setItem('isAuthenticated', 'true');
-            localStorage.setItem('userEmail', 'support@breezo.com');
-            localStorage.setItem('userName', 'Demo User');
-            localStorage.setItem('userId', demoUser.id);
-            localStorage.setItem('isGuest', 'true');
-            localStorage.setItem('isNewUser', 'true'); // Flag for tutorial modal
-
-            window.location.href = 'dashboard.html';
-          } else {
-            alert('Error creating demo account. Please try again.');
-          }
-        } catch (error) {
-          console.error('Demo access error:', error);
-          alert('Error creating demo account. Please try again.');
-        }
-      });
+      
 
       // Modal functionality for Privacy Policy and Terms of Service
       function setupModals() {

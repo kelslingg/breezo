@@ -7,7 +7,6 @@ BREEZO is a comprehensive respiratory health application that combines machine l
 - **ML-Powered Symptom Analysis**: AI-driven disease prediction based on respiratory symptoms
 - **Real-time Air Quality Index (AQI)**: Live air quality data for informed outdoor activity decisions
 - **Personal Health Tracking**: Symptom reports and health history management
-- **User Authentication**: Secure user accounts with Firebase Authentication
 - **Responsive Design**: Modern, mobile-friendly interface built with TailwindCSS
 
 ## Architecture
@@ -22,7 +21,7 @@ BREEZO uses a **Firebase-powered backend** with **GitHub Pages hosting**:
 - **Hosting**: GitHub Pages
 
 ## Quick Start
-
+w
 ### Prerequisites
 - Node.js 18+
 - Firebase CLI (`npm install -g firebase-tools`)
@@ -183,4 +182,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **TailwindCSS**: UI framework and styling
 - **IQAir**: Air quality data API
 - **OpenWeatherMap**: Weather data API
-# Breezo-web
