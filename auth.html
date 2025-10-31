@@ -423,13 +423,13 @@
               symptomReports: []
             });
             
-            return newUser;
+            return { user: newUser, error: null, code: null };
           } else {
-            throw new Error(result.error);
+            return { user: null, error: result.error || 'Unknown signup error', code: result.code || null };
           }
         } catch (error) {
           console.error('Firebase sign up error:', error);
-          return null;
+          return { user: null, error: error.message || 'Signup failed', code: error.code || null };
         }
       }
       
@@ -440,13 +440,22 @@
           const result = await firebaseServices.signIn(email, password);
           
           if (result.success) {
-            // Check if this user exists in our Firestore database
-            // This ensures they signed up through our system, not just any random email
-            const userDoc = await firebaseServices.db.collection('users').doc(result.user.uid).get();
-            
+            // Ensure a Firestore user document exists; create it on first sign-in if missing
+            const userRef = firebaseServices.db.collection('users').doc(result.user.uid);
+            const userDoc = await userRef.get();
+            let userData;
             if (userDoc.exists) {
-              // User exists in our database - they properly signed up
-              const userData = userDoc.data();
+              userData = userDoc.data();
+            } else {
+              // Backfill minimal user record so returning users can sign in without blocking
+              userData = {
+                email: email,
+                fullName: result.user.displayName || 'User',
+                createdAt: new Date(),
+                lastLogin: new Date()
+              };
+              await userRef.set(userData, { merge: true });
+            }
               
               // Create local user object for compatibility
               const user = {
@@ -490,13 +499,7 @@
               }
               
               return user;
-            } else {
-              // User doesn't exist in our database - they didn't sign up properly
-              // Sign them out immediately
-              await firebaseServices.signOut();
-              console.log('❌ User not found in database - must sign up first');
-              return null;
-            }
+            
           } else {
             // Firebase sign-in failed
             console.log('❌ Firebase sign-in failed:', result.error);
@@ -684,11 +687,22 @@
         const confirmPassword = document.getElementById('signup-confirm-password').value;
         const terms = document.getElementById('signup-terms').checked;
         
+        // Ensure Firebase services are ready
+        if (!window.firebaseServices || !window.firebaseServices.auth || !window.firebaseServices.db) {
+          showAuthError('Initializing authentication services. Please try again in a moment.');
+          return;
+        }
+
         if (password !== confirmPassword) {
           showAuthError('Passwords do not match');
           return;
         }
         
+        if (password && password.length < 6) {
+          showAuthError('Password must be at least 6 characters.');
+          return;
+        }
+
         if (!terms) {
           showAuthError('You must accept the Terms of Service and Privacy Policy to continue.');
           return;
@@ -702,15 +716,8 @@
           submitBtn.disabled = true;
           
           try {
-            // Check if user already exists in our database first
-            const existingUserQuery = await firebaseServices.db.collection('users').where('email', '==', email).get();
-            if (!existingUserQuery.empty) {
-              showAuthError('An account with this email already exists. Please sign in instead.');
-              return;
-            }
-            
-            // Create new user account with Firebase
-            const newUser = await createUserAccount(firstName, lastName, email, password);
+            // Create new user account with Firebase (Auth will prevent duplicates)
+            const { user: newUser, error, code } = await createUserAccount(firstName, lastName, email, password);
             
             if (newUser) {
               // Store authentication state
@@ -735,11 +742,19 @@
               
               window.location.href = 'dashboard.html';
             } else {
-              showAuthError('Error creating account. This email may already be registered. Please try signing in instead.');
+              // Friendly messages for common Firebase errors
+              const map = {
+                'auth/email-already-in-use': 'This email is already registered. Please sign in instead.',
+                'auth/invalid-email': 'Please enter a valid email address.',
+                'auth/operation-not-allowed': 'Email/password accounts are disabled in Firebase Auth.',
+                'auth/weak-password': 'Password is too weak. Please use at least 6 characters.',
+                'permission-denied': 'Access denied by database rules. Please try again after rules are updated.'
+              };
+              showAuthError(map[code] || error || 'Account creation failed. Please try again.');
             }
           } catch (error) {
             console.error('Sign up error:', error);
-            showAuthError('Account creation failed. Please try again.');
+            showAuthError(error?.message || 'Account creation failed. Please try again.');
           } finally {
             // Reset button state
             submitBtn.textContent = originalText;

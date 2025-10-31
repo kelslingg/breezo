@@ -38,7 +38,7 @@ class FirebaseServices {
       const userCredential = await this.auth.signInWithEmailAndPassword(email, password);
       return { success: true, user: userCredential.user };
     } catch (error) {
-      return { success: false, error: error.message };
+      return { success: false, error: error.message, code: error.code };
     }
   }
 
@@ -64,7 +64,7 @@ class FirebaseServices {
 
       return { success: true, user: userCredential.user };
     } catch (error) {
-      return { success: false, error: error.message };
+      return { success: false, error: error.message, code: error.code };
     }
   }
 
