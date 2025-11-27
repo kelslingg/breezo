@@ -47,43 +47,6 @@
             overflow: hidden;
         }
 
-        .lungs {
-            width: 100px;
-            height: 80px;
-            position: relative;
-        }
-
-        .lung-left, .lung-right {
-            position: absolute;
-            width: 42px;
-            height: 60px;
-            background: rgba(25, 154, 142, 0.6);
-            border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
-        }
-
-        .lung-left {
-            left: 0;
-            top: 10px;
-            transform: rotate(-25deg);
-        }
-
-        .lung-right {
-            right: 0;
-            top: 10px;
-            transform: rotate(25deg);
-        }
-
-        .trachea {
-            position: absolute;
-            width: 8px;
-            height: 30px;
-            background: rgba(25, 154, 142, 0.7);
-            border-radius: 4px;
-            left: 50%;
-            top: 5px;
-            transform: translateX(-50%);
-        }
-
         .brand-name {
             font-size: 2.5rem;
             font-weight: 700;
@@ -125,11 +88,7 @@
     <div class="loading-container" id="loadingContainer">
         <div class="logo-container">
             <div class="logo-circle">
-                <div class="lungs">
-                    <div class="trachea"></div>
-                    <div class="lung-left"></div>
-                    <div class="lung-right"></div>
-                </div>
+                <img src="assets/breezo-logo.png" alt="Breezo lungs logo" style="width: 110px; height: 110px; border-radius: 999px;" />
             </div>
             <div class="brand-name">BREEZO</div>
         </div>

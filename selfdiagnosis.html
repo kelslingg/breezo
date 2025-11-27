@@ -23,6 +23,31 @@
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
       }
+      .ios-heading {
+        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: #0f172a;
+      }
+      .ios-subheading {
+        font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 1rem;
+        line-height: 1.55;
+        color: #475569;
+      }
+      .ios-body {
+        font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.55;
+        color: #334155;
+      }
+      .ios-caption {
+        font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        letter-spacing: 0.01em;
+      }
     </style>
   </head>
   <body class="min-h-screen bg-blur">
@@ -230,19 +255,16 @@
           <!-- Breezo Logo Container -->
           <div class="mb-6 mt-2">
             <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl mx-auto" style="box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);">
-              <div class="lungs" style="width: 64px; height: 51px; position: relative;">
-                <div class="trachea" style="position: absolute; width: 3px; height: 19px; background: rgba(147, 197, 253, 0.8); border-radius: 1.5px; left: 50%; top: 2px; transform: translateX(-50%);"></div>
-                <div class="lung-left" style="position: absolute; width: 26px; height: 38px; background: rgba(147, 197, 253, 0.7); border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%; left: 0; top: 8px; transform: rotate(-25deg);"></div>
-                <div class="lung-right" style="position: absolute; width: 26px; height: 38px; background: rgba(147, 197, 253, 0.7); border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%; right: 0; top: 8px; transform: rotate(25deg);"></div>
-              </div>
+              <img src="assets/breezo-logo.png" alt="Breezo lungs logo" style="width: 80px; height: 80px; border-radius: 999px;" />
             </div>
           </div>
-          <div class="text-3xl font-bold text-gray-900 mb-6 text-center tracking-tight" style="font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">Self-Diagnosis</div>
-          <div class="bg-white rounded-3xl shadow-xl p-8 w-full mb-6 flex flex-col items-center" style="box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);">
-            <div class="text-xl text-gray-900 text-center mb-3 font-semibold">This app currently supports diagnosis for <span class="text-[#199A8E] font-bold">respiratory diseases only</span></div>
-            <div class="text-gray-600 text-center text-lg">We're working on expanding our diagnostic capabilities to serve you better.</div>
+        <div class="ios-heading text-center mb-4">Self-Diagnosis</div>
+        <div class="bg-white rounded-3xl shadow-xl p-8 w-full mb-6 flex flex-col items-center gap-3 text-center" style="box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);">
+          <p class="ios-subheading text-sm uppercase tracking-[0.18em] text-[#0f172a]/60 mb-1">Currently Available</p>
+          <p class="ios-heading text-[1.35rem] leading-tight mb-1">Respiratory guidance only</p>
+          <p class="ios-body max-w-lg">We're continually training Breezo to support more health scenarios. For now, our AI companion is calibrated for respiratory symptoms.</p>
           </div>
-          <div class="text-center text-lg text-red-600 font-medium mb-8 leading-relaxed">This is not a substitute for professional medical advice.<br/>Always consult with a healthcare provider for proper diagnosis and treatment.</div>
+        <div class="text-center ios-caption text-red-600 font-semibold mb-7 leading-relaxed">This experience is not a substitute for professional medical advice. Always consult a healthcare provider for diagnosis and treatment.</div>
           <button id="continue-warning" class="w-full max-w-sm bg-[#199A8E] hover:bg-[#157c71] text-white font-bold rounded-2xl py-4 text-lg text-center shadow-xl transition-all duration-200 hover:shadow-2xl transform hover:scale-105" style="box-shadow: 0 10px 25px rgba(25, 154, 142, 0.3);">Continue</button>
         </div>
       </div>
